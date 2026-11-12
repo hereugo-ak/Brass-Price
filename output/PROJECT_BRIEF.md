@@ -114,7 +114,38 @@ Metal leg, 4-week horizon (from `data/brass_model.py`): **₹994.63/kg**, 80% ba
 
 On 5,500 kg/month the band spans roughly **₹9 lakh** between low and high. That is why the floor matters more than the middle number.
 
-### 2.6 Owner intelligence — 6 of 8 questions answered
+### 2.6 The price is calculated, not looked up
+
+The owner described the mechanism himself: *"LME governs most of it but in India we have MCX which is metal trading which also governs the price, plus the transportation is always extra."*
+
+That is an instruction to **calculate**, and the calculation now runs two independent ways:
+
+```
+price = ratio × metal_value + transport
+```
+
+| Route | Construction | Metal value |
+|---|---|---:|
+| **A — LME × FX** | 0.615 × Cu $14,473/t × ₹94.53 + 0.385 × Zn $4,021/t × ₹94.53 | **₹987.77/kg** |
+| **B — MCX domestic** | 0.615 × ₹1,341.85 + 0.385 × ₹411.45 (INR/kg already) | **₹983.65/kg** |
+| | **difference** | **−₹4.12/kg (−0.42%)** |
+
+Route B embeds FX, import duty and the domestic premium, so the agreement between A and B is a genuine cross-check rather than a tautology. Two different data sources, two different constructions, same answer to within 0.42%.
+
+**Current calculated price (12 Nov 2026, transport taken as ₹20/kg):**
+
+| Line | Metal | × ratio | Brass | + transport |
+|---|---:|---:|---:|---:|
+| Low (mean − 1sd) | 983.65 | 0.837 | 823.31 | **₹843/kg** |
+| Central | 983.65 | 0.876 | 861.67 | **₹882/kg** |
+| High (mean + 1sd) | 983.65 | 0.915 | 900.04 | **₹920/kg** |
+| Quote floor (+5%) | | | | **₹965/kg** |
+
+**No invoice was used to produce these numbers.** They follow from public metal prices, the domestic exchange, a measured ratio and a transport parameter.
+
+**What an invoice would and would not do.** It is **not** a prerequisite for the calculation — that claim was made earlier and is withdrawn. It would narrow the ratio from the *market board* value (sd 0.039 → ±₹38/kg) toward Castle's *own* value. The honey grade alone already carries sd 0.017 (±₹17/kg), so the remaining uncertainty is bounded and modest. An invoice improves precision; it does not unlock anything.
+
+### 2.7 Owner intelligence — 6 of 8 questions answered
 
 Recorded verbatim in `data/owner_answers.md`, dated 2026-11-12:
 
@@ -133,7 +164,7 @@ Recorded verbatim in `data/owner_answers.md`, dated 2026-11-12:
 
 What the answers changed in the design: the target became the **domestic brass scrap price in ₹/kg, delivered, GST inclusive**; the horizon became **four weeks**; the quote shield is built for **Europe and the Gulf**; **transport** entered the price identity and sits inside the target, not added later.
 
-### 2.7 Models built and results
+### 2.8 Models built and results
 
 | Model | Target | Result |
 |---|---|---|
@@ -143,6 +174,7 @@ What the answers changed in the design: the target became the **domestic brass s
 | `drift12` on the WPI brass index | domestic brass index, 1–4 months | **beats naive in all 12 configurations by 2.7–7.5%** — but DM +0.56…+1.22, not significant, and the edge exists only post-2020 |
 | **Ratio model (`brass_target_from_board.py`)** | brass ₹/kg = ratio × metal leg | **ratio 0.876 ± 0.039**, band ₹804 / ₹871 / ₹966 |
 | **Procurement backtest (`backtest_procurement.py`)** | synthetic brass, 1,593 weeks | **buy-timing signal FAILS**: −₹0.11/kg vs buying every week. Quote floor is what survives. |
+| **Price calculator (`brass_price_calculator.py`)** | brass ₹/kg from MCX + LME + transport | **₹823 / ₹862 / ₹900 + transport**, quote floor ₹965. LME route and MCX route agree to **0.42%**. |
 
 **Findings that matter:**
 
@@ -155,7 +187,7 @@ What the answers changed in the design: the target became the **domestic brass s
 - **The asymmetry is confirmed in time, not only in spread:** brass was higher than today in **52.6% of 1-week periods, 57.5% of 4-week periods and 59.6% of 8-week periods**. The expected cost of delay is small (+0.24% over four weeks) — the owner's weekly rhythm is rational — but the tail is one-sided, which is exactly what the quote floor covers.
 - **Quoting at the band's middle carries an expected metal cost of ₹5.37/kg = ~₹29,500 per 5,500 kg order**, worst case ₹77.7/kg. Quoting at the band high removes that risk but prices ~11% above the middle. That trade-off is the decision the floor rule encodes.
 
-### 2.8 Tools and deliverables built
+### 2.9 Tools and deliverables built
 
 | File | Purpose | State |
 |---|---|---|
@@ -171,6 +203,7 @@ What the answers changed in the design: the target became the **domestic brass s
 | `output/WPI_BRASS_FINDING.md` | the WPI index discovery and its four tests | current |
 | `output/BAND_REPORT.md` | metal-leg results, band, quote-floor grid | current |
 | `output/PROCUREMENT_BACKTEST.md` | acceptance test: cost of delay, signal rejection, quote exposure | current |
+| `data/brass_price_calculator.py` | the working calculation, two routes, transport as a parameter | current |
 
 ---
 
@@ -215,7 +248,7 @@ MCX data therefore arrives by manual bhavcopy. It is now captured: 955 daily cop
 
 | # | Missing | Why it matters | What resolves it |
 |---:|---|---|---|
-| 1 | **One Castle invoice — ₹/kg, month, grade** | confirms the 0.876 ratio on Castle's own purchases; converts an estimate into a fact | one figure from the owner |
+| 1 | **One Castle invoice — ₹/kg, month, grade** *(optional, not a blocker)* | narrows the ratio from the market board value (±₹38/kg) to Castle's own value, and confirms the transport charge | one figure from the owner — the calculation already runs without it |
 | 2 | Weekly brass price series | turns the ratio into a tracked series and enables the rupee-saved backtest | one figure a week: 8 rows to start, 30 to be usable, 100+ to fit |
 | 3 | Quote-validity days per market | sets the quote-floor horizon precisely | owner; 30 days assumed, stress-tested at 15 and 7 |
 | 4 | Bartan/gittu alloy composition | the 0.872 bartan ratio rests on one observation; composition sets the metal leg | owner, or a CoA/IS 319 grade confirmation |
@@ -247,7 +280,7 @@ MCX data therefore arrives by manual bhavcopy. It is now captured: 955 daily cop
 
 **Not delivered, and not claimed:** a model that beats naive on Castle's real price, a profitable timing signal, or a calibrated continuous ₹/kg history.
 
-**The gap is now one invoice and one weekly figure.** This morning it was the entire spread layer. That is the difference the last datasets made.
+**The calculation runs today.** Two independent metal routes agree to 0.42%, the ratio is measured, and the output is a ₹/kg band with a quote floor. What remains is refinement — a weekly series to track the ratio's drift, and one invoice to confirm it is Castle's number and not just the market's.
 
 ---
 

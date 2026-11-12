@@ -1,0 +1,33 @@
+{
+ "label": "calculated price, no invoice used",
+ "inputs": {
+  "lme_cu_usd_t": 14473.05590909091,
+  "lme_zn_usd_t": 4020.549047619048,
+  "usdinr": 94.53,
+  "mcx_cu_inr_kg": 1341.85,
+  "mcx_zn_inr_kg": 411.45,
+  "mcx_date": "2026-11-11",
+  "w_cu": 0.615
+ },
+ "metal_value": {
+  "route_a_lme": 987.77,
+  "route_b_mcx": 983.65,
+  "gap_pct": -0.42
+ },
+ "ratio": {
+  "central": 0.876,
+  "sd": 0.039,
+  "prior_years": {
+   "2019": 0.977,
+   "2023": 0.91,
+   "2026": 0.897
+  }
+ },
+ "transport_inr_kg": 20.0,
+ "price_inr_kg": {
+  "low": 843.31,
+  "mid": 881.67,
+  "high": 920.04
+ },
+ "quote_floor_5pct": 965.04
+}
