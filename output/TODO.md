@@ -20,8 +20,12 @@ The forecaster did not, and has been withdrawn.
 | Rupee-saved backtest | ✅ run — **buy signal rejected** (−₹0.11/kg) |
 | **Model training** | ⛔ **DONE AND NEGATIVE** — 8 models, 17 drivers, 155 months, all lose (DM −5.6 to −10.2) |
 | Product UI | ✅ v3, editorial system, 19/19 headless tests |
-| Quote log | 🟡 schema created (`data/quotes.csv`), nothing writing to it yet |
-| Backend / API | ⛔ **not built — blocked on sign-off** |
+| Quote log | ✅ **live** — every check stored with `model_version`, floor at time, verdict |
+| Backend / API | ✅ **BUILT & TESTED** — FastAPI + SQLite, 28/28 pytest, verified on a live server |
+| Sync All | ✅ built — per-feed `OK / STALE / BLOCKED / MANUAL / FAILED`, never crashes |
+| Manual upload | ✅ built — preview → validate → commit, with tested guards |
+| Guide (owner-facing) | ⛔ not built (P2) |
+| Delivery (weekly note) | ⛔ not built (P3) |
 | Push to GitHub | ⛔ blocked on your login |
 
 ---
@@ -33,15 +37,15 @@ The forecaster did not, and has been withdrawn.
 
 ---
 
-## P1 — Backend foundation ⭐ (do only after sign-off)
+## P1 — Backend foundation ✅ DONE 2026-11-12
 
-- [ ] Database: SQLite `brass.db` with `series`, `observation`, `model_input`, `quote`, `note`
-- [ ] Wire `data/engine.py` as the single source of floor math (already built)
-- [ ] **Sync All** endpoint/CLI: run all automatable feeds, return per-feed `OK / STALE / BLOCKED / FAILED`
-- [ ] **Manual upload** endpoint: preview → validate → commit, for MCX, WPI, board prices, owner rate
-- [ ] Quote log writer: every check stored with `model_version`, floor at time, verdict
-- [ ] FastAPI: `/week`, `/quote`, `/history`, `/config`, `/sync`, `/upload`
-- [ ] Run-log table so "what did Sync All do last Tuesday" is answerable
+- [x] Database: SQLite `brass.db` — `series`, `observation`, `model_input`, `quote`, `note`, `feed_run`, `feed_run_item`, `upload`
+- [x] Engine at `app/engine.py`, `MODEL_VERSION 2026-11-12.1`, matches UI to ₹0.01
+- [x] **Sync All** `app/sync.py` — FRED ×5, ECB, CFTC live; 4 OK / 3 STALE / 6 MANUAL on first run
+- [x] **Manual upload** `app/upload.py` — 5 feeds, frameset trap rejected, idempotent, per-row reasons
+- [x] Quote log writer — rows written before the response is returned
+- [x] FastAPI: `/health`, `/week`, `/quote`, `/history`, `/sync`, `/sync/last`, `/upload/*`, `/config`
+- [x] Run log (`feed_run` + `feed_run_item`) — every run and every feed outcome retained
 
 **Acceptance:** one command brings every feed current, refuses bad uploads with a reason, and every
 displayed number is reproducible from stored rows + `model_version`.

@@ -1,7 +1,14 @@
 .env
 __pycache__/
-*.log
+*.pyc
+.pytest_cache/
 node_modules/
+*.log
 .DS_Store
 Thumbs.db
 ~$*
+
+# local database and its WAL sidecars are runtime state, not source
+brass.db
+brass.db-wal
+brass.db-shm
