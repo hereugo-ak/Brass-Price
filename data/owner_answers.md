@@ -32,7 +32,19 @@
 
 > Europe and Middle east has most orders
 
-**Gap:** quote-validity days per market NOT answered. US/Australia not mentioned (assumed minor until confirmed).
+**Follow-up (2026-11-12):**
+> quote is valid till no price change in market ( usually that day only valid till that day )
+
+**Resolved:** a quotation is valid **same-day only**. It cannot be revised once given, so the
+pricing risk does not come from the quote ageing — it comes from the **delivery period**: metal is
+bought over the following weeks while the price is already fixed. The cover period is therefore the
+delivery lead time (~1 month, per Q4), not the quote validity.
+
+**Transport follow-up (2026-11-12):** "transport varies" — cost depends on **how far the material
+travels**, i.e. on which city/mandi it is sourced from. Modelled as km × ₹/tonne-km.
+
+**Still missing:** the per-tonne-km rate, and which source markets Castle actually uses most.
+(Per-market validity differences no longer matter — all quotes are same-day.)
 
 ## Q6 price formula
 

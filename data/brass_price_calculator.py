@@ -83,8 +83,30 @@ def mcx_latest():
     return out
 
 
+# Transport is a DISTANCE x RATE model, not a fixed number.
+# Owner (2026-11-12): "transportation is always extra"; rate itself not given.
+# All four freight-rate sources probed returned 404, so the rate is a labelled
+# ASSUMPTION the analyst must replace with a real bill.
+DISTANCES = {'delhi': 130, 'moradabad': 120, 'jaipur': 250, 'ahmedabad': 950,
+             'jamnagar': 1270, 'mumbai': 1340}
+RATE_INR_PER_T_KM = 3.0     # ASSUMPTION - unverified
+
+
+def transport_inr_kg(city='delhi', rate=RATE_INR_PER_T_KM):
+    """km x Rs/tonne-km = Rs/tonne; /1000 = Rs/kg."""
+    km = DISTANCES.get(city.lower(), 130)
+    return km * rate / 1000.0, km, rate
+
+
 def main():
-    transport = float(sys.argv[1]) if len(sys.argv) > 1 else 0.0
+    transport = float(sys.argv[1]) if len(sys.argv) > 1 else None
+    city = sys.argv[2] if len(sys.argv) > 2 else 'delhi'
+    if transport is None:
+        transport, km, rate = transport_inr_kg(city)
+        print(f'transport model: {city.title()} {km} km x Rs{rate}/tonne-km '
+              f'= Rs {transport:.2f}/kg  [RATE IS AN UNVERIFIED ASSUMPTION]')
+    else:
+        km, rate = None, None
 
     cu_m, cu_v = latest_monthly(load_monthly('PCOPPUSDM'))
     zn_m, zn_v = latest_monthly(load_monthly('PZINCUSDM'))
@@ -150,7 +172,10 @@ def main():
                         'route_b_mcx': round(leg_b, 2) if leg_b else None,
                         'gap_pct': round((leg_b - leg_a) / leg_a * 100, 2) if leg_b else None},
         'ratio': {'central': RATIO, 'sd': RATIO_SD, 'prior_years': RATIO_PRIOR_YEARS},
-        'transport_inr_kg': transport,
+        'transport_inr_kg': round(transport, 2),
+        'transport_model': {'city': city, 'km': km, 'rate_inr_per_t_km': rate,
+                            'verified': False,
+                            'note': 'rate is an unverified assumption; all freight sources returned 404'},
         'price_inr_kg': {
             'low': round(leg * (RATIO - RATIO_SD) + transport, 2),
             'mid': round(leg * RATIO + transport, 2),

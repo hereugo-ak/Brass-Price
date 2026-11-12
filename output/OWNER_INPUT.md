@@ -72,8 +72,14 @@ the horizon at **four weeks**. It also revealed the real product requirement: no
 **What this changed:** owner-facing copy was re-scoped from "US, Europe, Australia, UAE" to
 **Europe and the Middle East**. The quote shield is now built for a European and a Gulf quote.
 
-**Still missing:** **quote-validity days per market.** This is the one answered question that
-remains half-open. 30 days is currently an assumption derived from Q4, stress-tested at 15 and 7.
+**Follow-up (2026-11-12):** *"quote is valid till no price change in market (usually that day only
+valid till that day)"*
+
+**Resolved — a quotation is valid same-day only.** This changes the model's exposure window. The
+risk is not the quote ageing; it is that the price is fixed today while metal is **bought over the
+following weeks**. So the cover period is the **delivery lead time (~1 month, from Q4)**, not the
+validity of the quote. The floor is shown for same-day, 15-day and 30-day cover so the difference
+is visible.
 
 ---
 
@@ -101,9 +107,17 @@ are built:
 | B — MCX domestic | 0.615 × ₹1,341.85 + 0.385 × ₹411.45 | ₹983.65/kg |
 | | **agreement** | **−0.42%** |
 
-**Still missing:** the premium over the benchmark, and the transport rate in ₹/kg. Transport is
-currently a ₹20/kg parameter; every ₹10/kg of transport moves the quote floor by about ₹10/kg, or
-₹55,000 a month on 5,500 kg.
+**Follow-up (2026-11-12):** *"transport varies"* — it depends on distance, i.e. on which city the
+metal comes from.
+
+**Transport is now a distance model:** `km × ₹/tonne-km ÷ 1,000`. Delhi 130 km → ₹0.39/kg at
+₹3/tonne-km; Jamnagar 1,270 km → ₹3.81/kg. **This corrects an earlier error:** the ₹20/kg figure
+used in the first draft was a placeholder and about 50× too high for a short haul. Transport is a
+**minor** term — under 0.5% of the price — not a major one.
+
+**Still missing:** the actual ₹/tonne-km rate. All four freight-rate sources probed (IndiaFilings,
+Vahak, Porter, BlackBuck) returned **404**, so ₹3/tonne-km is a labelled assumption, editable in the
+product. Every ₹1/tonne-km moves the floor by about ₹0.13/kg at 130 km.
 
 ---
 
@@ -138,13 +152,13 @@ is about **₹4.6 lakh/month**.
 | 2 | Items, sizes, grades | ✅ | target = brass **scrap** |
 | 3 | Order rhythm | ✅ | weekly cadence, no bulk |
 | 4 | Reaction speed | ✅ | **4-week horizon** |
-| 5 | Markets / quote validity | ⚠️ markets only | Europe + Middle East |
+| 5 | Markets / quote validity | ✅ **same-day validity** | Europe + Middle East; same-day cover |
 | 6 | Price formula | ✅ mechanism, ❌ numbers | **the calculator + ratio** |
 | 7 | Scrap share | ✅ | 70% scrap, in-house melt |
 | 8 | Monthly kilos | ✅ | rupee translation |
 
-**7 of 8 answered. Two things still genuinely open: quote-validity days, and the transport rate in
-₹/kg.**
+**All 8 answered.** One thing still open: the **transport rate in ₹/tonne-km** (all freight
+sources returned 404, so it is an editable assumption).
 
 ---
 

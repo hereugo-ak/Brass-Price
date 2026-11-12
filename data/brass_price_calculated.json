@@ -23,11 +23,18 @@
    "2026": 0.897
   }
  },
- "transport_inr_kg": 20.0,
- "price_inr_kg": {
-  "low": 843.31,
-  "mid": 881.67,
-  "high": 920.04
+ "transport_inr_kg": 0.39,
+ "transport_model": {
+  "city": "delhi",
+  "km": 130,
+  "rate_inr_per_t_km": 3.0,
+  "verified": false,
+  "note": "rate is an unverified assumption; all freight sources returned 404"
  },
- "quote_floor_5pct": 966.04
+ "price_inr_kg": {
+  "low": 823.7,
+  "mid": 862.06,
+  "high": 900.43
+ },
+ "quote_floor_5pct": 945.45
 }

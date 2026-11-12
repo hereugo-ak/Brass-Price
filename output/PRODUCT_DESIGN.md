@@ -81,10 +81,37 @@ Nothing else. No login. No install. Works on a phone, offline, from a shared lin
 
 **What it is built from:**
 ```
-price = metal value (MCX copper + zinc) × brass ratio + transport
-floor = (high band + transport) × 1.05
+price  = metal value (MCX copper + zinc) × brass ratio + transport
+floor  = (brass + ratio spread + metal-move cover) × (1 + margin) + transport
 ```
-Metal ₹983.65/kg · ratio 0.876 (measured) · transport ₹20/kg → **floor ₹966/kg for a 30-day quote.**
+Metal ₹983.65/kg · ratio 0.876 ± 0.039 (measured) · margin 5%.
+
+**Transport is a distance model, not a constant:** `km × ₹/tonne-km ÷ 1,000`.
+
+| Source | km to Aligarh | Transport at ₹3/t-km |
+|---|---:|---:|
+| Moradabad | 120 | ₹0.36/kg |
+| Delhi | 130 | ₹0.39/kg |
+| Jaipur | 250 | ₹0.75/kg |
+| Ahmedabad | 950 | ₹2.85/kg |
+| Jamnagar | 1,270 | ₹3.81/kg |
+| Mumbai | 1,340 | ₹4.02/kg |
+
+**This corrected a real error.** The first draft used ₹20/kg for transport — a placeholder that was
+about 50× too high for a short haul, and it inflated every floor by ₹20. Transport is a **minor**
+term (under 0.5% of price), not a major one. The rate itself is still an **unverified assumption** —
+all four freight sources probed returned 404 — so it is editable in the product and flagged on screen.
+
+**Cover period follows the delivery lead time, not quote validity.** The owner confirmed a quote is
+**valid same-day only**, so the risk is not the quote ageing: it is that the price is fixed today
+while metal is bought over the next month. The floor is therefore shown for **same-day, 15-day and
+30-day cover** — ₹950 / ₹965 / ₹973 — because the delivery window, not the quote, is the exposure.
+
+| Cover | Low | Middle | High | **Floor** |
+|---|---:|---:|---:|---:|
+| Same day | ₹820 | ₹862 | ₹905 | **₹950** |
+| 15 days | ₹811 | ₹862 | ₹919 | **₹965** |
+| 30 days | ₹805 | ₹862 | ₹926 | **₹973** |
 
 ---
 
