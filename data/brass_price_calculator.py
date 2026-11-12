@@ -156,7 +156,7 @@ def main():
             'mid': round(leg * RATIO + transport, 2),
             'high': round(leg * (RATIO + RATIO_SD) + transport, 2),
         },
-        'quote_floor_5pct': round(leg * (RATIO + RATIO_SD) * 1.05 + transport, 2),
+        'quote_floor_5pct': round((leg * (RATIO + RATIO_SD) + transport) * 1.05, 2),
     }
     (HERE / 'brass_price_calculated.json').write_text(json.dumps(out, indent=1), encoding='utf-8')
     print(f'\n  QUOTE FLOOR (+5%) = Rs {out["quote_floor_5pct"]:.0f}/kg')

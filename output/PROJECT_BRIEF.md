@@ -139,7 +139,7 @@ Route B embeds FX, import duty and the domestic premium, so the agreement betwee
 | Low (mean − 1sd) | 983.65 | 0.837 | 823.31 | **₹843/kg** |
 | Central | 983.65 | 0.876 | 861.67 | **₹882/kg** |
 | High (mean + 1sd) | 983.65 | 0.915 | 900.04 | **₹920/kg** |
-| Quote floor (+5%) | | | | **₹965/kg** |
+| Quote floor (+5%) | | | | **₹966/kg** |
 
 **No invoice was used to produce these numbers.** They follow from public metal prices, the domestic exchange, a measured ratio and a transport parameter.
 
@@ -174,7 +174,7 @@ What the answers changed in the design: the target became the **domestic brass s
 | `drift12` on the WPI brass index | domestic brass index, 1–4 months | **beats naive in all 12 configurations by 2.7–7.5%** — but DM +0.56…+1.22, not significant, and the edge exists only post-2020 |
 | **Ratio model (`brass_target_from_board.py`)** | brass ₹/kg = ratio × metal leg | **ratio 0.876 ± 0.039**, band ₹804 / ₹871 / ₹966 |
 | **Procurement backtest (`backtest_procurement.py`)** | synthetic brass, 1,593 weeks | **buy-timing signal FAILS**: −₹0.11/kg vs buying every week. Quote floor is what survives. |
-| **Price calculator (`brass_price_calculator.py`)** | brass ₹/kg from MCX + LME + transport | **₹823 / ₹862 / ₹900 + transport**, quote floor ₹965. LME route and MCX route agree to **0.42%**. |
+| **Price calculator (`brass_price_calculator.py`)** | brass ₹/kg from MCX + LME + transport | **₹823 / ₹862 / ₹900 + transport**, quote floor ₹966. LME route and MCX route agree to **0.42%**. |
 
 **Findings that matter:**
 

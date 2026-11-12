@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Brass Guard — Castle Hardwares</title>
+<style>
+  :root{
+    --ink:#1c1a17; --ink2:#4a453d; --ink3:#7d766b;
+    --paper:#faf7f2; --paper2:#f3eee4; --rule:#ddd4c4;
+    --navy:#1c2f5c; --gold:#a87e00;
+    --safe:#2f6b3d; --tight:#8a6a2f; --risk:#a8541f; --stop:#8a2f2f;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    padding:0 0 40px}
+  .wrap{max-width:560px;margin:0 auto;padding:0 16px}
+
+  header{border-bottom:3px double var(--navy);padding:18px 0 12px;margin-bottom:14px}
+  .brand{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  h1{font-family:Georgia,'Times New Roman',serif;font-size:22px;margin:0;color:var(--navy);
+    letter-spacing:-.01em}
+  .tag{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink3)}
+  .sub{font-size:12.5px;color:var(--ink3);margin:5px 0 0}
+
+  /* tabs */
+  .tabs{display:flex;gap:0;border:1px solid var(--rule);background:#fff;margin-bottom:16px}
+  .tabs button{flex:1;padding:11px 6px;border:0;background:transparent;font:inherit;
+    font-size:13px;color:var(--ink3);cursor:pointer;border-bottom:3px solid transparent}
+  .tabs button.on{color:var(--navy);font-weight:700;border-bottom-color:var(--gold);background:var(--paper2)}
+  .pane{display:none}
+  .pane.on{display:block}
+
+  /* week card */
+  .card{background:#fff;border:1px solid var(--rule);padding:14px 16px;margin-bottom:14px}
+  .card h2{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);
+    margin:0 0 10px;font-weight:600}
+  .band{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);
+    border:1px solid var(--rule)}
+  .band div{background:#fff;padding:11px 8px;text-align:center}
+  .band b{display:block;font-size:19px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .band span{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink3)}
+  .band .lo b{color:var(--safe)} .band .hi b{color:var(--risk)}
+  .floor{display:flex;justify-content:space-between;align-items:baseline;
+    margin-top:12px;padding-top:12px;border-top:1px solid var(--rule)}
+  .floor b{font-size:26px;color:var(--navy);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .floor span{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink3)}
+  .stamp{font-size:11px;color:var(--ink3);margin-top:8px}
+
+  /* input */
+  label{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink3);margin-bottom:6px}
+  input[type=number]{width:100%;padding:15px 14px;border:1px solid var(--rule);background:#fff;
+    font:inherit;font-size:26px;font-variant-numeric:tabular-nums;color:var(--ink);border-radius:2px}
+  input[type=number]:focus{outline:2px solid var(--gold);outline-offset:-1px}
+  .chips{display:flex;gap:8px;margin:12px 0 16px}
+  .chips button{flex:1;padding:11px 4px;border:1px solid var(--rule);background:#fff;
+    font:inherit;font-size:13px;color:var(--ink2);cursor:pointer;border-radius:2px}
+  .chips button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+  .verdict{border-left:6px solid var(--rule);background:#fff;padding:16px;margin-top:4px;
+    display:none}
+  .verdict.show{display:block}
+  .verdict .headline{font-family:Georgia,serif;font-size:24px;margin:0 0 6px;letter-spacing:-.01em}
+  .verdict p{margin:0 0 10px;font-size:14.5px;color:var(--ink2)}
+  .verdict .math{font-size:12.5px;color:var(--ink3);border-top:1px solid var(--rule);
+    padding-top:10px;font-variant-numeric:tabular-nums}
+  .verdict.safe{border-left-color:var(--safe)} .verdict.safe .headline{color:var(--safe)}
+  .verdict.tight{border-left-color:var(--tight)} .verdict.tight .headline{color:var(--tight)}
+  .verdict.risk{border-left-color:var(--risk)} .verdict.risk .headline{color:var(--risk)}
+  .verdict.stop{border-left-color:var(--stop)} .verdict.stop .headline{color:var(--stop)}
+
+  /* note tab */
+  textarea{width:100%;min-height:220px;padding:14px;border:1px solid var(--rule);background:#fff;
+    font:14px/1.6 ui-monospace,Menlo,Consolas,monospace;color:var(--ink);border-radius:2px;
+    resize:vertical}
+  .btn{display:block;width:100%;padding:15px;border:1px solid var(--navy);background:var(--navy);
+    color:#fff;font:inherit;font-size:15px;cursor:pointer;border-radius:2px;margin-top:12px}
+  .btn.ghost{background:#fff;color:var(--navy)}
+  .msg{font-size:13px;margin-top:10px;display:none}
+  .msg.show{display:block;color:var(--safe)}
+
+  details{margin-top:16px;border:1px solid var(--rule);background:#fff}
+  details summary{padding:12px 14px;cursor:pointer;font-size:13px;color:var(--ink2);
+    list-style:none}
+  details summary::-webkit-details-marker{display:none}
+  details summary::before{content:"▸ ";color:var(--gold)}
+  details[open] summary::before{content:"▾ "}
+  details .inner{padding:0 14px 16px;border-top:1px solid var(--rule)}
+  .adv-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .adv-grid input{padding:10px;font-size:16px}
+  .hint{font-size:11.5px;color:var(--ink3);margin-top:8px;line-height:1.45}
+
+  footer{margin-top:26px;padding-top:14px;border-top:1px solid var(--rule);
+    font-size:11.5px;color:var(--ink3);line-height:1.55}
+  .warn{background:var(--paper2);border-left:3px solid var(--gold);padding:10px 12px;
+    font-size:12px;color:var(--ink2);margin-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <h1>Brass Guard</h1>
+      <span class="tag">Castle Hardwares · Aligarh</span>
+    </div>
+    <p class="sub">One number to check before you send a quote.</p>
+  </header>
+
+  <div class="tabs">
+    <button id="tabCheck" class="on">Check a quote</button>
+    <button id="tabNote">This week's note</button>
+  </div>
+
+  <!-- ============================ CHECK -->
+  <section id="paneCheck" class="pane on">
+    <label for="price">Price you are about to quote — ₹ per kilo</label>
+    <input type="number" id="price" inputmode="decimal" step="0.5" min="0" placeholder="e.g. 930">
+
+    <label style="margin-top:16px">How long will this quote stay open?</label>
+    <div class="chips" id="chips">
+      <button data-days="7">7 days</button>
+      <button data-days="15">15 days</button>
+      <button data-days="30" class="on">30 days</button>
+    </div>
+
+    <div class="verdict" id="verdict">
+      <p class="headline" id="vHead"></p>
+      <p id="vBody"></p>
+      <p class="math" id="vMath"></p>
+    </div>
+
+    <details open>
+      <summary>This week's numbers</summary>
+      <div class="inner">
+        <div class="card" style="border:0;padding:0;margin:12px 0 0">
+          <div class="band">
+            <div class="lo"><b id="bLo">—</b><span>low</span></div>
+            <div><b id="bMid">—</b><span>middle</span></div>
+            <div class="hi"><b id="bHi">—</b><span>high</span></div>
+          </div>
+          <div class="floor">
+            <span>Quote floor</span>
+            <b id="bFloor">—</b>
+          </div>
+          <div class="stamp" id="bStamp"></div>
+        </div>
+      </div>
+    </details>
+
+    <div class="warn">
+      The floor is the lowest price that still covers a normal metal move over the period the
+      quote stays open. Below it you are betting on the market going your way.
+    </div>
+  </section>
+
+  <!-- ============================ NOTE -->
+  <section id="paneNote" class="pane">
+    <label for="note">Your weekly message — send as it is</label>
+    <textarea id="note" readonly></textarea>
+    <button class="btn" id="copyNote">Copy message</button>
+    <button class="btn ghost" id="shareNote">Share</button>
+    <div class="msg" id="noteMsg">Copied.</div>
+    <div class="hint">
+      This text is generated from this week's numbers. Send it at the start of the week.
+      If you cannot send it, the numbers in the Check tab are still current.
+    </div>
+  </section>
+
+  <details id="adv">
+    <summary>Update this week's numbers (for the person maintaining it)</summary>
+    <div class="inner">
+      <div class="adv-grid">
+        <div><label for="iMetal">Metal value ₹/kg</label>
+          <input type="number" id="iMetal" step="0.01"></div>
+        <div><label for="iTransport">Transport ₹/kg</label>
+          <input type="number" id="iTransport" step="0.5"></div>
+        <div><label for="iRatio">Ratio</label>
+          <input type="number" id="iRatio" step="0.001"></div>
+        <div><label for="iSd">Ratio spread</label>
+          <input type="number" id="iSd" step="0.001"></div>
+      </div>
+      <div class="hint">
+        Metal value comes from MCX copper and zinc on the day. Ratio is the measured
+        brass-to-metal ratio. Leave these alone unless the weekly update says otherwise.
+      </div>
+    </div>
+  </details>
+
+  <footer>
+    <b>How the number is built.</b> Metal value × measured brass ratio + transport. The low and
+    high are one standard deviation apart. The floor adds the margin needed to survive an
+    adverse metal move over the quote period.<br><br>
+    Computed from MCX copper and zinc closes. Not a prediction — a range you can quote against.
+  </footer>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---- this week's inputs (updated weekly by whoever maintains the file)
+  var DEFAULTS = {
+    metal: 983.65,      // Rs/kg, 0.615*MCX_Cu + 0.385*MCX_Zn
+    transport: 20.00,   // Rs/kg, owner says transport is always extra
+    ratio: 0.876,       // bartan+honey+purja measured ratio
+    sd: 0.039,          // one standard deviation of that ratio
+    stamp: 'Updated 12 Nov 2026 · MCX copper ₹1,341.85 · zinc ₹411.45'
+  };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var state = { days: 30, price: null };
+
+  function nums() {
+    var m = parseFloat($('iMetal').value) || DEFAULTS.metal;
+    var t = parseFloat($('iTransport').value);
+    if (isNaN(t)) { t = DEFAULTS.transport; }
+    var r = parseFloat($('iRatio').value) || DEFAULTS.ratio;
+    var sd = parseFloat($('iSd').value);
+    if (isNaN(sd)) { sd = DEFAULTS.sd; }
+    var mid = m * r + t;
+    var high = m * (r + sd) + t;
+    var low = m * (r - sd) + t;
+    var floor = high * 1.05;          // +5% margin to survive an adverse move
+    return { m: m, t: t, r: r, sd: sd, mid: mid, high: high, low: low, floor: floor };
+  }
+
+  function scale(days) {
+    return Math.sqrt(days / 30);      // random-walk cushion scaling
+  }
+
+  function band(days) {
+    var n = nums();
+    var k = scale(days);
+    var cushion = n.high - n.mid;
+    var margin = n.floor - n.high;
+    return {
+      mid: n.mid,
+      high: n.mid + cushion * k,
+      low: n.mid - (n.mid - n.low) * k,
+      floor: n.mid + cushion * k + margin * k,
+      base: n
+    };
+  }
+
+  function money(x) { return '₹' + x.toFixed(0); }
+
+  function render() {
+    var b30 = band(30);
+    $('bLo').textContent = money(b30.low);
+    $('bMid').textContent = money(b30.mid);
+    $('bHi').textContent = money(b30.high);
+    $('bFloor').textContent = money(b30.floor);
+    $('bStamp').textContent = DEFAULTS.stamp;
+    $('iMetal').value = DEFAULTS.metal;
+    $('iTransport').value = DEFAULTS.transport;
+    $('iRatio').value = DEFAULTS.ratio;
+    $('iSd').value = DEFAULTS.sd;
+    buildNote(b30);
+    check();
+  }
+
+  function check() {
+    var p = parseFloat($('price').value);
+    var v = $('verdict');
+    if (isNaN(p) || p <= 0) { v.className = 'verdict'; return; }
+
+    var b = band(state.days);
+    var order = 100;
+    var gap = p - b.floor;
+    var head, body, cls;
+
+    if (p >= b.floor) {
+      cls = 'safe';
+      head = 'Safe to quote.';
+      body = 'This price covers a normal metal move over ' + state.days + ' days, with ' +
+             money(p - b.high) + ' per kilo above the expected high.';
+    } else if (p >= b.high) {
+      cls = 'tight';
+      head = 'Allowed, but thin.';
+      body = 'You are above the expected high but ' + money(b.floor - p) +
+             ' per kilo below a safe floor. A sharp metal move eats your margin.';
+    } else if (p >= b.mid) {
+      cls = 'risk';
+      head = 'Risky.';
+      body = 'Metal is expected to sit near ' + money(b.mid) + '. Quoting ' +
+             money(p) + ' leaves only ' + money(p - b.mid) +
+             ' per kilo, and prices rose in 57 of every 100 four-week periods.';
+    } else {
+      cls = 'stop';
+      head = 'Do not quote this.';
+      body = 'Below the expected metal value of ' + money(b.mid) + '. You would be buying metal ' +
+             'at a loss. Raise it to ' + money(b.floor) + ' or shorten the validity.';
+    }
+
+    $('vHead').textContent = head;
+    $('vBody').textContent = body;
+    $('vMath').textContent =
+      'Quote ' + money(p) + ' · floor for ' + state.days + ' days ' + money(b.floor) +
+      ' · gap ' + (gap >= 0 ? '+' : '−') + money(Math.abs(gap)) + '/kg' +
+      ' · on a ' + order + ' kg order that is ' + (gap >= 0 ? '+' : '−') +
+      money(Math.abs(gap) * order);
+    v.className = 'verdict show ' + cls;
+  }
+
+  function buildNote(b) {
+    var day = new Date();
+    var months = ['January','February','March','April','May','June','July','August',
+                  'September','October','November','December'];
+    var dateStr = day.getDate() + ' ' + months[day.getMonth()] + ' ' + day.getFullYear();
+    var text =
+      'Brass Guard — week of ' + dateStr + '\n\n' +
+      'Metal this week\n' +
+      '  Low      ₹' + b.low.toFixed(0) + '/kg\n' +
+      '  Middle   ₹' + b.mid.toFixed(0) + '/kg\n' +
+      '  High     ₹' + b.high.toFixed(0) + '/kg\n\n' +
+      'Quote floor\n' +
+      '  ' + '₹' + b.floor.toFixed(0) + '/kg for a 30-day quote\n' +
+      '  ' + '₹' + band(15).floor.toFixed(0) + '/kg for 15 days\n' +
+      '  ' + '₹' + band(7).floor.toFixed(0) + '/kg for 7 days\n\n' +
+      'What it means\n' +
+      '  Prices rose in 57 of the last 100 four-week periods.\n' +
+      '  Plan on the middle. Treat the gap to the high as your cushion.\n' +
+      '  Do not quote below the floor.\n\n' +
+      'Built from MCX copper and zinc closes, ' + dateStr + '.';
+    $('note').value = text;
+  }
+
+  // ---- wiring
+  $('price').addEventListener('input', check);
+  Array.prototype.forEach.call($('chips').children, function (btn) {
+    btn.addEventListener('click', function () {
+      Array.prototype.forEach.call($('chips').children, function (b) { b.className = ''; });
+      btn.className = 'on';
+      state.days = parseInt(btn.getAttribute('data-days'), 10);
+      check();
+    });
+  });
+  ['iMetal','iTransport','iRatio','iSd'].forEach(function (id) {
+    $(id).addEventListener('input', function () {
+      // recompute everything from the advanced inputs without resetting them
+      var m = parseFloat($('iMetal').value) || DEFAULTS.metal;
+      var t = parseFloat($('iTransport').value); if (isNaN(t)) { t = DEFAULTS.transport; }
+      var r = parseFloat($('iRatio').value) || DEFAULTS.ratio;
+      var sd = parseFloat($('iSd').value); if (isNaN(sd)) { sd = DEFAULTS.sd; }
+      var mid = m * r + t, high = m * (r + sd) + t, low = m * (r - sd) + t;
+      var b30 = { mid: mid, high: high, low: low, floor: high * 1.05 };
+      $('bLo').textContent = money(b30.low);
+      $('bMid').textContent = money(b30.mid);
+      $('bHi').textContent = money(b30.high);
+      $('bFloor').textContent = money(b30.floor);
+      buildNote(b30);
+      check();
+    });
+  });
+
+  function tab(show, hide, onBtn, offBtn) {
+    $(show).className = 'pane on'; $(hide).className = 'pane';
+    $(onBtn).className = 'on'; $(offBtn).className = '';
+  }
+  $('tabCheck').addEventListener('click', function () {
+    tab('paneCheck','paneNote','tabCheck','tabNote');
+  });
+  $('tabNote').addEventListener('click', function () {
+    tab('paneNote','paneCheck','tabNote','tabCheck');
+  });
+
+  $('copyNote').addEventListener('click', function () {
+    var t = $('note').value;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(t).then(function () {
+        $('noteMsg').className = 'msg show';
+      }, function () { $('note').select(); });
+    } else { $('note').select(); }
+  });
+  $('shareNote').addEventListener('click', function () {
+    if (navigator.share) {
+      navigator.share({ text: $('note').value }).catch(function () {});
+    } else {
+      $('note').select();
+      $('noteMsg').textContent = 'Copy the selected text, then paste it.';
+      $('noteMsg').className = 'msg show';
+    }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

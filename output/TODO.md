@@ -14,7 +14,7 @@
 | MCX daily copper + zinc | ✅ done — 955 rows, 2025-01-01 → 2026-11-11 |
 | Board price tier | ✅ done — 27 dated observations from 11 sources |
 | Brass/metal ratio | ✅ measured — 0.977 (2019) / 0.910 (2023) / 0.876 (2026) |
-| Price calculator | ✅ working — two routes agree to 0.42%; band ₹843 / ₹882 / ₹920, floor ₹965 |
+| Price calculator | ✅ working — two routes agree to 0.42%; band ₹843 / ₹882 / ₹920, floor ₹966 |
 | Rupee-saved backtest | ✅ run — **buy signal rejected** (−₹0.11/kg) |
 | **Trained model on brass** | ❌ **NONE. This is P1.** |
 | Weekly brass series | ❌ missing — needs Castle |
@@ -155,7 +155,7 @@ walk in a different currency. Expect naive to win.
 **Why keep it on the list:** if P1 and P2 both lose, this is the honest end state and it is already
 built and working.
 
-- Band ₹843 / ₹882 / ₹920 delivered; quote floor ₹965/kg
+- Band ₹843 / ₹882 / ₹920 delivered; quote floor ₹966/kg
 - Two independent metal routes agreeing to 0.42%
 - Buy signal withdrawn on evidence
 - **This is a defensible submission on its own.** The trained models are upside, not a prerequisite.
