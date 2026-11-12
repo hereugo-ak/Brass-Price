@@ -36,7 +36,7 @@ The **transport line is owner-confirmed** (2026-11-12: "the transportation is al
 
 **Current state (as of 2026-11-12):**
 - Research done and closed: 72 nodes (26 Verified / 31 Disputed / 15 visible watchlist), 9 edges (4 Verified / 5 Disputed), 61 claim rows, 38 dataset rows, 14 quarantined claims. Do not re-research.
-- Owner deliverables done: `Brass_Story.html`, `brass_graph.html`, `Castle_Discovery_Questions.html`, `DTPS_Dossier.html`, `PRD.md/.docx`, `Executive_Summary.docx`. Note: owner-facing copy still says US/Europe/Australia/UAE — it has not been re-scoped to the founder's Europe + Middle East answer.
+- Owner deliverables done: `Brass_Story.html`, `brass_graph.html`, `Castle_Discovery_Questions.html`, `DTPS_Dossier.html`, `PRD.md/.docx`, `Executive_Summary.docx`. Owner-facing copy was re-scoped on 2026-11-12 to the founder's answers: Europe + Middle East markets, scrap-led economics (bartan/gittu, ~70% scrap), delivered + transport basis, and a "what you told us" answers band in the story and the dossier. Weekday names were purged from all owner-facing copy (weekly wording only).
 - Data spine live: 7 FRED series backfilled (DEXINUS through 2026-11-06), 2,789 weekly feature rows (1973-01-05 → 2026-11-06, 31 columns), ECB + CFTC snapshots.
 - Model bar: naive 1-week MAE ₹0.2128, 4-week ₹0.4625. Best Ridge loses (0.2930 / 0.5131); Diebold–Mariano favours naive. This is the honest finding, not a bug.
 - Decision engine is **demo only**; it is not advice and must not be sent to the owner.
