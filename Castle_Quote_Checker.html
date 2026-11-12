@@ -187,6 +187,24 @@ select:focus,input[type=file]:focus{border-color:var(--gold)}
 .preview-table td{padding:4px 6px;border-bottom:1px solid var(--rule-2)}
 .rejected{font-size:11.5px;color:var(--stop);margin-top:8px}
 .rejected li{margin-left:14px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);margin-top:16px}
+.stats>div{padding:12px 10px 13px}
+.stats>div:nth-child(odd){border-right:1px solid var(--rule)}
+.stats>div:nth-child(n+3){border-top:1px solid var(--rule)}
+.stats .k{font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+.stats .v{font-family:var(--serif);font-size:24px;letter-spacing:-.02em;margin-top:3px}
+.stats .v.good{color:var(--safe)}.stats .v.bad{color:var(--stop)}.stats .v.mute{color:var(--ink-4)}
+.stats .s{font-size:10.5px;color:var(--ink-3);margin-top:2px}
+.qtable{width:100%;border-collapse:collapse;font-size:11.5px;margin-top:14px}
+.qtable th{text-align:left;font:600 9px var(--sans);letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3);padding:6px 4px;border-bottom:1px solid var(--rule);white-space:nowrap}
+.qtable td{padding:6px 4px;border-bottom:1px solid var(--rule-2);font-variant-numeric:tabular-nums}
+.qtable td.n{text-align:right}
+.qtable .cov-y{color:var(--safe)}.qtable .cov-n{color:var(--stop)}.qtable .cov-u{color:var(--ink-4)}
+.notelist{margin-top:12px;border-top:1px solid var(--rule)}
+.notelist div{display:flex;justify-content:space-between;gap:10px;padding:9px 0;
+  border-bottom:1px solid var(--rule-2);font-size:12px}
 
 /* ---------- guide overlay ---------- */
 .overlay{position:fixed;inset:0;z-index:50;background:rgba(28,26,23,.55);
@@ -252,6 +270,7 @@ colophon .fin{font-family:var(--serif);font-size:12px;color:var(--ink-3);margin-
   <div class="tabs">
     <button id="tCheck" class="on">Check a quote</button>
     <button id="tNote">Weekly note</button>
+    <button id="tHist">History</button>
     <button id="tData">Data</button>
   </div>
 
@@ -339,7 +358,10 @@ colophon .fin{font-family:var(--serif);font-size:12px;color:var(--ink-3);margin-
       <div class="btnrow">
         <button class="btn" id="copyNote">Copy note</button>
         <button class="btn ghost" id="shareNote">Share</button>
+        <button class="btn ghost" id="sendNote">Send note</button>
       </div>
+      <div class="notice hidden" id="noteMsg"></div>
+      <div class="notelist" id="noteHist"></div>
       <p class="help">Built from the same numbers as the floor above. There is one source of truth
       for this product, so the note can never disagree with the screen.</p>
     </section>
@@ -385,6 +407,31 @@ colophon .fin{font-family:var(--serif);font-size:12px;color:var(--ink-3);margin-
         </div>
         <div class="resultbox" id="upResult"></div>
       </div>
+    </section>
+  </div>
+
+  <!-- =============================== HISTORY =============================== -->
+  <div id="pHist" class="pane">
+    <section>
+      <div class="marker-no">History</div>
+      <h2 class="sec">Did the floor hold</h2>
+      <div class="secrule"></div>
+      <div class="stats" id="stats">
+        <div><div class="k">Quotes checked</div><div class="v mute" id="hTotal">—</div>
+          <div class="s" id="hScored"></div></div>
+        <div><div class="k">Floor coverage</div><div class="v mute" id="hCoverage">—</div>
+          <div class="s">target 80%</div></div>
+        <div><div class="k">Below floor</div><div class="v mute" id="hBelow">—</div>
+          <div class="s">quotes flagged</div></div>
+        <div><div class="k">Exposure flagged</div><div class="v mute" id="hExposure">—</div>
+          <div class="s">per 100 kg order</div></div>
+      </div>
+      <div class="notice hidden" id="hMsg"></div>
+      <div id="hTable"></div>
+      <p class="help" style="margin-top:12px">
+        Coverage is scored against the metal price that was actually current when the cover period
+        ended. Quotes with no stored metal data are shown as unmeasured, never guessed.
+      </p>
     </section>
   </div>
 
@@ -780,6 +827,85 @@ colophon .fin{font-family:var(--serif);font-size:12px;color:var(--ink-3);margin-
     });
   }
 
+  /* ---------------------------------------------------------------- report */
+  function loadReport() {
+    if (!S.live) {
+      $('hMsg').className = 'notice err';
+      $('hMsg').textContent = 'History needs the backend. It is offline.';
+      return;
+    }
+    api('/report?limit=200').then(function (r) {
+      $('hTotal').textContent = r.total_quotes;
+      $('hTotal').className = 'v';
+      $('hScored').textContent = r.scored_quotes + ' scored' +
+        (r.unscored_quotes ? ' · ' + r.unscored_quotes + ' unmeasured' : '');
+
+      var cov = r.floor_coverage_rate;
+      var cv = $('hCoverage');
+      cv.textContent = cov == null ? '—' : Math.round(cov * 100) + '%';
+      cv.className = 'v ' + (cov == null ? 'mute' : (cov >= r.floor_coverage_target ? 'good' : 'bad'));
+
+      $('hBelow').textContent = r.below_floor_quotes;
+      $('hBelow').className = 'v ' + (r.below_floor_quotes > 0 ? 'bad' : '');
+      $('hExposure').textContent = '₹' + Math.round(r.exposure_flagged_per_100kg).toLocaleString();
+      $('hExposure').className = 'v ' + (r.exposure_flagged_per_100kg > 0 ? 'bad' : 'mute');
+
+      $('hMsg').className = 'notice hidden';
+      if (!r.total_quotes) {
+        $('hTable').innerHTML = '<p class="help" style="margin-top:14px">' +
+          'No quotes checked yet. Use the Check tab and every result is recorded here.</p>';
+        return;
+      }
+      var rows = r.quotes.slice(0, 25).map(function (q) {
+        var covTxt = q.covered === true ? 'held' : q.covered === false ? 'failed' : '—';
+        var covCls = q.covered === true ? 'cov-y' : q.covered === false ? 'cov-n' : 'cov-u';
+        return '<tr><td>' + esc((q.quoted_at || '').slice(0, 10)) + '</td>' +
+          '<td class="n">' + money(q.price) + '</td>' +
+          '<td class="n">' + money(q.floor) + '</td>' +
+          '<td class="n">' + (q.realised_cost == null ? '—' : money(q.realised_cost)) + '</td>' +
+          '<td>' + esc(q.verdict) + '</td>' +
+          '<td class="' + covCls + '">' + covTxt + '</td></tr>';
+      }).join('');
+      $('hTable').innerHTML = '<table class="qtable"><tr><th>date</th><th>price</th>' +
+        '<th>floor</th><th>realised</th><th>verdict</th><th>floor</th></tr>' + rows + '</table>';
+    }, function (e) {
+      $('hMsg').className = 'notice err';
+      $('hMsg').textContent = 'Could not load history: ' + e.message;
+    });
+  }
+
+  /* ---------------------------------------------------------------- note send */
+  function sendNote() {
+    if (!S.live) { return; }
+    var msg = $('noteMsg');
+    msg.className = 'notice';
+    msg.textContent = 'Sending…';
+    api('/note/send?channel=file', { method: 'POST' })
+      .then(function (r) {
+        msg.className = r.ok ? 'notice ok' : 'notice err';
+        msg.textContent = r.ok
+          ? 'Note #' + r.note_id + ' written: ' + r.message
+          : 'Not sent. ' + r.message;
+        loadNoteHistory();
+      }, function (e) {
+        msg.className = 'notice err';
+        msg.textContent = 'Send failed: ' + e.message;
+      });
+  }
+
+  function loadNoteHistory() {
+    if (!S.live) { return; }
+    api('/note/history').then(function (r) {
+      var el = $('noteHist');
+      if (!r.notes.length) { el.innerHTML = ''; return; }
+      el.innerHTML = r.notes.slice(0, 6).map(function (n) {
+        return '<div><span>week of ' + esc(n.week_start) + '</span>' +
+          '<span style="color:var(--ink-3)">' + esc(n.sent_at ? 'sent ' + n.sent_at.slice(0, 16)
+            : 'not sent') + '</span></div>';
+      }).join('');
+    }, function () {});
+  }
+
   /* ---------------------------------------------------------------- upload */
   function loadTemplates() {
     if (!S.live) { return; }
@@ -926,7 +1052,7 @@ colophon .fin{font-family:var(--serif);font-size:12px;color:var(--ink-3);margin-
     });
   });
 
-  var TABS = { tCheck: 'pCheck', tNote: 'pNote', tData: 'pData' };
+  var TABS = { tCheck: 'pCheck', tNote: 'pNote', tHist: 'pHist', tData: 'pData' };
   function showTab(btnId) {
     Object.keys(TABS).forEach(function (b) {
       var pane = TABS[b];
@@ -935,7 +1061,12 @@ colophon .fin{font-family:var(--serif);font-size:12px;color:var(--ink-3);margin-
     });
   }
   Object.keys(TABS).forEach(function (b) {
-    $(b).addEventListener('click', function () { showTab(b); });
+    $(b).addEventListener('click', function () {
+      showTab(b);
+      if (b === 'tHist') { loadReport(); }
+      if (b === 'tData') { loadTemplates(); }
+      if (b === 'tNote') { loadNoteHistory(); }
+    });
   });
 
   $('conn').addEventListener('click', function () {
@@ -957,6 +1088,7 @@ colophon .fin{font-family:var(--serif);font-size:12px;color:var(--ink-3);margin-
     else { $('note').select(); }
   });
 
+  $('sendNote').addEventListener('click', sendNote);
   $('syncBtn').addEventListener('click', syncAll);
   $('lastBtn').addEventListener('click', showLast);
   $('upFeed').addEventListener('change', function () { updateHelp(); $('upResult').textContent = ''; pending = null; $('commitBtn').disabled = true; });

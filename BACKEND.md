@@ -16,10 +16,15 @@ python3 -m app.cli week          # this week's band and floor
 python3 -m app.cli quote 1000    # check a price, log it
 python3 -m app.cli history       # recent quotes
 
+python3 -m app.cli note          # build the weekly note
+python3 -m app.cli note --send --channel file     # write it to data/outbox
+python3 -m app.cli note --send --channel email    # needs SMTP_* env vars
+python3 -m app.cli report        # did the floor hold, and what it protected
+
 python3 -m app.cli serve         # http://127.0.0.1:8000/docs
 ```
 
-Tests: `python3 -m pytest tests -q` → **28 passing**.
+Tests: `python3 -m pytest tests -q` → **47 passing**.
 
 ---
 
@@ -101,9 +106,28 @@ Start with `python3 -m app.cli serve`, then open `/docs`.
 | GET | `/upload/templates` | what each manual feed expects |
 | POST | `/upload/preview` | parse + validate, writes nothing |
 | POST | `/upload/commit` | write the accepted rows |
+| GET | `/note` | the weekly note, built from the same engine outputs |
+| POST | `/note/send?channel=file\|email` | deliver it; a failed send is never reported as delivered |
+| GET | `/note/history` | what was generated and whether it was sent |
+| GET | `/report` | floor coverage, exposure flagged, per-quote scoring |
 | GET | `/config` | feeds, model version, verdict copy |
 
 ---
+
+## Did the floor hold?
+
+`report` scores every logged quote against the metal price that was **actually
+current when the cover period ended**, taken from stored observations:
+
+| Field | Meaning |
+|---|---|
+| `floor_coverage_rate` | share of quotes whose floor was at or above the realised cost |
+| `exposure_flagged_per_100kg` | Σ max(0, floor − price) × 100 kg over flagged quotes |
+| `loss_if_all_quoted_per_100kg` | what those quotes would have lost at the realised cost |
+| `unscored_quotes` | quotes with no metal data on the end date — **shown as unmeasured, never guessed** |
+
+Exposure is reported as exposure, not as savings. We do not know whether the owner
+raised his price, so the product never claims he did.
 
 ## The rule that makes this auditable
 
@@ -134,11 +158,14 @@ app/
   sync.py      Sync All, staleness, run log
   upload.py    preview -> validate -> commit, per-feed validators
   pricing.py   inputs + provenance, week(), quote log, history
+  analytics.py realised cost, floor coverage, exposure, weekly series
+  notes.py     build / save / deliver the weekly note; file and SMTP channels
   api.py       FastAPI surface
   cli.py       the same operations from the terminal
 tests/
   test_engine_upload.py   15 tests
-  test_api.py             13 tests
+  test_api.py             18 tests
+  test_analytics_notes.py 14 tests
 ```
 
 ---
@@ -151,7 +178,7 @@ tests/
 | No auth | pilot runs on localhost only |
 | Ratio is a constant | 0.876 from eleven boards; Castle's own invoice would move it ±₹38 → ±₹17 |
 | Transport rate assumed | ₹3/tonne-km; one freight bill replaces it |
-| No delivery | the weekly note is generated but not sent by this service yet |
+| WhatsApp delivery | the note writes to a file or sends by SMTP; WhatsApp Business is not wired |
 
 Each of these is a deliberate pilot-stage choice, recorded in `output/PRD_v2.md` §4.2 and
 `output/TODO.md`.

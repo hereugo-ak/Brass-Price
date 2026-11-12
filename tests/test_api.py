@@ -142,3 +142,48 @@ def test_last_sync_is_recorded(client, monkeypatch):
     r = client.get('/sync/last')
     assert r.status_code == 200
     assert r.json()['run'] is not None
+
+
+def test_report_endpoint_returns_every_field(client):
+    """Regression: /report returned 500 because a column was read by the wrong name."""
+    r = client.get('/report?limit=5')
+    assert r.status_code == 200, r.text
+    body = r.json()
+    for key in ('total_quotes', 'scored_quotes', 'floor_coverage_rate',
+                'exposure_flagged_per_100kg', 'series', 'quotes'):
+        assert key in body
+
+
+def test_report_is_honest_with_no_quotes(client):
+    body = client.get('/report').json()
+    assert body['total_quotes'] == 0
+    assert body['floor_coverage_rate'] is None
+    assert body['series'] == []
+
+
+def test_note_endpoints(client, tmp_path, monkeypatch):
+    from app import notes
+    monkeypatch.setattr(notes, 'OUTBOX', tmp_path / 'outbox')
+    n = client.get('/note')
+    assert n.status_code == 200
+    assert 'Quotation floor' in n.json()['body']
+
+    s = client.post('/note/send?channel=file')
+    assert s.status_code == 200, s.text
+    assert s.json()['ok'] is True
+
+    h = client.get('/note/history').json()
+    assert h['total'] == 1
+
+
+def test_note_send_rejects_unknown_channel(client):
+    assert client.post('/note/send?channel=carrier-pigeon').status_code == 400
+
+
+def test_note_email_without_config_reports_failure(client, monkeypatch):
+    from app import notes
+    for k in notes.SMTP_ENV:
+        monkeypatch.delenv(k, raising=False)
+    r = client.post('/note/send?channel=email').json()
+    assert r['ok'] is False
+    assert 'not configured' in r['message'].lower()

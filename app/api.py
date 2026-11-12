@@ -11,7 +11,7 @@ from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-from . import db, pricing, sync, upload
+from . import analytics, db, notes, pricing, sync, upload
 from .config import FEEDS, MANUAL_FEEDS, SETTINGS
 from .engine import MODEL_VERSION, VERDICT_COPY
 
@@ -162,6 +162,52 @@ def upload_commit(body: CommitIn):
     saved['message'] = (f'{saved["accepted"]} row(s) accepted, '
                         f'{saved["rejected"]} rejected, {saved["added"]} new.')
     return saved
+
+
+# --------------------------------------------------------------------- note
+@app.get('/note')
+def get_note(week_start: Optional[str] = None):
+    conn = _conn()
+    try:
+        return notes.build(conn, week_start)
+    finally:
+        conn.close()
+
+
+@app.post('/note/send')
+def post_note_send(channel: str = 'file', week_start: Optional[str] = None,
+                   dry_run: bool = False):
+    conn = _conn()
+    try:
+        return notes.deliver(conn, channel=channel, start=week_start, dry_run=dry_run)
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+    finally:
+        conn.close()
+
+
+@app.get('/note/history')
+def get_note_history(limit: int = 20):
+    conn = _conn()
+    try:
+        return notes.history(conn, limit)
+    finally:
+        conn.close()
+
+
+# --------------------------------------------------------------------- report
+@app.get('/report')
+def get_report(limit: int = 200):
+    """Did the floor hold, and what exposure did it flag?"""
+    if limit < 1 or limit > 2000:
+        raise HTTPException(400, 'limit must be 1..2000')
+    conn = _conn()
+    try:
+        rep = analytics.history_report(conn, limit)
+        rep['series'] = analytics.weekly_series(conn, 26)
+    finally:
+        conn.close()
+    return rep
 
 
 # --------------------------------------------------------------------- config

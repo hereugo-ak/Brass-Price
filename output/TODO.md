@@ -25,7 +25,9 @@ The forecaster did not, and has been withdrawn.
 | Sync All | ✅ built — per-feed `OK / STALE / BLOCKED / MANUAL / FAILED`, never crashes |
 | Manual upload | ✅ built — preview → validate → commit, with tested guards |
 | Guide (owner-facing) | ✅ **built** — 3-step first-run overlay + per-feed upload instructions in the Data tab |
-| Delivery (weekly note) | 🟡 note generated from the API and copyable; **sending** not built (P3) |
+| History & rupee report | ✅ **built** — `/report`: floor coverage vs 80% target, exposure flagged, per-quote scoring against realised cost |
+| Product UI | ✅ **v5** — 4 tabs (Check · Note · History · Data), 47 backend + 23 integration tests |
+| Delivery (weekly note) | ✅ built — file + SMTP channels, stored in `note` with sent timestamps. Failed sends are never reported as delivered |
 | Push to GitHub | ⛔ blocked on your login |
 
 ---
@@ -63,21 +65,21 @@ displayed number is reproducible from stored rows + `model_version`.
 
 ---
 
-## P3 — Weekly note delivery
+## P3 — Weekly note delivery ✅ DONE 2026-11-12
 
-- [ ] Note generator writing a dated file (already prototyped in the UI)
-- [ ] Record of notes sent
-- [ ] Email delivery (free) → WhatsApp Business later (~₹1/conversation)
+- [x] Note generator: build → save → deliver, one file per week in `data/outbox/`
+- [x] `note` table with channel and `sent_at`; `/note/history`
+- [x] Email channel via SMTP env vars. **Without config it reports failure, never success.** WhatsApp still open.
 
 **Acceptance:** the note can be delivered without a human copying text.
 
 ---
 
-## P4 — History and the rupee-saved report
+## P4 — History and the rupee-saved report ✅ DONE 2026-11-12
 
-- [ ] Floor vs actual over time
-- [ ] Quotes vs corrections, adherence rate
-- [ ] Rupee-saved figure the owner accepts as real
+- [x] `weekly_series` + per-quote realised cost from stored observations
+- [x] below-floor count and rate; coverage rate vs the 80% target
+- [x] exposure flagged per 100 kg — reported as *exposure*, not savings, because we cannot prove he raised the price
 
 **Acceptance:** a single number the owner believes, derived only from the quote log.
 

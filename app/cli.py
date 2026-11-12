@@ -15,7 +15,7 @@ import json
 import pathlib
 import sys
 
-from . import db, pricing, sync, upload
+from . import analytics, db, notes, pricing, sync, upload
 from .config import MANUAL_FEEDS, SETTINGS
 from .engine import MODEL_VERSION
 
@@ -129,6 +129,56 @@ def cmd_upload(a):
           f"{saved['added']} new rows.")
 
 
+def cmd_note(a):
+    conn = db.init()
+    try:
+        if a.send:
+            res = notes.deliver(conn, channel=a.channel, dry_run=a.dry)
+            if res.get('dry_run'):
+                print(res['note']['body'])
+                print(f"\n(dry run — would send via {res['would_send_via']})")
+            else:
+                print(f"note #{res.get('note_id')} via {res['channel']}: {res['message']}")
+                if not res.get('ok'):
+                    sys.exit(1)
+        else:
+            n = notes.build(conn)
+            print(n['body'])
+            print(f"\n[model {n['model_version']}"
+                  + (', PROVISIONAL' if n['provisional'] else '') + ']')
+    finally:
+        conn.close()
+
+
+def cmd_report(a):
+    conn = db.init()
+    try:
+        r = analytics.history_report(conn, a.limit)
+    finally:
+        conn.close()
+    print('Quote history report')
+    print(f"  quotes                 {r['total_quotes']}")
+    print(f"  scored                 {r['scored_quotes']} "
+          f"(unscored {r['unscored_quotes']})")
+    print(f"  below floor            {r['below_floor_quotes']}")
+    cov = r['floor_coverage_rate']
+    print(f"  floor coverage         " +
+          ('not yet measurable' if cov is None else
+           f"{cov*100:.1f}% (target {r['floor_coverage_target']*100:.0f}%)"))
+    print(f"  exposure flagged       INR {r['exposure_flagged_per_100kg']:,.0f} "
+          f"per 100 kg order")
+    print(f"  loss if all quoted     INR {r['loss_if_all_quoted_per_100kg']:,.0f} "
+          f"per 100 kg order")
+    if r['quotes']:
+        print(f"\n{'when':20} {'price':>8} {'floor':>8} {'realised':>9} "
+              f"{'verdict':>7} {'covered':>8}")
+        for q in r['quotes'][:a.limit]:
+            rc = '' if q['realised_cost'] is None else f"{q['realised_cost']:.0f}"
+            covd = {True: 'yes', False: 'NO', None: '—'}[q['covered']]
+            print(f"  {q['quoted_at'][:19]:18} {q['price']:>8.2f} "
+                  f"{q['floor']:>8.2f} {rc:>9} {q['verdict']:>7} {covd:>8}")
+
+
 def cmd_feeds(a):
     for f in MANUAL_FEEDS:
         print(f'{f.key:26} {f.freq:8} {f.unit:20} template: {", ".join(f.template)}')
@@ -171,6 +221,16 @@ def main(argv=None):
     s.add_argument('path')
     s.add_argument('--commit', action='store_true')
     s.set_defaults(fn=cmd_upload)
+
+    s = sub.add_parser('note', help='build (or send) the weekly note')
+    s.add_argument('--send', action='store_true')
+    s.add_argument('--channel', default='file', choices=['file', 'email'])
+    s.add_argument('--dry', action='store_true', help='with --send, do not send')
+    s.set_defaults(fn=cmd_note)
+
+    s = sub.add_parser('report', help='did the floor hold, and what did it protect')
+    s.add_argument('--limit', type=int, default=20)
+    s.set_defaults(fn=cmd_report)
 
     sub.add_parser('feeds', help='list feeds that need manual upload'
                    ).set_defaults(fn=cmd_feeds)
