@@ -16,7 +16,9 @@
 | Brass/metal ratio | ✅ measured — 0.977 (2019) / 0.910 (2023) / 0.876 (2026) |
 | Price calculator | ✅ working — two routes agree to 0.42%; band ₹843 / ₹882 / ₹920, floor ₹966 |
 | Rupee-saved backtest | ✅ run — **buy signal rejected** (−₹0.11/kg) |
-| **Trained model on brass** | ❌ **NONE. This is P1.** |
+| **Trained model on brass** | ✅ **DONE 2026-11-12** — 8 models × 17 drivers × 155 months. **All lost to naive** (DM −5.6 to −10.2). `output/DRIVER_MODEL_RESULTS.md` |
+| Driver data coverage | ⚠️ **26 files with data, 9 empty templates, 18 catalogue entries with no file at all.** "All data collected" was inaccurate. Audit: `data/collection_audit.py` |
+| Owner replies documented | ✅ `output/OWNER_INPUT.md` + `.docx` — all 8 verbatim, Q6 mechanism, what each changed |
 | Weekly brass series | ❌ missing — needs Castle |
 | GitHub push | ❌ blocked — needs your login |
 

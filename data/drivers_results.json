@@ -1,0 +1,257 @@
+{
+ "target": "WPI brass index 1314090011",
+ "rows": 155,
+ "features_used": [
+  "idx_lag1",
+  "idx_lag2",
+  "idx_lag3",
+  "idx_lag6",
+  "idx_lag12",
+  "mom3",
+  "mom6",
+  "mom12",
+  "cu",
+  "zn",
+  "fx",
+  "metal",
+  "metal_mom3",
+  "brent",
+  "houst",
+  "ttlcons",
+  "eur"
+ ],
+ "features_missing_because_not_collected": [
+  "mcx_cu",
+  "mcx_zn"
+ ],
+ "horizons": {
+  "1": {
+   "n_forecasts": 94,
+   "scores": {
+    "naive": {
+     "n": 94,
+     "MAE": 2.45,
+     "RMSE": 3.24,
+     "dir_hit": 0.638,
+     "dm_vs_naive": null
+    },
+    "drift12": {
+     "n": 94,
+     "MAE": 2.31,
+     "RMSE": 3.05,
+     "dir_hit": 0.532,
+     "dm_vs_naive": 1.04
+    },
+    "ridge0.1": {
+     "n": 94,
+     "MAE": 3.91,
+     "RMSE": 5.26,
+     "dir_hit": 0.574,
+     "dm_vs_naive": -5.62
+    },
+    "ridge1": {
+     "n": 94,
+     "MAE": 3.95,
+     "RMSE": 5.31,
+     "dir_hit": 0.617,
+     "dm_vs_naive": -5.67
+    },
+    "ridge10": {
+     "n": 94,
+     "MAE": 4.23,
+     "RMSE": 5.61,
+     "dir_hit": 0.681,
+     "dm_vs_naive": -6.47
+    },
+    "ridge100": {
+     "n": 94,
+     "MAE": 6.67,
+     "RMSE": 8.27,
+     "dir_hit": 0.809,
+     "dm_vs_naive": -10.24
+    },
+    "lasso0.01": {
+     "n": 94,
+     "MAE": 3.9,
+     "RMSE": 5.23,
+     "dir_hit": 0.628,
+     "dm_vs_naive": -5.69
+    },
+    "rf": {
+     "n": 94,
+     "MAE": 6.5,
+     "RMSE": 9.15,
+     "dir_hit": 0.745,
+     "dm_vs_naive": -6.98
+    },
+    "gbr": {
+     "n": 94,
+     "MAE": 4.8,
+     "RMSE": 6.41,
+     "dir_hit": 0.713,
+     "dm_vs_naive": -7.04
+    },
+    "hgb": {
+     "n": 94,
+     "MAE": 7.23,
+     "RMSE": 10.01,
+     "dir_hit": 0.734,
+     "dm_vs_naive": -7.39
+    }
+   },
+   "best": "drift12"
+  },
+  "2": {
+   "n_forecasts": 93,
+   "scores": {
+    "naive": {
+     "n": 93,
+     "MAE": 4.26,
+     "RMSE": 5.58,
+     "dir_hit": 0.667,
+     "dm_vs_naive": null
+    },
+    "drift12": {
+     "n": 93,
+     "MAE": 4.09,
+     "RMSE": 5.25,
+     "dir_hit": 0.495,
+     "dm_vs_naive": 0.74
+    },
+    "ridge0.1": {
+     "n": 93,
+     "MAE": 5.39,
+     "RMSE": 7.1,
+     "dir_hit": 0.667,
+     "dm_vs_naive": -3.82
+    },
+    "ridge1": {
+     "n": 93,
+     "MAE": 5.48,
+     "RMSE": 7.16,
+     "dir_hit": 0.677,
+     "dm_vs_naive": -4.15
+    },
+    "ridge10": {
+     "n": 93,
+     "MAE": 5.79,
+     "RMSE": 7.54,
+     "dir_hit": 0.688,
+     "dm_vs_naive": -5.08
+    },
+    "ridge100": {
+     "n": 93,
+     "MAE": 8.09,
+     "RMSE": 10.16,
+     "dir_hit": 0.806,
+     "dm_vs_naive": -8.46
+    },
+    "lasso0.01": {
+     "n": 93,
+     "MAE": 5.41,
+     "RMSE": 7.07,
+     "dir_hit": 0.667,
+     "dm_vs_naive": -4.02
+    },
+    "rf": {
+     "n": 93,
+     "MAE": 7.63,
+     "RMSE": 10.67,
+     "dir_hit": 0.753,
+     "dm_vs_naive": -5.61
+    },
+    "gbr": {
+     "n": 93,
+     "MAE": 6.15,
+     "RMSE": 8.24,
+     "dir_hit": 0.731,
+     "dm_vs_naive": -5.28
+    },
+    "hgb": {
+     "n": 93,
+     "MAE": 8.26,
+     "RMSE": 11.41,
+     "dir_hit": 0.753,
+     "dm_vs_naive": -6.01
+    }
+   },
+   "best": "drift12"
+  },
+  "3": {
+   "n_forecasts": 92,
+   "scores": {
+    "naive": {
+     "n": 92,
+     "MAE": 5.77,
+     "RMSE": 7.58,
+     "dir_hit": 0.685,
+     "dm_vs_naive": null
+    },
+    "drift12": {
+     "n": 92,
+     "MAE": 5.51,
+     "RMSE": 7.08,
+     "dir_hit": 0.511,
+     "dm_vs_naive": 0.8
+    },
+    "ridge0.1": {
+     "n": 92,
+     "MAE": 6.66,
+     "RMSE": 8.85,
+     "dir_hit": 0.63,
+     "dm_vs_naive": -3.1
+    },
+    "ridge1": {
+     "n": 92,
+     "MAE": 6.72,
+     "RMSE": 8.89,
+     "dir_hit": 0.641,
+     "dm_vs_naive": -3.35
+    },
+    "ridge10": {
+     "n": 92,
+     "MAE": 6.9,
+     "RMSE": 9.28,
+     "dir_hit": 0.663,
+     "dm_vs_naive": -3.7
+    },
+    "ridge100": {
+     "n": 92,
+     "MAE": 9.34,
+     "RMSE": 11.83,
+     "dir_hit": 0.837,
+     "dm_vs_naive": -8.05
+    },
+    "lasso0.01": {
+     "n": 92,
+     "MAE": 6.69,
+     "RMSE": 8.83,
+     "dir_hit": 0.663,
+     "dm_vs_naive": -3.34
+    },
+    "rf": {
+     "n": 92,
+     "MAE": 8.59,
+     "RMSE": 12.06,
+     "dir_hit": 0.793,
+     "dm_vs_naive": -4.89
+    },
+    "gbr": {
+     "n": 92,
+     "MAE": 7.39,
+     "RMSE": 10.05,
+     "dir_hit": 0.739,
+     "dm_vs_naive": -4.74
+    },
+    "hgb": {
+     "n": 92,
+     "MAE": 9.3,
+     "RMSE": 12.74,
+     "dir_hit": 0.804,
+     "dm_vs_naive": -5.56
+    }
+   },
+   "best": "drift12"
+  }
+ }
+}
