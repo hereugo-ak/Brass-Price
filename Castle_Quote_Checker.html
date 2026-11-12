@@ -3,293 +3,325 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0d1117">
-<title>Brass Guard — Castle Hardwares</title>
+<meta name="theme-color" content="#faf7f2">
+<title>Brass Guard · Castle Hardwares</title>
 <style>
-/* ============================================================
-   Brass Guard · v2
-   Editorial serif × fintech motion. No dependencies.
-   ============================================================ */
+/* ==========================================================================
+   Brass Guard — set in the same system as the Castle document.
+   Ink on ledger paper. Hairlines, not cards. Serif display, tabular figures.
+   Motion is editorial: things arrive and settle. No glow, no glass, no gradients.
+   ========================================================================== */
 :root{
-  --ink:#0b0f16;
-  --ink-2:#111823;
-  --ink-3:#1a2331;
-  --line:rgba(255,255,255,.09);
-  --line-2:rgba(255,255,255,.16);
-  --txt:#eef2f7;
-  --txt-2:#9aa7b8;
-  --txt-3:#5f6c7e;
-  --gold:#d6a441;
-  --gold-2:#f0c66b;
-  --safe:#3ddc84;
-  --safe-dim:#1f7a4c;
-  --tight:#e0a94b;
-  --risk:#ff8a4c;
-  --stop:#ff5c5c;
-  --navy:#16233c;
-  --r:14px;
-  --spring:cubic-bezier(.34,1.56,.64,1);
-  --ease:cubic-bezier(.22,.61,.36,1);
-  --shadow:0 24px 60px -18px rgba(0,0,0,.75);
+  --ink:#1c1a17;
+  --ink-2:#4a453d;
+  --ink-3:#7d766b;
+  --ink-4:#a89e8e;
+  --paper:#faf7f2;
+  --paper-2:#f3eee4;
+  --paper-3:#eee8dc;
+  --rule:#d9d0bf;
+  --rule-2:#eee7d9;
+  --navy:#1c2f5c;
+  --gold:#a87e00;
+  --safe:#1d6b32;
+  --tight:#8a6a2f;
+  --risk:#a8541f;
+  --stop:#8a2f2f;
+  --serif:Georgia,'Iowan Old Style','Palatino Linotype','Times New Roman',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;
+  --ease:cubic-bezier(.2,.7,.2,1);
+  --ease-settle:cubic-bezier(.16,1,.3,1);
 }
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
-html,body{height:100%}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
 body{
-  background:var(--ink);color:var(--txt);
-  font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;
+  background:var(--paper);color:var(--ink);
+  font:15px/1.58 var(--sans);
   -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
-  padding-bottom:env(safe-area-inset-bottom);
+  padding:0 0 env(safe-area-inset-bottom);
+  font-feature-settings:"tnum" 1,"lnum" 1;
 }
-/* ambient light */
-body::before{
-  content:"";position:fixed;inset:-30% -10% auto -10%;height:70vh;z-index:0;
-  background:
-    radial-gradient(46% 60% at 22% 12%, rgba(214,164,65,.20), transparent 70%),
-    radial-gradient(40% 55% at 82% 4%, rgba(93,140,255,.16), transparent 72%),
-    radial-gradient(60% 60% at 50% 100%, rgba(61,220,132,.07), transparent 70%);
-  filter:blur(18px);pointer-events:none;
-  animation:drift 24s var(--ease) infinite alternate;
+/* faint ruled paper, like the printed story */
+.ruled{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:repeating-linear-gradient(
+    to bottom, transparent 0 33px, rgba(28,47,92,.045) 33px 34px);
 }
-@keyframes drift{
-  0%{transform:translate3d(0,0,0) scale(1)}
-  100%{transform:translate3d(0,-3%,0) scale(1.06)}
-}
-/* fine grain */
-body::after{
-  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.035;
-  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='120' height='120' filter='url(%23n)'/></svg>");
-}
-.wrap{position:relative;z-index:1;max-width:600px;margin:0 auto;padding:22px 18px 64px}
+.sheet{position:relative;z-index:1;max-width:620px;margin:0 auto;padding:0 22px 72px}
 
-/* ---------------- header ---------------- */
-header{display:flex;align-items:center;justify-content:space-between;gap:14px;
-  margin-bottom:26px;animation:rise .7s var(--spring) both}
-.logo{display:flex;align-items:center;gap:11px}
-.mark{
-  width:38px;height:38px;border-radius:11px;flex:0 0 auto;
-  background:linear-gradient(145deg,var(--gold-2),#8c6a1e);
-  display:grid;place-items:center;font-family:Georgia,serif;font-weight:700;color:#241a05;
-  font-size:17px;letter-spacing:-.03em;
-  box-shadow:0 6px 18px -6px rgba(214,164,65,.65), inset 0 1px 0 rgba(255,255,255,.45);
+/* ---------------------------------------------------------------- masthead */
+.masthead{padding:26px 0 0;animation:ink .5s var(--ease) both}
+.brandrow{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.wordmark{display:flex;align-items:baseline;gap:10px}
+.wordmark h1{
+  font-family:var(--serif);font-size:27px;font-weight:400;letter-spacing:-.015em;
+  line-height:1;
 }
-.h-txt h1{font-family:Georgia,'Times New Roman',serif;font-size:19px;font-weight:600;
-  letter-spacing:-.01em;line-height:1.15}
-.h-txt p{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--txt-3);margin-top:3px}
-.live{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--txt-2);
-  border:1px solid var(--line);border-radius:999px;padding:6px 11px;white-space:nowrap;
-  background:rgba(255,255,255,.025)}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--safe);
-  box-shadow:0 0 0 0 rgba(61,220,132,.6);animation:pulse 2.4s var(--ease) infinite}
-@keyframes pulse{
-  0%{box-shadow:0 0 0 0 rgba(61,220,132,.55)}
-  70%{box-shadow:0 0 0 7px rgba(61,220,132,0)}
-  100%{box-shadow:0 0 0 0 rgba(61,220,132,0)}
+.wordmark .by{
+  font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);
+}
+.weekref{
+  font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);
+  white-space:nowrap;padding-bottom:2px;
+}
+.rule-heavy{height:0;border-top:2.5px solid var(--ink);margin-top:12px}
+.rule-hair{height:0;border-top:1px solid var(--rule);margin-top:3px}
+.standfirst{
+  font-family:var(--serif);font-size:14.5px;color:var(--ink-2);
+  padding:11px 0 0;line-height:1.5;
 }
 
-/* ---------------- floor hero ---------------- */
-.hero{
-  position:relative;border:1px solid var(--line);border-radius:calc(var(--r) + 6px);
-  padding:22px 22px 20px;margin-bottom:16px;overflow:hidden;
-  background:
-    linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.015) 45%,rgba(255,255,255,.03));
-  box-shadow:var(--shadow);
-  animation:rise .8s var(--spring) .05s both;
-  backdrop-filter:blur(12px);
+/* ---------------------------------------------------------------- sections */
+section{padding:26px 0 0;animation:rise .55s var(--ease) both}
+section:nth-of-type(2){animation-delay:.06s}
+section:nth-of-type(3){animation-delay:.11s}
+section:nth-of-type(4){animation-delay:.16s}
+section:nth-of-type(5){animation-delay:.21s}
+.marker-no{
+  font-family:var(--serif);font-size:11px;letter-spacing:.1em;color:var(--gold);
+  text-transform:uppercase;
 }
-.hero::before{
-  content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;
-  background:linear-gradient(150deg,rgba(214,164,65,.55),transparent 40%,transparent 60%,rgba(255,255,255,.10));
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;
+h2.sec{
+  font-family:var(--serif);font-size:19px;font-weight:400;letter-spacing:-.01em;
+  margin-top:2px;
 }
-.eyebrow{font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;color:var(--gold);
-  display:flex;align-items:center;gap:8px}
-.eyebrow::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line-2),transparent)}
-.floor-row{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-top:12px}
-.floor-num{font-family:Georgia,serif;font-size:clamp(46px,15vw,60px);line-height:.95;
-  letter-spacing:-.035em;font-variant-numeric:tabular-nums;
-  background:linear-gradient(175deg,#fff,#c9d3e0 55%,#8fa0b5);
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+.secrule{height:0;border-top:1px solid var(--ink);margin-top:8px}
+
+/* ---------------------------------------------------------------- the floor */
+.floor-wrap{display:flex;align-items:flex-start;justify-content:space-between;
+  gap:18px;margin-top:16px}
+.floor-num{
+  font-family:var(--serif);font-size:clamp(54px,17vw,72px);line-height:.86;
+  letter-spacing:-.045em;white-space:nowrap;
 }
-.floor-num .cur{font-size:.42em;vertical-align:.42em;letter-spacing:0;
-  -webkit-text-fill-color:var(--gold);background:none;color:var(--gold);margin-right:2px}
-.floor-meta{text-align:right;font-size:11.5px;color:var(--txt-2);line-height:1.5;padding-bottom:6px}
-.floor-meta b{color:var(--txt);font-variant-numeric:tabular-nums}
-.floor-sub{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);
-  display:flex;justify-content:space-between;font-size:12px;color:var(--txt-3)}
-.floor-sub span b{color:var(--txt-2);font-variant-numeric:tabular-nums}
+.floor-num .rs{font-size:.34em;letter-spacing:0;vertical-align:.62em;margin-right:3px;
+  color:var(--ink-3)}
+.floor-side{text-align:right;padding-top:6px}
+.floor-side .k{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+.floor-side .v{font-size:12.5px;color:var(--ink-2);margin-top:2px}
+.floor-side .v b{color:var(--ink);font-weight:600}
 
-/* ---------------- band chart ---------------- */
-.chart-card{border:1px solid var(--line);border-radius:var(--r);padding:16px 14px 10px;
-  background:rgba(255,255,255,.022);margin-bottom:16px;
-  animation:rise .8s var(--spring) .12s both}
-.chart-head{display:flex;justify-content:space-between;align-items:center;
-  font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--txt-3);
-  padding:0 4px 8px}
-svg.band{width:100%;height:auto;display:block;overflow:visible}
-.band-track{stroke:var(--line-2)}
-.band-zone{opacity:0;animation:fadeIn .9s var(--ease) .5s forwards}
-.band-line{stroke-dasharray:600;stroke-dashoffset:600;animation:draw 1.2s var(--ease) .35s forwards}
-@keyframes draw{to{stroke-dashoffset:0}}
-@keyframes fadeIn{to{opacity:1}}
-.band-tick{opacity:0;animation:fadeIn .5s var(--ease) forwards}
-.marker{transition:transform .55s var(--spring), opacity .3s var(--ease)}
-.marker.hide{opacity:0}
-.marker-label{font:600 10px/1 -apple-system,sans-serif;letter-spacing:.09em;text-transform:uppercase;fill:var(--txt-2)}
-.band-axis{font:500 9.5px/1 -apple-system,sans-serif;fill:var(--txt-3);font-variant-numeric:tabular-nums}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);margin-top:20px;
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.trio > div{padding:11px 0 12px;text-align:center;position:relative}
+.trio > div + div{border-left:1px solid var(--rule)}
+.trio .k{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.trio .v{font-family:var(--serif);font-size:23px;letter-spacing:-.02em;margin-top:3px}
+.trio .v.safe{color:var(--safe)} .trio .v.risk{color:var(--risk)}
 
-/* ---------------- checker ---------------- */
-.panel{border:1px solid var(--line);border-radius:var(--r);padding:18px;
-  background:rgba(255,255,255,.022);margin-bottom:16px;
-  animation:rise .8s var(--spring) .18s both}
-.lbl{font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--txt-3);
-  display:block;margin-bottom:9px}
-.amount{position:relative;display:flex;align-items:center;
-  border:1px solid var(--line-2);border-radius:11px;background:rgba(0,0,0,.28);
-  transition:border-color .25s var(--ease), box-shadow .25s var(--ease), background .25s var(--ease)}
-.amount:focus-within{border-color:var(--gold);
-  box-shadow:0 0 0 4px rgba(214,164,65,.13);background:rgba(0,0,0,.4)}
-.amount .sym{padding:0 0 0 16px;font-size:22px;color:var(--txt-3);transition:color .25s}
-.amount:focus-within .sym{color:var(--gold)}
-.amount input{
-  flex:1;border:0;outline:0;background:transparent;color:var(--txt);
-  font:inherit;font-size:30px;font-variant-numeric:tabular-nums;letter-spacing:-.02em;
-  padding:13px 16px 13px 8px;width:100%;-moz-appearance:textfield}
-.amount input::-webkit-outer-spin-button,.amount input::-webkit-inner-spin-button{display:none}
-.amount input::placeholder{color:var(--txt-3);font-size:22px;letter-spacing:0}
+/* ---------------------------------------------------------------- gauge */
+.gauge{width:100%;height:auto;display:block;margin-top:6px;overflow:visible}
+.g-rule{stroke:var(--ink);stroke-width:1}
+.g-tick{stroke:var(--ink-4);stroke-width:1}
+.g-rule{stroke:var(--ink-2);stroke-width:1.5}
+.g-tick.major{stroke:var(--ink-2)}
+.g-lbl{font:500 9.5px var(--mono);fill:var(--ink-3)}
+.g-cap{font:600 9px var(--sans);letter-spacing:.13em;text-transform:uppercase;fill:var(--ink-3)}
+.g-band{fill:rgba(168,126,0,.12)}
+.g-band-safe{fill:rgba(29,107,50,.14)}
+.g-band-stop{fill:rgba(138,47,47,.12)}
+.g-react{opacity:1}
+.g-marker{transition:transform .42s var(--ease-settle), opacity .25s var(--ease)}
+.g-marker.off{opacity:0}
+.no-quote{font:400 11px var(--sans);fill:var(--ink-4);letter-spacing:.02em}
+.gauge-cap{display:flex;justify-content:space-between;gap:12px;font-size:10.5px;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin-top:2px}
 
-.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;
-  border:1px solid var(--line);border-radius:11px;padding:5px;background:rgba(0,0,0,.24)}
-.seg button{
-  border:0;background:transparent;color:var(--txt-2);font:inherit;font-size:12.5px;
-  padding:10px 4px;border-radius:8px;cursor:pointer;
-  transition:all .3s var(--ease);position:relative}
-.seg button .s{display:block;font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--txt-3);margin-top:2px}
-.seg button.on{background:linear-gradient(160deg,rgba(214,164,65,.22),rgba(214,164,65,.08));
-  color:var(--gold-2);box-shadow:inset 0 0 0 1px rgba(214,164,65,.4), 0 6px 18px -10px rgba(214,164,65,.7)}
-.seg button.on .s{color:rgba(240,198,107,.75)}
-
-/* ---------------- verdict ---------------- */
-.verdict{
-  border-radius:var(--r);position:relative;overflow:hidden;
-  border:0 solid var(--line);background:rgba(255,255,255,.03);
-  max-height:0;opacity:0;padding:0 18px;margin-top:0;pointer-events:none;
-  transition:max-height .5s var(--ease), opacity .35s var(--ease),
-             padding .4s var(--ease), margin .4s var(--ease), border-width .2s;
+/* ---------------------------------------------------------------- form */
+.field{margin-top:18px}
+.field label,.seg-label{
+  display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:7px;
 }
-.verdict.show{max-height:280px;opacity:1;padding:18px;margin-top:16px;border-width:1px;
-  pointer-events:auto}
-.verdict::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
-  background:var(--accent);transition:background .5s var(--ease)}
-.verdict.safe{--accent:var(--safe)}
-.verdict.tight{--accent:var(--tight)}
-.verdict.risk{--accent:var(--risk)}
-.verdict.stop{--accent:var(--stop)}
-.v-head{display:flex;align-items:center;gap:9px;font-family:Georgia,serif;font-size:21px;
-  letter-spacing:-.01em;margin-bottom:7px;color:var(--accent)}
-.v-head .badge{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:0 0 auto;
-  box-shadow:0 0 14px var(--accent)}
-.v-body{font-size:13.5px;color:var(--txt-2);line-height:1.6}
-.v-math{margin-top:13px;padding-top:12px;border-top:1px solid var(--line);
-  display:flex;justify-content:space-between;gap:10px;font-size:11px;color:var(--txt-3);
-  font-variant-numeric:tabular-nums}
-.v-math b{color:var(--txt);font-weight:600}
+.entry{
+  display:flex;align-items:baseline;gap:8px;
+  border-bottom:2px solid var(--ink);padding-bottom:5px;
+  transition:border-color .25s var(--ease);
+}
+.entry:focus-within{border-bottom-color:var(--gold)}
+.entry .rs{font-family:var(--serif);font-size:25px;color:var(--ink-3)}
+.entry input{
+  flex:1;min-width:0;border:0;background:transparent;outline:0;color:var(--ink);
+  font-family:var(--serif);font-size:40px;letter-spacing:-.025em;line-height:1.1;
+  padding:0;-moz-appearance:textfield;
+}
+.entry input::-webkit-outer-spin-button,.entry input::-webkit-inner-spin-button{
+  -webkit-appearance:none;margin:0}
+.entry input::placeholder{color:var(--ink-4)}
+.fieldhint{font-size:11.5px;color:var(--ink-3);margin-top:7px;transition:opacity .3s var(--ease)}
+.entry .unit{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+  white-space:nowrap;padding-bottom:6px}
 
-/* ---------------- transport ---------------- */
-.t-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
-select,input[type=number].sm{
-  width:100%;padding:11px 12px;border:1px solid var(--line-2);border-radius:10px;
-  background:rgba(0,0,0,.28);color:var(--txt);font:inherit;font-size:14px;outline:0;
-  transition:border-color .25s,box-shadow .25s}
-select:focus,input[type=number].sm:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(214,164,65,.12)}
-select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%235f6c7e'/></svg>");
-  background-repeat:no-repeat;background-position:right 12px center}
-.t-out{margin-top:12px;font-size:12px;color:var(--txt-2);display:flex;justify-content:space-between}
-.t-out b{color:var(--gold-2);font-variant-numeric:tabular-nums}
+/* cover period: underlined words, not buttons */
+.periods{display:flex;gap:20px;margin-top:6px;border-bottom:1px solid var(--rule);
+  padding-bottom:0}
+.periods button{
+  border:0;background:none;font:inherit;font-size:13.5px;color:var(--ink-3);
+  padding:6px 0 9px;cursor:pointer;position:relative;transition:color .2s var(--ease);
+}
+.periods button::after{
+  content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;
+  background:var(--ink);transform:scaleX(0);transform-origin:left;
+  transition:transform .3s var(--ease);
+}
+.periods button:hover{color:var(--ink-2)}
+.periods button.on{color:var(--ink);font-weight:600}
+.periods button.on::after{transform:scaleX(1)}
 
-/* ---------------- note ---------------- */
-textarea{width:100%;min-height:210px;padding:15px;border:1px solid var(--line-2);border-radius:12px;
-  background:rgba(0,0,0,.3);color:var(--txt);
-  font:12.5px/1.7 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  outline:0;resize:vertical;transition:border-color .25s,box-shadow .25s}
-textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(214,164,65,.12)}
+/* ---------------------------------------------------------------- verdict stamp */
+.stamp-holder{margin-top:20px;min-height:0}
+.stamp{display:none}
+.stamp.show{
+  display:block;border:2px solid currentColor;padding:13px 16px 14px;position:relative;
+  color:var(--safe);transform-origin:18% 40%;
+  animation:stampIn .34s var(--ease-settle) both;
+}
+@keyframes stampIn{
+  from{transform:scale(1.07) rotate(-1.4deg)}
+  to{transform:scale(1) rotate(-.6deg)}
+}
+.stamp.safe{color:var(--safe)} .stamp.tight{color:var(--tight)}
+.stamp.risk{color:var(--risk)}  .stamp.stop{color:var(--stop)}
+.stamp .st-head{
+  font-family:var(--serif);font-size:20px;letter-spacing:.02em;display:flex;
+  align-items:center;gap:9px;line-height:1.15;
+}
+.stamp .st-head .mk{font-family:var(--sans);font-size:9.5px;letter-spacing:.14em;
+  border:1px solid currentColor;padding:2px 6px;text-transform:uppercase;opacity:.8}
+.stamp .st-body{font-size:13px;color:var(--ink-2);margin-top:7px;line-height:1.55}
+.stamp .st-math{
+  display:flex;gap:18px;flex-wrap:wrap;margin-top:11px;padding-top:9px;
+  border-top:1px solid var(--rule);font:12px var(--mono);color:var(--ink-3);
+}
+.stamp .st-math b{color:var(--ink);font-weight:600}
 
-/* ---------------- buttons ---------------- */
-.btn{position:relative;width:100%;padding:15px;border:0;border-radius:12px;cursor:pointer;
-  font:inherit;font-size:14.5px;font-weight:600;letter-spacing:.01em;
-  color:#1a1200;background:linear-gradient(160deg,var(--gold-2),#c2932f);
-  box-shadow:0 14px 34px -14px rgba(214,164,65,.85), inset 0 1px 0 rgba(255,255,255,.5);
-  transition:transform .18s var(--spring), box-shadow .25s var(--ease), filter .25s;
-  overflow:hidden;margin-top:12px}
-.btn:hover{filter:brightness(1.06)}
-.btn:active{transform:scale(.975);box-shadow:0 6px 16px -8px rgba(214,164,65,.8)}
-.btn.ghost{background:rgba(255,255,255,.05);color:var(--txt);
-  box-shadow:inset 0 0 0 1px var(--line-2)}
-.btn.ghost:hover{background:rgba(255,255,255,.08)}
-.btn::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
-  transform:translateX(-120%)}
-.btn:active::after{animation:sheen .6s var(--ease)}
-@keyframes sheen{to{transform:translateX(120%)}}
+/* ---------------------------------------------------------------- transport */
+.togrow{display:flex;align-items:flex-start;gap:11px;padding:13px 0;
+  border-bottom:1px solid var(--rule-2);cursor:pointer;user-select:none}
+.switch{
+  flex:0 0 auto;width:38px;height:21px;border-radius:11px;background:var(--paper-3);
+  border:1px solid var(--rule);position:relative;transition:background .25s var(--ease),
+  border-color .25s var(--ease);margin-top:2px;
+}
+.switch::after{
+  content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;
+  background:#fff;border:1px solid var(--rule);
+  transition:transform .28s var(--ease-settle), border-color .25s;
+}
+.switch.on{background:var(--navy);border-color:var(--navy)}
+.switch.on::after{transform:translateX(17px);border-color:var(--navy)}
+.togrow .txt{display:block}
+.togrow .txt .t{display:block;font-size:13.5px;color:var(--ink)}
+.togrow .txt .h{display:block;font-size:11.5px;color:var(--ink-3);margin-top:3px;line-height:1.5}
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:4px;
+  border-bottom:1px solid var(--rule-2)}
+.tgrid > div{padding:12px 0}
+.tgrid > div + div{border-left:1px solid var(--rule-2);padding-left:16px}
+.tgrid select,.tgrid input{
+  width:100%;border:0;border-bottom:1px solid var(--rule);background:transparent;
+  font:14px var(--sans);color:var(--ink);padding:4px 0 5px;outline:0;
+  transition:border-color .25s;
+}
+.tgrid select:focus,.tgrid input:focus{border-bottom-color:var(--gold)}
+.tgrid select{appearance:none;-webkit-appearance:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='9' height='5'><path d='M0 0l4.5 5L9 0z' fill='%237d766b'/></svg>");
+  background-repeat:no-repeat;background-position:right 2px center;padding-right:16px}
+.tout{display:flex;justify-content:space-between;align-items:baseline;
+  padding:11px 0 0;font-size:12.5px;color:var(--ink-3)}
+.tout b{font-family:var(--serif);font-size:17px;color:var(--ink);letter-spacing:-.01em}
+.tout b.zero{color:var(--ink-4)}
+.aside{font-size:11.5px;color:var(--ink-3);line-height:1.55;margin-top:9px;
+  padding-left:11px;border-left:2px solid var(--gold)}
 
-/* ---------------- tabs ---------------- */
-.tabs{display:flex;gap:4px;margin-bottom:16px;border:1px solid var(--line);border-radius:12px;
-  padding:5px;background:rgba(0,0,0,.24);animation:rise .8s var(--spring) .1s both}
-.tabs button{flex:1;border:0;background:transparent;color:var(--txt-2);font:inherit;font-size:13px;
-  padding:10px;border-radius:9px;cursor:pointer;transition:all .3s var(--ease)}
-.tabs button.on{background:rgba(255,255,255,.09);color:var(--txt);
-  box-shadow:inset 0 0 0 1px var(--line-2)}
+/* ---------------------------------------------------------------- tabs */
+.tabs{display:flex;gap:26px;border-bottom:1px solid var(--rule);margin-top:22px}
+.tabs button{
+  border:0;background:none;font:inherit;font-size:13.5px;color:var(--ink-3);
+  padding:8px 0 10px;cursor:pointer;position:relative;transition:color .2s var(--ease);
+}
+.tabs button::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;
+  background:var(--ink);transform:scaleX(0);transform-origin:left;
+  transition:transform .3s var(--ease)}
+.tabs button.on{color:var(--ink);font-weight:600}
+.tabs button.on::after{transform:scaleX(1)}
 .pane{display:none}
-.pane.on{display:block;animation:paneIn .45s var(--ease) both}
-@keyframes paneIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.pane.on{display:block;animation:paneIn .4s var(--ease) both}
 
-/* ---------------- disclosure ---------------- */
-details{border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.018);
-  margin-bottom:16px;overflow:hidden;animation:rise .8s var(--spring) .24s both}
-summary{padding:14px 16px;cursor:pointer;font-size:12.5px;color:var(--txt-2);
-  display:flex;align-items:center;gap:9px;list-style:none;user-select:none;
-  transition:color .25s,background .25s}
-summary:hover{color:var(--txt);background:rgba(255,255,255,.03)}
+/* ---------------------------------------------------------------- note */
+.note{
+  width:100%;min-height:250px;margin-top:16px;padding:16px 18px;
+  background:var(--paper-2);border:1px solid var(--rule);
+  font:12.5px/1.75 var(--mono);color:var(--ink);resize:vertical;outline:0;
+  transition:border-color .25s;
+}
+.note:focus{border-color:var(--gold)}
+.btn{
+  width:100%;padding:14px;margin-top:11px;border:1px solid var(--ink);
+  background:var(--ink);color:var(--paper);font:inherit;font-size:13.5px;
+  letter-spacing:.02em;cursor:pointer;transition:background .2s var(--ease),
+  color .2s var(--ease), transform .1s;
+}
+.btn:hover{background:var(--navy);border-color:var(--navy)}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--paper-2);color:var(--ink)}
+
+/* ---------------------------------------------------------------- disclosure */
+details{border-top:1px solid var(--rule-2)}
+details:first-of-type{border-top:1px solid var(--rule)}
+summary{
+  display:flex;align-items:center;gap:10px;padding:13px 0;cursor:pointer;
+  font-size:12.5px;color:var(--ink-2);list-style:none;user-select:none;
+  transition:color .2s;
+}
+summary:hover{color:var(--ink)}
 summary::-webkit-details-marker{display:none}
-.chev{width:14px;height:14px;flex:0 0 auto;transition:transform .4s var(--spring);color:var(--gold)}
-details[open] .chev{transform:rotate(90deg)}
-.d-inner{padding:2px 16px 18px;border-top:1px solid var(--line)}
+summary .caret{
+  width:7px;height:7px;border-right:1.5px solid var(--ink-3);border-bottom:1.5px solid var(--ink-3);
+  transform:rotate(-45deg);transition:transform .3s var(--ease-settle);margin-left:2px;
+}
+details[open] summary .caret{transform:rotate(45deg)}
+.dbody{padding-bottom:18px}
 
-footer{margin-top:24px;padding-top:18px;border-top:1px solid var(--line);
-  font-size:11px;color:var(--txt-3);line-height:1.7}
-footer b{color:var(--txt-2);font-weight:600}
+/* ---------------------------------------------------------------- foot */
+colophon{margin-top:34px;display:block;border-top:2.5px solid var(--ink);padding-top:12px}
+colophon p{font-size:11.5px;color:var(--ink-3);line-height:1.65;margin-bottom:9px}
+colophon b{color:var(--ink-2);font-weight:600}
+colophon .fin{font-family:var(--serif);font-size:12px;color:var(--ink-3);
+  letter-spacing:.02em;margin-top:14px}
 
-.pill{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:999px;
-  font-size:10px;letter-spacing:.06em;text-transform:uppercase;
-  background:rgba(214,164,65,.13);color:var(--gold-2);border:1px solid rgba(214,164,65,.28)}
-.warn{display:flex;gap:10px;padding:12px 14px;border-radius:11px;font-size:12px;line-height:1.6;
-  background:rgba(255,138,76,.07);border:1px solid rgba(255,138,76,.22);color:#ffb894}
-.warn svg{flex:0 0 auto;margin-top:1px}
-
-@keyframes rise{from{opacity:0;transform:translateY(18px) scale(.99)}to{opacity:1;transform:none}}
+@keyframes ink{from{transform:translateY(-3px)}to{transform:none}}
+@keyframes rise{from{transform:translateY(11px)}to{transform:none}}
+@keyframes fadeIn{from{opacity:1}to{opacity:1}}
+@keyframes paneIn{from{transform:translateY(7px)}to{transform:none}}
 
 @media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
-    transition-duration:.001ms!important}
+  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
 }
-@media (max-width:380px){
-  .floor-num{font-size:46px}
-  .wrap{padding:18px 14px 56px}
+@media (max-width:400px){
+  .sheet{padding:0 17px 64px}
+  .floor-num{font-size:56px}
+  .wordmark h1{font-size:23px}
+  .periods{gap:16px}
 }
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="ruled"></div>
+<div class="sheet">
 
-  <header>
-    <div class="logo">
-      <div class="mark">CH</div>
-      <div class="h-txt">
+  <header class="masthead">
+    <div class="brandrow">
+      <div class="wordmark">
         <h1>Brass Guard</h1>
-        <p>Castle Hardwares · Aligarh</p>
+        <span class="by">Castle Hardwares</span>
       </div>
+      <div class="weekref" id="weekref">—</div>
     </div>
-    <div class="live"><span class="dot"></span><span id="liveDate">—</span></div>
+    <div class="rule-heavy"></div>
+    <div class="rule-hair"></div>
+    <p class="standfirst">The lowest price a brass quote may carry this week, and the range to plan on.</p>
   </header>
 
   <div class="tabs">
@@ -297,190 +329,190 @@ footer b{color:var(--txt-2);font-weight:600}
     <button id="tNote">Weekly note</button>
   </div>
 
-  <!-- ============================== CHECK ============================== -->
-  <section id="pCheck" class="pane on">
+  <!-- ===================================================== CHECK -->
+  <div id="pCheck" class="pane on">
 
-    <div class="hero">
-      <div class="eyebrow">Quote floor · this week</div>
-      <div class="floor-row">
-        <div class="floor-num"><span class="cur">₹</span><span id="floorNum">0</span></div>
-        <div class="floor-meta">
-          per kilo<br><b id="floorDays">30-day</b> cover<br>
-          <span style="color:var(--txt-3)">metal <b id="mMetal">—</b></span>
+    <section>
+      <div class="marker-no">Quotation floor</div>
+      <h2 class="sec">What this week will bear</h2>
+      <div class="secrule"></div>
+
+      <div class="floor-wrap">
+        <div class="floor-num"><span class="rs">₹</span><span id="floorNum">0</span></div>
+        <div class="floor-side">
+          <div class="k">per kilo</div>
+          <div class="v"><b id="coverTxt">same-day</b> cover</div>
+          <div class="v">metal <b id="metalTxt">—</b></div>
         </div>
       </div>
-      <div class="floor-sub">
-        <span>Middle <b id="fMid">—</b></span>
-        <span>High <b id="fHigh">—</b></span>
-        <span>Transport <b id="fTrans">—</b></span>
-      </div>
-    </div>
 
-    <div class="chart-card">
-      <div class="chart-head"><span>This month's range</span><span>₹/kg</span></div>
-      <svg class="band" id="bandSvg" viewBox="0 0 560 128" role="img"
-           aria-label="Brass price range this month with your quote position">
-        <defs>
-          <linearGradient id="zoneGrad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#3ddc84" stop-opacity=".26"/>
-            <stop offset="45%" stop-color="#d6a441" stop-opacity=".20"/>
-            <stop offset="100%" stop-color="#ff5c5c" stop-opacity=".24"/>
-          </linearGradient>
-          <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#3ddc84"/>
-            <stop offset="50%" stop-color="#d6a441"/>
-            <stop offset="100%" stop-color="#ff5c5c"/>
-          </linearGradient>
-        </defs>
-        <rect class="band-zone" x="30" y="44" width="500" height="26" rx="13" fill="url(#zoneGrad)"/>
-        <line class="band-track" x1="30" y1="57" x2="530" y2="57" stroke-width="1"/>
-        <line class="band-line" x1="30" y1="57" x2="530" y2="57" stroke="url(#lineGrad)" stroke-width="2"/>
-        <g id="ticks"></g>
-        <g class="marker hide" id="marker">
-          <line id="mLine" x1="0" y1="34" x2="0" y2="80" stroke="#fff" stroke-width="2"/>
-          <circle id="mDot" cx="0" cy="57" r="6" fill="#fff" stroke="#0b0f16" stroke-width="2"/>
-          <text id="mText" x="0" y="26" text-anchor="middle" class="marker-label">your quote</text>
+      <div class="trio">
+        <div><div class="k">Low</div><div class="v safe" id="tLow">—</div></div>
+        <div><div class="k">Middle</div><div class="v" id="tMid">—</div></div>
+        <div><div class="k">High</div><div class="v risk" id="tHigh">—</div></div>
+      </div>
+
+      <svg class="gauge" id="gauge" viewBox="0 0 560 92" role="img"
+           aria-label="Price gauge showing this week's range and your quote">
+        <rect class="g-band-stop g-react" id="gzStop" x="0" y="30" width="0" height="24"/>
+        <rect class="g-band g-react" id="gzMid" x="0" y="30" width="0" height="24"/>
+        <rect class="g-band-safe g-react" id="gzSafe" x="0" y="30" width="0" height="24"/>
+        <line class="g-rule g-react" x1="20" y1="54" x2="540" y2="54"/>
+        <g id="gtick"></g>
+        <g class="g-marker off" id="gmarker">
+          <line id="gmLine" x1="0" y1="24" x2="0" y2="84" stroke="var(--ink)" stroke-width="1.5"/>
+          <path id="gmHead" d="M-5,24 L5,24 L0,31 Z" fill="var(--ink)"/>
+          <text id="gmText" x="0" y="14" text-anchor="middle" class="g-cap">your quote</text>
         </g>
+        <text class="no-quote" id="gHint" x="20" y="80">Enter a price to see where it sits.</text>
       </svg>
-    </div>
+      <p class="gauge-cap"><span id="gRange">—</span><span id="gMarkerCap"></span></p>
+    </section>
 
-    <div class="panel">
-      <label class="lbl" for="quote">Price you are about to quote</label>
-      <div class="amount">
-        <span class="sym">₹</span>
-        <input id="quote" type="number" inputmode="decimal" step="0.5" min="0" placeholder="0" autocomplete="off">
+    <section>
+      <div class="marker-no">Entry</div>
+      <h2 class="sec">Check a price before you send it</h2>
+      <div class="secrule"></div>
+
+      <div class="field">
+        <label for="quote">Price you are about to quote</label>
+        <div class="entry">
+          <span class="rs">₹</span>
+          <input id="quote" type="number" inputmode="decimal" step="0.5" min="0"
+                 placeholder="" autocomplete="off">
+          <span class="unit">per kilo</span>
+        </div>
+        <p class="fieldhint" id="fieldHint">Type the number you are about to put on the quote.</p>
       </div>
 
-      <label class="lbl" style="margin-top:18px">How long is this quote held</label>
-      <div class="seg" id="seg">
-        <button data-days="1" class="on">Same day<span class="s">owner</span></button>
-        <button data-days="15">15 days<span class="s">stress</span></button>
-        <button data-days="30">30 days<span class="s">stress</span></button>
-      </div>
-
-      <div class="verdict" id="verdict">
-        <div class="v-head"><span class="badge"></span><span id="vHead">—</span></div>
-        <div class="v-body" id="vBody"></div>
-        <div class="v-math">
-          <span>Floor <b id="vFloor">—</b></span>
-          <span>Gap <b id="vGap">—</b></span>
-          <span>On 100 kg <b id="vOrder">—</b></span>
+      <div class="field">
+        <span class="seg-label">How long is this quote held</span>
+        <div class="periods" id="periods">
+          <button data-days="1" class="on">Same day</button>
+          <button data-days="15">15 days</button>
+          <button data-days="30">30 days</button>
         </div>
       </div>
-    </div>
+
+      <div class="stamp-holder">
+        <div class="stamp" id="stamp" aria-live="polite">
+          <div class="st-head"><span id="stHead">—</span><span class="mk" id="stMk">verdict</span></div>
+          <div class="st-body" id="stBody"></div>
+          <div class="st-math">
+            <span>floor <b id="stFloor">—</b></span>
+            <span>gap <b id="stGap">—</b></span>
+            <span>100&nbsp;kg <b id="stOrder">—</b></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="marker-no">Transport</div>
+      <h2 class="sec">Where the metal comes from</h2>
+      <div class="secrule"></div>
+
+      <div class="togrow" id="togRow" role="switch" aria-checked="false" tabindex="0">
+        <span class="switch" id="tog"></span>
+        <span class="txt">
+          <span class="t">Transport already included in the quote</span>
+          <span class="h">If your trader quotes delivered prices, switch this on and transport is dropped from the calculation.</span>
+        </span>
+      </div>
+
+      <div class="tgrid">
+        <div>
+          <label class="seg-label" for="srcCity">Source market</label>
+          <select id="srcCity">
+            <option value="120">Moradabad · 120 km</option>
+            <option value="130" selected>Delhi · 130 km</option>
+            <option value="250">Jaipur · 250 km</option>
+            <option value="950">Ahmedabad · 950 km</option>
+            <option value="1270">Jamnagar · 1,270 km</option>
+            <option value="1340">Mumbai · 1,340 km</option>
+          </select>
+        </div>
+        <div>
+          <label class="seg-label" for="rate">Rate · ₹ per km per tonne</label>
+          <input id="rate" type="number" step="0.25" min="0" value="3">
+        </div>
+      </div>
+
+      <div class="tout">
+        <span>Transport per kilo</span>
+        <b id="tKg">—</b>
+      </div>
+      <p class="aside" id="tAside">
+        Distance × rate ÷ 1,000. The rate is an assumption until one freight bill confirms it —
+        four freight-rate sources were checked and none returned a figure.
+      </p>
+    </section>
 
     <details>
-      <summary>
-        <svg class="chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5"/></svg>
-        Transport — where is your metal coming from
-      </summary>
-      <div class="d-inner">
-        <div class="t-grid">
-          <div>
-            <label class="lbl" style="margin-top:12px">Source market</label>
-            <select id="srcCity">
-              <option value="130">Delhi — 130 km</option>
-              <option value="120">Moradabad — 120 km</option>
-              <option value="250">Jaipur — 250 km</option>
-              <option value="950">Ahmedabad — 950 km</option>
-              <option value="1270">Jamnagar — 1,270 km</option>
-              <option value="1340">Mumbai — 1,340 km</option>
-            </select>
-          </div>
-          <div>
-            <label class="lbl" style="margin-top:12px">Rate ₹ per tonne-km <span class="pill">assumed</span></label>
-            <input id="rate" type="number" class="sm" step="0.25" min="0" value="3">
-          </div>
+      <summary><span class="caret"></span>Model inputs, for whoever maintains this</summary>
+      <div class="dbody">
+        <div class="tgrid">
+          <div><label class="seg-label" for="iMetal">Metal ₹/kg</label>
+            <input id="iMetal" type="number" step="0.01"></div>
+          <div><label class="seg-label" for="iRatio">Brass ratio</label>
+            <input id="iRatio" type="number" step="0.001"></div>
         </div>
-        <div class="t-out">
-          <span>Transport per kilo</span>
-          <b id="tKg">—</b>
+        <div class="tgrid" style="border-top:1px solid var(--rule-2)">
+          <div><label class="seg-label" for="iSd">Ratio spread</label>
+            <input id="iSd" type="number" step="0.001"></div>
+          <div><label class="seg-label" for="iMargin">Margin %</label>
+            <input id="iMargin" type="number" step="0.5"></div>
         </div>
-        <div class="t-out" style="color:var(--txt-3);margin-top:6px">
-          <span id="tNote">Distance × rate ÷ 1,000</span>
-        </div>
+        <p class="aside" style="border-color:var(--rule);margin-top:12px">
+          Metal value = 0.615 × MCX copper + 0.385 × MCX zinc. Ratio is measured from eleven
+          Indian boards (bartan, honey, purja; n=16). The floor adds one ratio standard deviation,
+          the metal-move cushion for the cover period, transport and margin.
+        </p>
       </div>
     </details>
+  </div>
 
-    <div class="warn">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M12 9v4M12 17h.01M10.3 3.9L2.2 18a2 2 0 001.7 3h16.2a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/>
-      </svg>
-      <div><b>Transport rate not yet verified.</b> All freight-rate sources returned 404, so ₹3/tonne-km
-      is a placeholder you should replace with a real bill. Every ₹1/tonne-km moves the floor by
-      <span id="warnSens">—</span>.</div>
-    </div>
-  </section>
-
-  <!-- ============================== NOTE ============================== -->
-  <section id="pNote" class="pane">
-    <div class="panel">
-      <label class="lbl" for="note">This week's message — send as it is</label>
-      <textarea id="note" readonly></textarea>
-      <button class="btn" id="copyNote">Copy message</button>
+  <!-- ===================================================== NOTE -->
+  <div id="pNote" class="pane">
+    <section>
+      <div class="marker-no">Weekly note</div>
+      <h2 class="sec">Send this at the start of the week</h2>
+      <div class="secrule"></div>
+      <textarea class="note" id="note" readonly></textarea>
+      <button class="btn" id="copyNote">Copy note</button>
       <button class="btn ghost" id="shareNote">Share</button>
-    </div>
-    <div class="panel" style="padding:14px 16px">
-      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--txt-2)">
-        <span>Generated from this week's numbers</span>
-        <span class="pill" id="noteStamp">—</span>
-      </div>
-    </div>
-  </section>
+    </section>
+  </div>
 
-  <details>
-    <summary>
-      <svg class="chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5"/></svg>
-      Model inputs — for whoever maintains this
-    </summary>
-    <div class="d-inner">
-      <div class="t-grid">
-        <div><label class="lbl" style="margin-top:12px">Metal ₹/kg</label>
-          <input id="iMetal" type="number" class="sm" step="0.01"></div>
-        <div><label class="lbl" style="margin-top:12px">Brass ratio</label>
-          <input id="iRatio" type="number" class="sm" step="0.001"></div>
-        <div><label class="lbl" style="margin-top:12px">Ratio spread</label>
-          <input id="iSd" type="number" class="sm" step="0.001"></div>
-        <div><label class="lbl" style="margin-top:12px">Margin %</label>
-          <input id="iMargin" type="number" class="sm" step="0.5"></div>
-      </div>
-      <div class="t-out" style="color:var(--txt-3);margin-top:12px;display:block;line-height:1.6">
-        Metal value comes from MCX copper and zinc. Ratio is the measured brass-to-metal ratio
-        (bartan + honey + purja, n=16). The quote floor adds one standard deviation of the ratio,
-        the metal-move cushion for the cover period, transport, and your margin.
-      </div>
-    </div>
-  </details>
-
-  <footer>
-    <b>How this number is built.</b> Metal value from MCX copper and zinc × measured brass ratio
-    + transport, then a cushion for the period the quote is held, then margin.<br><br>
-    <b>What it is not.</b> Not a prediction. Two independent metal routes — LME×FX and MCX —
-    agree to 0.42%, which is why the level can be trusted; the range is wide because prices are
-    close to a random walk week to week. That is why this is a floor, not a forecast.
-  </footer>
+  <colophon>
+    <p><b>What this is.</b> Metal value from MCX copper and zinc, multiplied by the measured brass
+    ratio, plus transport, plus a cushion for the period the quote is held, plus margin.</p>
+    <p><b>What it is not.</b> A forecast. Two independent metal routes — LME × FX and MCX — agree to
+    0.42%, which is why the level can be trusted. Week-to-week direction cannot be: eight models
+    were trained and all lost to a random walk. So this is a floor, not a prediction.</p>
+    <p class="fin">Castle Hardwares, Aligarh · Brass Guard · <span id="colDate">—</span></p>
+  </colophon>
 </div>
 
 <script>
 (function () {
   'use strict';
-
   var $ = function (id) { return document.getElementById(id); };
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // ---- model constants (updated weekly by whoever maintains the file)
   var M = {
-    metal: 983.65,      // ₹/kg  = 0.615*MCX_Cu + 0.385*MCX_Zn  (2026-11-11)
-    ratio: 0.876,       // measured: bartan + honey + purja, n=16
-    sd: 0.039,          // 1 sd of that ratio
+    metal: 983.65,
+    ratio: 0.876,
+    sd: 0.039,
     margin: 0.05,
-    priceRiskP95_30d: 25.8,   // brass, ₹/kg, 4-week p95 from the backtest
-    stamp: '12 Nov 2026'
+    riskP95_30d: 25.8,
+    downFactor: 0.72
   };
-  var state = { days: 1, quote: null, transport: 0.39 };
+  var S = { days: 1, quote: null, transport: 0, transportOn: true, scale: null };
 
-  // ---- transport: distance x rate / 1000  (₹/t-km * km = ₹/t = ₹/kg/1000)
+  /* ---------------- transport ---------------- */
   function transportPerKg() {
+    if (!S.transportOn) { return 0; }
     var km = parseFloat($('srcCity').value) || 130;
     var rate = parseFloat($('rate').value);
     if (isNaN(rate)) { rate = 3; }
@@ -492,235 +524,236 @@ footer b{color:var(--txt-2);font-weight:600}
     var ratio = parseFloat($('iRatio').value) || M.ratio;
     var sd = parseFloat($('iSd').value);
     if (isNaN(sd)) { sd = M.sd; }
-    var margin = parseFloat($('iMargin').value);
-    if (isNaN(margin)) { margin = M.margin * 100; }
-    margin = margin / 100;
-    return { metal: metal, ratio: ratio, sd: sd, margin: margin };
+    var mg = parseFloat($('iMargin').value);
+    if (isNaN(mg)) { mg = M.margin * 100; }
+    return { metal: metal, ratio: ratio, sd: sd, margin: mg / 100 };
   }
 
+  /* ---------------- band ---------------- */
   function band(days) {
     var p = params();
-    var t = state.transport;
+    var t = S.transport;
     var brass = p.metal * p.ratio;
     var ratioUp = p.metal * p.sd;
-    var ratioDown = ratioUp;
     var k = Math.sqrt(Math.max(days, 1) / 30);
-    var riskUp = M.priceRiskP95_30d * k;
-    var riskDown = M.priceRiskP95_30d * 0.72 * k;   // downside is thinner (measured)
-    var mid = brass + t;
-    var high = brass + ratioUp + riskUp + t;
-    var low = brass - ratioDown - riskDown + t;
-    var floor = high * (1 + p.margin);
-    return { mid: mid, high: high, low: low, floor: floor, days: days, metal: p.metal, t: t };
+    var up = M.riskP95_30d * k;
+    var down = M.riskP95_30d * M.downFactor * k;
+    return {
+      mid: brass + t,
+      high: brass + ratioUp + up + t,
+      low: brass - ratioUp - down + t,
+      floor: (brass + ratioUp + up + t) * (1 + p.margin),
+      metal: p.metal, t: t, days: days
+    };
   }
 
   function money(v) { return '₹' + Math.round(v); }
-  function money1(v) { return '₹' + v.toFixed(2); }
+  function money2(v) { return '₹' + v.toFixed(2); }
 
-  // ---- animated number roll
-  function roll(el, to, prefix) {
-    var from = parseFloat(el.dataset.v || '0');
-    var final = (prefix || '') + Math.round(to);
-    el.dataset.v = to;
-    // correct value first, animation second: neverleave a stale number on screen
-    el.textContent = final;
-    if (reduce || !window.requestAnimationFrame) { return; }
-    var t0 = null, dur = 620, done = false;
-    function finish() {
-      if (done) { return; }
-      done = true;
-      el.textContent = final;
-    }
-    function step(t) {
-      if (done) { return; }
-      if (t0 === null) { t0 = t; }
-      var p = Math.min(1, (t - t0) / dur);
-      var e = 1 - Math.pow(1 - p, 3);
-      el.textContent = (prefix || '') + Math.round(from + (to - from) * e);
-      if (p < 1) { window.requestAnimationFrame(step); } else { finish(); }
-    }
-    window.requestAnimationFrame(step);
-    window.setTimeout(finish, dur + 120);   // guarantees the final value regardless
+  /* ---------------- ink-settle number ---------------- */
+  function settle(el, to) {
+    var txt = String(Math.round(to));
+    if (el.textContent === txt) { return; }
+    el.textContent = txt;
+    if (reduce) { return; }
+    el.style.animation = 'none';
+    /* force reflow, then a restrained settle rather than a count-up */
+    void el.offsetWidth;
+    el.style.animation = 'none';
+    el.style.transform = 'translateY(2px)';
+    el.style.transition = 'transform .3s var(--ease-settle)';
+    requestAnimationFrame(function(){ el.style.transform = 'none'; });
   }
 
-  // ---- band chart
-  function drawTicks(b) {
-    var g = $('ticks');
-    g.innerHTML = '';
+  /* ---------------- gauge ---------------- */
+  function drawGauge(b) {
     var span = b.high - b.low;
-    var pad = span * 0.18;
+    var pad = span * 0.22;
     var lo = b.low - pad, hi = b.high + pad;
-    var X = function (v) { return 30 + ((v - lo) / (hi - lo)) * 500; };
-    var marks = [
-      { v: b.low, t: 'low', c: '#3ddc84' },
-      { v: b.mid, t: 'mid', c: 'rgba(255,255,255,.55)' },
-      { v: b.high, t: 'high', c: '#ff5c5c' }
-    ];
-    marks.forEach(function (m, i) {
-      var x = X(m.v);
+    var X = function (v) { return 20 + ((v - lo) / (hi - lo)) * 520; };
+
+    $('gzStop').setAttribute('x', 20);
+    $('gzStop').setAttribute('width', Math.max(0, X(b.mid) - 20));
+    $('gzMid').setAttribute('x', X(b.mid));
+    $('gzMid').setAttribute('width', Math.max(0, X(b.high) - X(b.mid)));
+    $('gzSafe').setAttribute('x', X(b.high));
+    $('gzSafe').setAttribute('width', Math.max(0, 540 - X(b.high)));
+
+    var g = $('gtick');
+    g.innerHTML = '';
+    var step = niceStep(span / 5);
+    var start = Math.ceil(lo / step) * step;
+    for (var v = start; v <= hi; v += step) {
+      var x = X(v);
+      var major = Math.abs(v % (step * 5)) < 1e-6;
       var ln = document.createElementNS('http://www.w3.org/2000/svg', 'line');
       ln.setAttribute('x1', x); ln.setAttribute('x2', x);
-      ln.setAttribute('y1', 50); ln.setAttribute('y2', 64);
-      ln.setAttribute('stroke', m.c); ln.setAttribute('stroke-width', '1.5');
-      ln.setAttribute('class', 'band-tick');
-      ln.style.animationDelay = (0.55 + i * 0.09) + 's';
+      ln.setAttribute('y1', major ? 48 : 50);
+      ln.setAttribute('y2', 60);
+      ln.setAttribute('class', 'g-tick' + (major ? ' major' : ''));
+      ln.setAttribute('class', 'g-tick g-react' + (major ? ' major' : ''));
       g.appendChild(ln);
-      var tx = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      tx.setAttribute('x', x); tx.setAttribute('y', 80);
-      tx.setAttribute('text-anchor', 'middle');
-      tx.setAttribute('class', 'band-axis band-tick');
-      tx.style.animationDelay = (0.55 + i * 0.09) + 's';
-      tx.textContent = Math.round(m.v);
-      g.appendChild(tx);
-      var lb = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      lb.setAttribute('x', x); lb.setAttribute('y', 96);
-      lb.setAttribute('text-anchor', 'middle');
-      lb.setAttribute('class', 'band-axis band-tick');
-      lb.style.opacity = '.6';
-      lb.style.animationDelay = (0.55 + i * 0.09) + 's';
-      lb.textContent = m.t;
-      g.appendChild(lb);
-    });
-    return { X: X, lo: lo, hi: hi };
-  }
 
-  var scaleRef = null;
-
-  function placeMarker(quote) {
-    var mk = $('marker');
-    if (quote == null || isNaN(quote) || !scaleRef) { mk.classList.add('hide'); return; }
-    var x = scaleRef.X(quote);
-    x = Math.max(16, Math.min(544, x));
-    $('mLine').setAttribute('x1', x); $('mLine').setAttribute('x2', x);
-    $('mDot').setAttribute('cx', x);
-    $('mText').setAttribute('x', x);
-    var out = (quote < scaleRef.lo || quote > scaleRef.hi);
-    $('mText').textContent = out ? 'your quote — off range' : 'your quote';
-    mk.classList.remove('hide');
-  }
-
-  // ---- verdict
-  function verdict() {
-    var q = parseFloat($('quote').value);
-    var v = $('verdict');
-    if (isNaN(q) || q <= 0) {
-      v.classList.remove('show', 'safe', 'tight', 'risk', 'stop');
-      state.quote = null;
-      placeMarker(null);
-      return;
     }
-    state.quote = q;
-    var b = band(state.days);
+    S.scale = { X: X, lo: lo, hi: hi };
+  }
+
+  function niceStep(raw) {
+    var p = Math.pow(10, Math.floor(Math.log10(raw)));
+    var n = raw / p;
+    var s = n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10;
+    return s * p;
+  }
+
+  function placeQuote(q) {
+    var mk = $('gmarker'), hint = $('gHint');
+    if (q == null || isNaN(q) || !S.scale) {
+      mk.classList.add('off'); hint.style.opacity = '1'; return;
+    }
+    var x = Math.max(22, Math.min(538, S.scale.X(q)));
+    $('gmLine').setAttribute('x1', x); $('gmLine').setAttribute('x2', x);
+    $('gmHead').setAttribute('transform', 'translate(' + x + ',0)');
+    $('gmText').setAttribute('x', x);
+    mk.classList.remove('off');
+    hint.style.opacity = '0';
+    var cap = document.getElementById('gMarkerCap');
+    if (cap) { cap.textContent = 'your quote ' + money(q); }
+  }
+
+  /* ---------------- verdict ---------------- */
+  function judge() {
+    var q = parseFloat($('quote').value);
+    var st = $('stamp');
+    if (isNaN(q) || q <= 0) {
+      st.classList.remove('show', 'safe', 'tight', 'risk', 'stop');
+      S.quote = null; placeQuote(null); return;
+    }
+    S.quote = q;
+    var b = band(S.days);
     var gap = q - b.floor;
-    var cls, head, body;
+    var cls, head, tag, body;
 
     if (q >= b.floor) {
-      cls = 'safe'; head = 'Safe to quote';
-      body = 'Covers a normal metal move over ' + labelFor(state.days) +
-             ', with ' + money(q - b.high) + ' per kilo clear of the expected high.';
+      cls = 'safe'; head = 'Safe to quote'; tag = 'clear';
+      body = 'Covers a normal metal move with ' + money(q - b.high) +
+             ' per kilo clear of the expected high.';
     } else if (q >= b.high) {
-      cls = 'tight'; head = 'Allowed, but thin';
-      body = 'Above the expected high but ' + money(b.floor - q) +
-             ' per kilo below the floor. One sharp move and the margin is gone.';
+      cls = 'tight'; head = 'Allowed, but thin'; tag = 'thin';
+      body = money(b.floor - q) + ' per kilo below the floor. One sharp move and the margin is gone.';
     } else if (q >= b.mid) {
-      cls = 'risk'; head = 'Risky';
-      body = 'Metal is expected near ' + money(b.mid) + '. At ' + money(q) + ' you keep only ' +
-             money(q - b.mid) + ' per kilo, and prices rose in 57 of the last 100 four-week periods.';
+      cls = 'risk'; head = 'Risky'; tag = 'risk';
+      body = 'Metal is expected near ' + money(b.mid) + '. You keep only ' + money(q - b.mid) +
+             ' per kilo, and prices rose in 57 of the last 100 four-week periods.';
     } else {
-      cls = 'stop'; head = 'Do not quote this';
+      cls = 'stop'; head = 'Do not quote this'; tag = 'below metal';
       body = 'Below the expected metal value of ' + money(b.mid) +
-             '. You would buy metal at a loss. Raise to ' + money(b.floor) + '.';
+             '. Raise to ' + money(b.floor) + ' or shorten the cover.';
     }
 
-    $('vHead').textContent = head;
-    $('vBody').textContent = body;
-    $('vFloor').textContent = money(b.floor);
-    $('vGap').textContent = (gap >= 0 ? '+' : '−') + money(Math.abs(gap));
-    $('vOrder').textContent = (gap >= 0 ? '+' : '−') + money(Math.abs(gap) * 100);
-    v.className = 'verdict show ' + cls;
-    placeMarker(q);
+    $('stHead').textContent = head;
+    $('stMk').textContent = tag;
+    $('stBody').textContent = body;
+    $('stFloor').textContent = money(b.floor);
+    $('stGap').textContent = (gap >= 0 ? '+' : '−') + money(Math.abs(gap));
+    $('stOrder').textContent = (gap >= 0 ? '+' : '−') + money(Math.abs(gap) * 100);
+    st.className = 'stamp show ' + cls;
+    placeQuote(q);
   }
 
-  function labelFor(d) {
-    if (d <= 1) { return 'the same day'; }
-    return d + ' days';
-  }
-
-  // ---- render
-  function render() {
-    state.transport = transportPerKg();
-    var b = band(state.days);
-
-    roll($('floorNum'), b.floor);
-    $('floorDays').textContent = state.days <= 1 ? 'same-day' : state.days + '-day';
-    $('mMetal').textContent = money(b.metal);
-    $('fMid').textContent = money(b.mid);
-    $('fHigh').textContent = money(b.high);
-    $('fTrans').textContent = money1(b.t);
-
-    $('tKg').textContent = money1(b.t) + '/kg';
-    $('warnSens').textContent = '₹' + (parseFloat($('srcCity').value) / 1000).toFixed(2) + '/kg';
-
-    scaleRef = drawTicks(b);
-    if (state.quote) { placeMarker(state.quote); }
-    buildNote(b);
-    verdict();
-  }
-
+  /* ---------------- note ---------------- */
   function buildNote(b) {
     var d = new Date();
     var mn = ['January','February','March','April','May','June','July','August',
               'September','October','November','December'];
     var ds = d.getDate() + ' ' + mn[d.getMonth()] + ' ' + d.getFullYear();
     var b15 = band(15), b30 = band(30);
-    var msg =
-      'Brass Guard — week of ' + ds + '\n\n' +
-      'Metal this week\n' +
-      '  Low      ₹' + Math.round(b.low) + '/kg\n' +
-      '  Middle   ₹' + Math.round(b.mid) + '/kg\n' +
-      '  High     ₹' + Math.round(b.high) + '/kg\n\n' +
-      'Quote floor\n' +
-      '  ₹' + Math.round(b.floor) + '/kg — quote held same day\n' +
-      '  ₹' + Math.round(b15.floor) + '/kg — held 15 days\n' +
-      '  ₹' + Math.round(b30.floor) + '/kg — held 30 days\n\n' +
-      'What it means\n' +
-      '  Plan on the middle. The gap to the high is your cushion.\n' +
-      '  Do not quote below the floor for the period you hold it.\n\n' +
-      'Built from MCX copper ' + '₹1,341.85' + ' and zinc ₹411.45, ' + ds + '.';
-    $('note').value = msg;
-    $('noteStamp').textContent = ds;
+    var tLine = S.transportOn ? money2(b.t) + '/kg' : 'already in the quote';
+    $('note').value =
+      'BRASS GUARD — week of ' + ds + '\n\n' +
+      'Range this month (₹/kg)\n' +
+      '  low      ' + money(b.low) + '\n' +
+      '  middle   ' + money(b.mid) + '\n' +
+      '  high     ' + money(b.high) + '\n\n' +
+      'Quotation floor (₹/kg)\n' +
+      '  same day ' + money(b.floor) + '\n' +
+      '  15 days  ' + money(b15.floor) + '\n' +
+      '  30 days  ' + money(b30.floor) + '\n\n' +
+      'Transport ' + tLine + '\n\n' +
+      'Read it like this: plan on the middle, treat the gap to the high as your\n' +
+      'cushion, and never quote below the floor for the period you are holding it.\n\n' +
+      'Built from MCX copper ₹1,341.85 and zinc ₹411.45, ' + ds + '.';
   }
 
-  // ---- wiring
-  $('quote').addEventListener('input', verdict);
-  [['iMetal'],['iRatio'],['iSd'],['iMargin']].forEach(function (a) {
-    $(a[0]).addEventListener('input', render);
+  /* ---------------- render ---------------- */
+  function render() {
+    S.transport = transportPerKg();
+    var b = band(S.days);
+
+    settle($('floorNum'), b.floor);
+    $('floorNum').dataset.raw = b.floor.toFixed(2);   /* unrounded, for checks */
+    $('coverTxt').textContent = S.days <= 1 ? 'same-day' : S.days + '-day';
+    $('metalTxt').textContent = money(b.metal);
+    $('tLow').textContent = money(b.low);
+    $('tMid').textContent = money(b.mid);
+    $('tHigh').textContent = money(b.high);
+    $('gRange').textContent = 'range ' + money(b.low) + ' – ' + money(b.high);
+
+    var tk = $('tKg');
+    tk.textContent = S.transportOn ? money2(b.t) + '/kg' : 'included';
+    tk.className = S.transportOn ? '' : 'zero';
+    $('tAside').textContent = S.transportOn
+      ? 'Distance × rate ÷ 1,000. The rate is an assumption until one freight bill confirms it — ' +
+        'four freight-rate sources were checked and none returned a figure.'
+      : 'Transport is switched off, so the floor reflects a delivered trader price.';
+
+    $('tog').className = 'switch' + (S.transportOn ? ' on' : '');
+    $('togRow').setAttribute('aria-checked', S.transportOn ? 'true' : 'false');
+
+    drawGauge(b);
+    if (S.quote) { placeQuote(S.quote); }
+    buildNote(b);
+    judge();
+  }
+
+  /* ---------------- events ---------------- */
+  $('quote').addEventListener('input', function(){var h=document.getElementById('fieldHint'); if(h){h.style.opacity=this.value?'0':'1';} judge();});
+  ['iMetal', 'iRatio', 'iSd', 'iMargin'].forEach(function (id) {
+    $(id).addEventListener('input', render);
   });
   $('srcCity').addEventListener('change', render);
   $('rate').addEventListener('input', render);
 
-  Array.prototype.forEach.call($('seg').children, function (btn) {
+  function toggleTransport() {
+    S.transportOn = !S.transportOn;
+    render();
+  }
+  $('togRow').addEventListener('click', toggleTransport);
+  $('togRow').addEventListener('keydown', function (e) {
+    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggleTransport(); }
+  });
+
+  Array.prototype.forEach.call($('periods').children, function (btn) {
     btn.addEventListener('click', function () {
-      Array.prototype.forEach.call($('seg').children, function (b) { b.className = ''; });
+      Array.prototype.forEach.call($('periods').children, function (b) { b.className = ''; });
       btn.className = 'on';
-      state.days = parseInt(btn.getAttribute('data-days'), 10);
+      S.days = parseInt(btn.getAttribute('data-days'), 10);
       render();
     });
   });
 
-  function switchTab(on, off, onBtn, offBtn) {
+  function tab(on, off, onB, offB) {
     $(on).className = 'pane on'; $(off).className = 'pane';
-    $(onBtn).className = 'on'; $(offBtn).className = '';
+    $(onB).className = 'on'; $(offB).className = '';
   }
-  $('tCheck').addEventListener('click', function () { switchTab('pCheck','pNote','tCheck','tNote'); });
-  $('tNote').addEventListener('click', function () { switchTab('pNote','pCheck','tNote','tCheck'); });
+  $('tCheck').addEventListener('click', function () { tab('pCheck', 'pNote', 'tCheck', 'tNote'); });
+  $('tNote').addEventListener('click', function () { tab('pNote', 'pCheck', 'tNote', 'tCheck'); });
 
   $('copyNote').addEventListener('click', function () {
     var t = $('note');
     if (navigator.clipboard) {
       navigator.clipboard.writeText(t.value).then(function () {
-        var btn = $('copyNote'); var old = btn.textContent;
-        btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = old; }, 1600);
+        var b = $('copyNote'), old = b.textContent;
+        b.textContent = 'Copied'; setTimeout(function () { b.textContent = old; }, 1600);
       }, function () { t.select(); });
     } else { t.select(); }
   });
@@ -729,19 +762,19 @@ footer b{color:var(--txt-2);font-weight:600}
     else { $('note').select(); }
   });
 
-  // date pill
+  /* ---------------- boot ---------------- */
   (function () {
     var d = new Date();
     var mn = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    $('liveDate').textContent = d.getDate() + ' ' + mn[d.getMonth()] + ' ' + d.getFullYear();
+    var lbl = 'week of ' + d.getDate() + ' ' + mn[d.getMonth()] + ' ' + d.getFullYear();
+    $('weekref').textContent = lbl;
+    $('colDate').textContent = d.getDate() + ' ' + mn[d.getMonth()] + ' ' + d.getFullYear();
+    $('iMetal').value = M.metal;
+    $('iRatio').value = M.ratio;
+    $('iSd').value = M.sd;
+    $('iMargin').value = (M.margin * 100).toFixed(1);
+    render();
   })();
-
-  // prime inputs then render
-  $('iMetal').value = M.metal;
-  $('iRatio').value = M.ratio;
-  $('iSd').value = M.sd;
-  $('iMargin').value = (M.margin * 100).toFixed(1);
-  render();
 })();
 </script>
 </body>
