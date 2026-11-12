@@ -1,5 +1,7 @@
 # Where to find Indian brass prices — manual hunt list
 
+> **Update (12 Nov 2026):** several claims below are now corrected and many free daily sources were found. See `SOURCES_NOT_IN_HUNT_LIST.md` in this folder. Key corrections: ScrapMonster and RecycleInMe are live (not 404), metal.com/SMM does carry brass, and MTLEXS / AajBazar / News18-PTI / Steel-Baba give free daily ₹/kg by grade.
+
 **Date:** 2026-11-12
 **Why this file:** the automated probes found no free brass series (MCX 403, BigMint 403, SteelMint/
 metal.com carry no brass in payload, ScrapMonster/RecycleInMe 404). These are the manual routes left,
