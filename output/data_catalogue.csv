@@ -1,0 +1,39 @@
+variable,unit,freq,public_or_paid,source,history,licensing,pub_lag,quality_issues
+"LME Cu Official/Settlement/3M","USD/t","daily","public-delayed / paid-live","LME Official + Closing pages","current-year free; history paid","LME licence for redistribution","Official 12:20-13:25 London; Closing from 17:50","day-delayed web; Ring vs electronic basis; align cash vs 3M via prompt checker"
+"LME Zn Official/Settlement/3M","USD/t","daily","public-delayed / paid-live","LME Zinc page + Closing","same","same","same","Zn less liquid; wider carry swings"
+"LME warehouse stocks + cancelled/on-warrant Cu/Zn","tonnes; %","daily","public summary / paid detail","LME warehouse-and-stocks reports; Historical-data page","current-month Excel free; full paid","LME licence","T+1 movement; off-warrant monthly","on/off-warrant regime break 2022-23; cancellations noisy weekly"
+"LME COTR Cu/Zn","lots / %OI","weekly","free","LME Commitments of traders (current path - cited old URL 404, use hub)","rolling recent free; history portal","LME terms","Tue publish Fri close T+2","MiFID classes; delta-equivalent OI != Market OI"
+"LME XML next-day feed","USD/t + stocks + FX","daily file 00:10 GMT","paid $2740/yr (stated on page, re-verify at purchase)","LME XML-next-day-feed page","previous-day only; build by collection","paid licence","T+1 00:10","need daily collector; format changes"
+"LME historical reports","mixed","daily hist","paid $85 first-5/contract/yr then $55; Premium $470; off-warrant API $1200 (stated, re-verify)","LME Historical-data page","per contract-year purchase","paid single-use research","on order","cost scales by contracts x years x types"
+"MCX Copper/Zinc bhavcopy","INR/kg","daily","public free download (403 bot-block 2026-10-01, exists)","MCX bhavcopy hub","multi-year archive claimed","MCX free view restrict redistribute","T+0 evening","bot-block; roll/symbol mapping; expiry gaps"
+"MCX Brass","INR/kg","daily","verify listing before use - absent 2026 list","MCX base-metals products page","unknown","same","same","2018 1t launch verified; now illiquid - synthesise 0.6Cu+0.4Zn if absent and document"
+"RBI/FBIL ref rates USD/EUR/GBP/JPY","INR per unit","daily business","public free","RBI ReferenceRateArchive + Excel","multi-year archive selector","free public","~13:30 IST","FBIL vs RBI method; weekend gaps; EUR via cross"
+"FRED DEXINUS (INR/USD)","INR/USD","daily","public free API","FRED DEXINUS (H.10)","long daily","public domain cite Fed","T+1","NYC noon vs Mumbai timing"
+"FRED DEXUSEU (USD/EUR)","USD/EUR","daily","public free","FRED DEXUSEU","long","public domain","T+1","inverse vs ECB quote"
+"ECB euro ref USD (+INR)","USD per EUR; INR table","daily","public free XML/SDMX/RSS","ECB eurofxref-graph-usd","long daily","free reuse","~16:00 CET","fixing vs spot"
+"Fed Broad Dollar DTWEXBGS","index Jan06=100","daily","public free","FRED DTWEXBGS","long","public domain","T+1","trade-weighted not bilateral"
+"IMF Cu/Zn monthly (FRED PCOPPUSDM/PZINCUSDM)","USD/t","monthly avg","public free API (IMF copyrighted cite)","FRED + IMF PCP hub","long monthly","IMF citation required","~1 month","smooths spikes; long-term only"
+"Brent spot/mthly (DCOILBRENTEU/POILBREUSDM)","$/bbl","daily + monthly","public free (EIA public / IMF cited)","FRED + EIA","long","mixed","daily T+1 / mthly 1mo","Brent Europe vs Indian basket spread; add PPAC"
+"Henry Hub + EU gas (DHHNGSP/PNGASEUUSDM)","$/MMBtu","daily + monthly","public free","FRED + EIA hist rngwhhdm","1997-2026 verified table","EIA public / IMF cited","weekly Wed","US hub != EU/India LNG"
+"US fuel GASREGW/GASDESW","$/gal","weekly Mon","public free EIA","FRED","long weekly","EIA public","weekly","US only; India trucking via PPAC RSP"
+"PPAC Indian basket + RSP + gas notices","$/bbl; INR/L","daily/monthly","public free","PPAC prices pages (deep URL slug changed - use hub)","multi-year downloads","GoI free","daily basket","JS/captcha downloads; state-tax fragmentation"
+"India Mfg PMI headline","diffusion 50=flat","monthly","free headline / paid detail (S&P licence)","TradingEconomics mirror (S&P source)","2012-2026 mirror","S&P licence; mirror disclaimer","flash ~1wk final month-start","flash->final revision (55.7->55.1 Sep26); 500-firm survey"
+"US ISM Mfg PMI","index","monthly","direct ISM (FRED NAPM deleted 22 series 2016)","ISM Report on Business (fetch empty 2026-10-01 paywall)","long direct","ISM licence","1st business day","DO NOT use FRED NAPM (removed)"
+"Ocean freight WCI/Freightos/BDI","$/40ft; index","weekly","free headline / paid detail","Drewry WCI (old path 404 - re-verify); Baltic Exchange indices hub","weekly recent free","copyright","weekly Thu","route mismatch - use India-EU N.Europe + India-US E.Coast legs; interim proxy EIA diesel"
+"Scrap/premia paid (Fastmarkets MB; Platts; CRU; WoodMac)","USD/t or c/lb","daily/weekly/monthly","paid - cost NOT retrievable free (404/403/hijack 2026-10-01)","CRU Group hub confirms existence only","long paywalled","commercial no-redistribute","daily-weekly","Indian honey scrap thinnest - budget 1 paid seat if needed; treat as gap"
+US housing starts (HOUST),k units SAAR,monthly,public free API,FRED HOUST (Census+HUD),long monthly,~3 weeks,revisions; SAAR vs NSA
+US construction spending (TTLCONS),USDm SAAR,monthly,public free API,FRED TTLCONS (Census),long monthly,~1 month,residential/nonres split in related series
+Drewry World Container Index + 8 legs,USD/40ft,weekly Thu,free headline / paid detail,Drewry Supply Chain Advisors WCI,recent free,weekly Thu,route mismatch: use India-EU/US legs; surcharges separate
+CBAM certificate price (EU ETS auction basis),EUR/tCO2,regular,public free,EC TAXUD CBAM price page,from 2026,regular,brass out of scope; tracks EU ETS
+Copper concentrate TC/RC benchmark + spot,USD/t + c/lb,annual bench / weekly spot,paid,Fastmarkets / Mysteel / S&P Platts,2010-,spot weekly,benchmark ONLY via annual deal (Antofagasta); spot thin
+SHFE weekly stocks Cu/Zn,tonnes,weekly,public free (delayed),SHFE eng/reports hub,2010- weekly,weekly,aggregator mirrors; contract-unit mapping
+USGS Mineral Commodity Summaries Cu/Zn,kt / %,annual,public free,USGS pubs.er.usgs.gov MCS,long annual,~1 month,annual only; yearbook lags
+Policy rates (Fed funds/ECB deposit/RBI repo),% p.a.,event->daily,public free,Fed/ECB/RBI press + FRED FEDFUNDS/DGS,long,same day,stance dummy; real-rate needs CPI
+CPI inflation (US BLS/India MoSPI/Euro HICP),% y/y + index,monthly,public free,BLS/MoSPI/ECB data portal,long monthly,~2 weeks,base-year changes (India 2024=100); SA vs NSA
+ABS Building Approvals (dwellings/units),no. + AUDm,monthly,public free,ABS,long monthly,~5 weeks,SA vs trend; approvals != completions
+RBA cash rate target,% p.a.,event,public free,RBA statistics,2008-,same day,transmission lag to construction
+OPEC MOMR (demand/economy/tanker),mb/d + USD/bbl,monthly,public free digital,OPEC publications.opec.org,long monthly,~2 weeks,Gulf capex proxy only; tanker ch. for freight sense
+HCL MIC output/sales y/y%,% y/y,quarterly,public free,HCL Production/Sales reports,FY24-,quarterly,PSU reporting gaps
+HS 74032100 duty stack events,BCD/SWS/IGST steps,event,public free,EximGuru notifications (CBIC mirror),2006-,same day,mirror; confirm CBIC
+IBM Average Sale Price (copper),INR/t,monthly,public free,IBM ASP portal,long,~1 month,pull method TBD
+HCL base-price circulars,INR/kg,monthly,public free,HCL Price Circular page,2017-2020 seen,monthly,archive looks stale; verify current

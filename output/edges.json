@@ -1,0 +1,116 @@
+{
+ "note": "Edge enters graph only if source supports RELATIONSHIP itself. Verified = both rounds agree with relationship evidence. Disputed = rounds disagree or directional-only. Quarantined edges in quarantine.csv, NOT here.",
+ "edges": [
+  {
+   "direction": "USD up -> LME Cu down",
+   "evidence": "BIS WP1083 (negative assoc, strongest for Cu/tin); CME 2026-06-30 mechanical denomination. Nodes verified (FRED/ECB), beta not quantified.",
+   "lag": "contemporaneous/days",
+   "mechanism": "Stronger dollar makes dollar-priced copper mechanically dearer for non-US buyers, denting demand.",
+   "scope": "cross-level",
+   "sign": "negative",
+   "source": "F1",
+   "status": "Disputed",
+   "status_note": "R1-quarantine (nodes only) vs R2-quarantine; keep as Disputed directional, NOT quantified beta.",
+   "target": "M_CU",
+   "type": "causal"
+  },
+  {
+   "direction": "TC collapse -> custom smelter cuts -> refined supply down",
+   "evidence": "Reuters Jun-2026 + MiningWeekly Nov-2025 + CRU 2026: $80+8c (2024)->$21.25+2.125c (2025)->$0/t 2026 (Jiangxi/Antofagasta); spot negative; >10% China 2026 cuts; ICSG +0.9% refined. IEA commentary corroborates.",
+   "lag": "months (annual benchmark + spot lead)",
+   "mechanism": "Zero processing margin forces custom smelters to cut/close, capping refined output.",
+   "scope": "same-level",
+   "sign": "positive (tightness up -> supply down -> price up)",
+   "source": "S2",
+   "status": "Verified",
+   "target": "SUP_UP",
+   "type": "causal"
+  },
+  {
+   "direction": "LME Cu high -> scrap collection up -> secondary supply up -> deficit dampened",
+   "evidence": "ETC factsheet (high prices incentivise recycling); IEA (expanding recycling on high prices); ICSG secondary +5.7% vs primary +2.3%. Elasticity magnitude not evidenced.",
+   "lag": "weeks-months",
+   "mechanism": "Record Cu incentivises collection + feed switch to scrap (TC-free), partly offsetting concentrate gap.",
+   "scope": "cross-level",
+   "sign": "negative feedback",
+   "source": "M_CU",
+   "status": "Disputed",
+   "status_note": "Feedback direction verified; magnitude quarantined.",
+   "target": "S4",
+   "type": "feedback loop"
+  },
+  {
+   "direction": "Tariff expectation -> COMEX-LME spread wide -> physical diverted to US -> non-US tightness",
+   "evidence": "SocGen via FXStreet 10-Aug-2026 tariff-arbitrage reshapes spread; StoneX 4-way ruling; Benchmark exclusion nuance; ING/CNBC 200kt/mo US imports, COMEX record stocks at LME/SHFE expense.",
+   "lag": "weeks; reversible on exemption/delay",
+   "mechanism": "Phased-tariff expectation widens COMEX premium, pulling metal to US and draining LME/SHFE.",
+   "scope": "cross-level",
+   "sign": "positive",
+   "source": "P3",
+   "status": "Verified",
+   "target": "S5",
+   "type": "causal"
+  },
+  {
+   "direction": "China PMI/output soft -> global Cu demand soft -> price/premia soft",
+   "evidence": "NBS PMI 50.1 Sep-2026 vs 49.8 Aug; Reuters/Mining.com copper slides as China data weighs. Event co-move only, no beta.",
+   "lag": "1-2 months to stocks/premia",
+   "mechanism": "China ~58-60% refined use; sub-50 PMI maps to cathode/rod order cuts and SHFE builds.",
+   "scope": "cross-level",
+   "sign": "positive",
+   "source": "F5",
+   "status": "Disputed",
+   "status_note": "Directional only, not quantified.",
+   "target": "D1",
+   "type": "causal"
+  },
+  {
+   "direction": "Cu/Al ratio high -> Al substitution -> Cu demand shaved",
+   "evidence": "Cu/Al 4.2-4.4 Jan-2026 (FinancialContent/FT); 3.5-4.0x threshold triggers switch (CRU/JPM); IEA Al-for-Cu saves up to 3.6Mt by 2040; Prysmian/auto cases.",
+   "lag": "6-18 months qualification",
+   "mechanism": "At >3.5-4x, cable/winding/EV qualify aluminium, shaving copper demand.",
+   "scope": "same-level",
+   "sign": "negative",
+   "source": "M_CU",
+   "status": "Verified",
+   "target": "D3",
+   "type": "substitution"
+  },
+  {
+   "direction": "LME*FX -> INR landed cost (accounting)",
+   "evidence": "RBI/FBIL + ECB ref rates + CBIC tariff values; CablePriceIndia formula. Identity, no econometrics needed.",
+   "lag": "daily",
+   "mechanism": "Rs/kg = LME $/t /1000 x USD/INR x (1+duty/freight/margin). 1% INR slip ~= Rs10-13/kg at $13-14k/t.",
+   "scope": "cross-level",
+   "sign": "positive",
+   "source": "M_CU",
+   "status": "Verified",
+   "target": "C1",
+   "type": "causal"
+  },
+  {
+   "direction": "Rates up -> construction/manufacturing soft -> brass demand soft",
+   "evidence": "JPM (Cu extremely sensitive to growth/construction); CME (rising rates curtail expansion). No Castle-specific elasticity.",
+   "lag": "1-3 quarters",
+   "mechanism": "Higher rates curtail building/auto/grid capex to which brass demand is geared.",
+   "scope": "cross-level",
+   "sign": "negative",
+   "source": "F2",
+   "status": "Disputed",
+   "target": "D1",
+   "type": "causal"
+  },
+  {
+   "direction": "Oil/Red Sea disruption -> freight up -> INR landed up",
+   "evidence": "JPM Red Sea (30% via Suez, Asia-Europe ~5x, lagged pass-through); Descartes/Hormuz surcharges; Drewry WCI route legs (URL re-verify).",
+   "lag": "1-3 months",
+   "mechanism": "$100+/bbl + Cape detour (+8-12d) + war-risk/ETS lifts Asia-Europe spot, passing to imports.",
+   "scope": "cross-level",
+   "sign": "positive",
+   "source": "F5",
+   "status": "Disputed",
+   "target": "C4",
+   "type": "causal"
+  }
+ ]
+}

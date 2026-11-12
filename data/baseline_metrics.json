@@ -1,0 +1,30 @@
+{
+ "h1_naive": {
+  "n": 2728,
+  "MAE": 0.2128,
+  "RMSE": 0.3832,
+  "dir_hit": null,
+  "dir_note": "1-step naive has no direction by construction"
+ },
+ "h1_seasonal52": {
+  "n": 2728,
+  "MAE": 2.4057,
+  "RMSE": 3.3987,
+  "dir_hit": 0.397,
+  "dir_note": ""
+ },
+ "h4_naive": {
+  "n": 2725,
+  "MAE": 0.4625,
+  "RMSE": 0.7965,
+  "dir_hit": 0.45,
+  "dir_note": ""
+ },
+ "h4_seasonal52": {
+  "n": 2725,
+  "MAE": 2.5111,
+  "RMSE": 3.5093,
+  "dir_hit": 0.399,
+  "dir_note": ""
+ }
+}

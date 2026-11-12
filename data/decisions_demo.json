@@ -1,0 +1,14 @@
+{
+ "mode": "DEMO-public-legs",
+ "signals": 1805,
+ "buy_signals": 546,
+ "buy_rate": 0.302,
+ "avg_nextwk_move_after_buy": -0.0016,
+ "last": {
+  "week": "2026-11-06",
+  "cu": 14473.05590909091,
+  "fx": 93.91,
+  "signal": "WAIT"
+ },
+ "message": "DEMO Monday note (2026-11-06): copper $14,473/t, INR 93.91 \u2014 signal WAIT. Real message needs brass target + spreads."
+}

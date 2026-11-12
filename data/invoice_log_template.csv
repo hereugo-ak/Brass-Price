@@ -1,0 +1,2 @@
+date,item,alloy_grade,form_size,supplier,qty_kg,price_inr_per_kg,total_inr,notes
+2026-10-01,EXAMPLE brass rod,CW614N,20mm,EXAMPLE supplier,500,895,447500,delete this row; one row per purchase; ballpark ok

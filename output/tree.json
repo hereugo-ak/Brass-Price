@@ -1,0 +1,753 @@
+{
+ "assumptions": [
+  "A1 alloys: CW614N/C36000 free-cutting rod 60-63%Cu + Pb 2.5-3.7%, CW617N forging, C260 70/30, Muntz 60/40 - lock via CoA/EN12164/BIS IS319",
+  "A2 buy India INR, sell US/EU USD/EUR",
+  "A3 spot/mixed - full pass-through with sticky lags",
+  "A4 no hedge",
+  "A5 weekly 1-8W lags + monthly regimes"
+ ],
+ "ce_check": "P_INR = wCu*LME_Cu*FX + wZn*LME_Zn*FX + premium - scrap_discount + conversion + margin + net_duties. No LME brass leg (VERIFIED). MCX brass 2018 historical, illiquid 2026 (DISPUTED as live).",
+ "meta": {
+  "client": "Castle Hardware",
+  "date": "2026-10-01",
+  "horizon": "weekly + long-term",
+  "root": "Castle INR delivered brass cost + export margin"
+ },
+ "nodes": [
+  {
+   "def": "Total INR cost per kg delivered rod/strip + export margin. Identity in meta.",
+   "excl": "Nothing - root covers all; children partition it.",
+   "id": "ROOT",
+   "incl": "Metal value + spreads + duties + demand/positioning timing effects.",
+   "name": "Castle brass price",
+   "parent": null,
+   "split": "L1 by disjoint causal stage: benchmarks | FX translation | upstream tonnes | India spreads | policy wedges | demand pull | expectations overlay",
+   "status": "Verified"
+  },
+  {
+   "def": "Global USD benchmarks Castle takes as given. No brass future.",
+   "excl": "Physical tonnes, FX, duties, India spreads (other branches).",
+   "id": "SUP",
+   "incl": "LME Cu/Zn Official, Settlement, MASP, Closing, COMEX HG, spreads.",
+   "name": "Metal benchmarks",
+   "parent": "ROOT",
+   "split": "L1 stage: price discovery (this) vs translation (MAC-FX) vs tonnes (SUP-UP) vs spreads (CONV) vs wedges (POL)",
+   "status": "Verified"
+  },
+  {
+   "def": "Upstream physical balance that drives benchmarks with lag.",
+   "excl": "Prices themselves, FX, duties.",
+   "id": "SUP_UP",
+   "incl": "Mine, smelter, scrap availability, stocks, disruptions.",
+   "name": "Upstream physical balance",
+   "parent": "SUP",
+   "split": "By sequential physical stage + buffers/shocks measured separately",
+   "status": "Verified"
+  },
+  {
+   "def": "Extraction to concentrate. ICSG balances drive outlook.",
+   "excl": "Smelter output, TC/RC economics (S2), prices.",
+   "id": "S1",
+   "incl": "World mine output, Chile/Peru/DRC/Indonesia, India HCL ore, grades.",
+   "name": "Copper mine + concentrate",
+   "parent": "SUP_UP",
+   "split": "By metal: Cu mine (S1) vs Zn mine (S3)",
+   "status": "Disputed",
+   "status_note": "ICSG 2025: 1.4% growth, 178kt surplus; 2026 deficit 150kt (R1 verified via Reuters, R2 unverified PDF-gated). Use as Disputed with vintage."
+  },
+  {
+   "def": "Custom smelters + refineries + SX-EW. TC/RC signals tightness.",
+   "excl": "Mining, semis rolling.",
+   "id": "S2",
+   "incl": "TC/RC benchmark + spot, cathode output, capacity/utilisation, Kutch/Hindalco.",
+   "name": "Copper smelt/refine + TC/RC",
+   "parent": "SUP_UP",
+   "split": "By transformation: concentrate market (TC) vs metal output",
+   "status": "Verified",
+   "status_note": "TC $0/t 2026 vs $21.25 2025 verified R1 (Reuters/Kitco) + R2-policy (Reuters/CRU). Spot negative separate. Kutch Phase-1 0.5Mtpa commissioned 28-Mar-2024 VERIFIED (Adani); 1Mtpa = full target."
+  },
+  {
+   "def": "Zinc ore to metal. HZL anchors India.",
+   "excl": "Cu legs, galvanising demand.",
+   "id": "S3",
+   "incl": "World Zn mine/refined (ILZSG), HZL mined/refined, Zn TC.",
+   "name": "Zinc mine + refine",
+   "parent": "SUP_UP",
+   "split": "By metal: Zn (this) vs Cu (S1/S2)",
+   "status": "Disputed",
+   "status_note": "HZL FY25 1095kt mined/1052kt refined: R1 verified via BusinessWire/Vedanta, R2 unverified (JS site). Mark Disputed pending annual-report page. ILZSG balance numbers quarantined to ledger."
+  },
+  {
+   "def": "Collection to secondary refined + direct-melt. Price-elastic buffer.",
+   "excl": "Primary mine/smelter tonnes.",
+   "id": "S4",
+   "incl": "Old/new Cu scrap, brass honey scrap, secondary refined, scrap imports India.",
+   "name": "Secondary / scrap availability",
+   "parent": "SUP_UP",
+   "split": "By source: primary (S1-S3) vs secondary (this)",
+   "status": "Verified",
+   "status_note": "Mechanism verified (ICSG secondary +5.7% vs primary +2.3% via ICSG PR reported press). Elasticity magnitude quarantined."
+  },
+  {
+   "def": "Exchange + off-warrant + producer/consumer + state stocks. Buffer, not flow.",
+   "excl": "Futures curve as price signal (MAC).",
+   "id": "S5",
+   "incl": "LME stocks/cancelled/on-warrant daily, SHFE weekly, bonded, SRB.",
+   "name": "Visible inventories",
+   "parent": "SUP_UP",
+   "split": "Stocks (levels, this) vs shocks (changes, S6)",
+   "status": "Verified",
+   "status_note": "LME daily + SHFE weekly reporting existence VERIFIED. Levels themselves are data, not claims."
+  },
+  {
+   "def": "Discrete events removing S1-S5 tonnes. Dummies, not levels.",
+   "excl": "Chronic capacity trends (in S1-S4).",
+   "id": "S6",
+   "incl": "Accidents, strikes, power, grade, bans, logistics blocks.",
+   "name": "Supply disruptions",
+   "parent": "SUP_UP",
+   "split": "Events (this) vs levels (S1-S5)",
+   "status": "Disputed",
+   "status_note": "Event list (Kakula flood, El Teniente, Grasberg, Chile blackout) single-trade-source; use as event dummies to verify per-incident."
+  },
+  {
+   "def": "LME Cu benchmark formation.",
+   "excl": "Zn, FX, physical tonnes.",
+   "id": "M_CU",
+   "incl": "Official, Settlement, MASP, Closing, cash-3M spread, COMEX HG + arb.",
+   "name": "LME copper benchmark",
+   "parent": "SUP",
+   "split": "By metal: Cu (this) vs Zn (M_ZN)",
+   "status": "Verified",
+   "status_note": "LME 25t lot USD/t VERIFIED; Official = Ring2 last bid/offer + Settlement last cash offer VERIFIED; MASP VWAP-window detail QUARANTINED to ledger; COMEX 25klb specs quarantined pending rulebook."
+  },
+  {
+   "def": "LME Zn benchmark. ~35-40% of 60/40 cost.",
+   "excl": "Cu leg.",
+   "id": "M_ZN",
+   "incl": "Zn Official/Settlement/3M, Zn stocks tightness feed.",
+   "name": "LME zinc benchmark",
+   "parent": "SUP",
+   "split": "By metal (see M_CU)",
+   "status": "Verified"
+  },
+  {
+   "def": "Where brass is finally consumed. Drives volume + pass-through.",
+   "excl": "Prices, FX, duties.",
+   "id": "DEM",
+   "incl": "India level, export pull, substitution share, temporal pattern.",
+   "name": "Demand pull",
+   "parent": "ROOT",
+   "split": "L1 stage: volume/pull (this) vs cost (others). L2 by geography of installation, then mechanism vs timing kept separate.",
+   "status": "Disputed"
+  },
+  {
+   "def": "Total copper+brass consumed India. Castle buys here.",
+   "excl": "Export volumes, substitution share.",
+   "id": "D1",
+   "incl": "Construction/plumbing, electrical, auto, machinery/durables, defence.",
+   "name": "India domestic demand level",
+   "parent": "DEM",
+   "split": "By geography: India install (this) vs US/EU install (D2)",
+   "status": "Disputed",
+   "status_note": "ICA FY25 1878kt +9.3% (building +11% infra +17%) UNVERIFIED (HTML only, PDF pending) - quarantined numbers; mechanism kept Disputed. CSEP 3.24Mt conventional +274kt transition by FY30: R2 verified via csep.org, R1 quarantined - Disputed pending second round."
+  },
+  {
+   "def": "Demand for finished hardware installed US/EU. Drives Castle orders.",
+   "excl": "India volumes.",
+   "id": "D2",
+   "incl": "US housing starts/permits, construction spend, EU construction prod, HS imports (7412/8481/8302).",
+   "name": "Export-market derived demand",
+   "parent": "DEM",
+   "split": "By geography (see D1)",
+   "status": "Disputed",
+   "status_note": "USGS/CDA shares VERIFIED as vintage ranges (building 42-45% per MCS2024-25, electrical 22-23%) - cite with year; single-year point without vintage DISPUTED. HS import volumes not retrieved - gap."
+  },
+  {
+   "def": "Share loss to other materials. Multiplies levels, not level itself.",
+   "excl": "Demand levels, cycles.",
+   "id": "D3",
+   "incl": "PEX/plastic vs tube, Al vs Cu, steel vs brass, lead-free alloy shift.",
+   "name": "Substitution drag",
+   "parent": "DEM",
+   "split": "By substitute material",
+   "status": "Disputed",
+   "status_note": "Share-loss series: PEX pipe (Freedonia, paid), BLS PPI plastic vs copper-base \u2014 to pull before modelling."
+  },
+  {
+   "def": "Cycle + seasonality + elasticity modulating D1/D2 into weekly vs long-term.",
+   "excl": "Levels, shares.",
+   "id": "D4",
+   "incl": "Business cycle, seasonality dummy, short-run price elasticity/destocking.",
+   "name": "Temporal pattern",
+   "parent": "DEM",
+   "split": "By frequency: cycle vs seasonal vs elastic response",
+   "status": "Disputed",
+   "status_note": "Seasonality estimated in-sample from LME/COMEX history; Seasonax (paid) optional."
+  },
+  {
+   "def": "Translation + expectations holding physical tonnes constant.",
+   "excl": "Physical tonnes, duties.",
+   "id": "MAC",
+   "incl": "FX, rates, inflation, positioning, sentiment, common costs.",
+   "name": "Macro & finance",
+   "parent": "ROOT",
+   "split": "By transmission: translation (FX) vs money price (rates) vs goods price (inflation) vs risk-holding (positioning) vs expectations/costs",
+   "status": "Verified"
+  },
+  {
+   "def": "USD metal to INR cost + EUR/USD revenue.",
+   "excl": "Real purchasing power (inflation).",
+   "id": "F1",
+   "incl": "USD/INR FBIL/RBI, EUR/INR cross, EUR/USD, DXY.",
+   "name": "FX translation",
+   "parent": "MAC",
+   "split": "Nominal translation (this) vs real (F3)",
+   "status": "Verified",
+   "status_note": "RBI archive+Excel, FRED DEXINUS/DEXUSEU/DTWEXBGS, ECB ref rates existence VERIFIED. FBIL VWAP-window detail quarantined. Identity LME*FX->INR VERIFIED as accounting."
+  },
+  {
+   "def": "Policy + market rates changing carry, finance, USD.",
+   "excl": "Earnings, PMI sentiment.",
+   "id": "F2",
+   "incl": "Fed funds, ECB deposit/MRO, RBI repo/stance, real yields.",
+   "name": "Cost of money",
+   "parent": "MAC",
+   "split": "Price of money (this) vs price of goods (F3)",
+   "status": "Verified",
+   "status_note": "Fed 3.75-4.00% post 16-Sep-2026 hike VERIFIED; ECB deposit 2.50% post 16-Sep-2026 VERIFIED; RBI repo 5.25% Aug-2026 single-round (quarantine detail, keep level Disputed if modelling)."
+  },
+  {
+   "def": "General price level forcing nominal pass-through.",
+   "excl": "Metal premia.",
+   "id": "F3",
+   "incl": "US CPI/core, Euro HICP, India CPI/food/core.",
+   "name": "Inflation & deflators",
+   "parent": "MAC",
+   "split": "Broad purchasing power (this) vs metal relative price",
+   "status": "Verified",
+   "status_note": "US CPI Aug-2026 +3.4% y/y +0.4% m/m VERIFIED (BLS). India CPI 4.82% single-round - Disputed."
+  },
+  {
+   "def": "Non-physical flows moving futures short-term.",
+   "excl": "Physical stocks.",
+   "id": "F4",
+   "incl": "CFTC COT/disaggregated, LME COTR, OI, vol.",
+   "name": "Investor positioning",
+   "parent": "MAC",
+   "split": "Who holds risk (this) vs what stocks exist (SUP)",
+   "status": "Verified",
+   "status_note": "CFTC Tue-positions/Fri-release VERIFIED. LME COTR existence verified, exact cited URL 404 - use current LME path."
+  },
+  {
+   "def": "Forward activity + shared input costs.",
+   "excl": "End-use tonnes, vessel logistics.",
+   "id": "F5",
+   "incl": "Mfg PMI + Copper Users PMI, equities, industrial power, crude/gas, BDI.",
+   "name": "Sentiment & common costs",
+   "parent": "MAC",
+   "split": "Expectations + shared costs (this) vs idiosyncratic balance",
+   "status": "Disputed",
+   "status_note": "PMI diffusion method general VERIFIED concept; specific India/US/EU PMI prints quarantined. BDI 40/30/30 composition quarantined pending Baltic manual. Energy/freight as cost push directional."
+  },
+  {
+   "def": "Jurisdiction rules taxing inbound, subsidising outbound, taxing destination.",
+   "excl": "LME formation, physical tonnes.",
+   "id": "POL",
+   "incl": "India inbound, India outbound offsets, US wall, EU wall, LME rules, env/sanctions.",
+   "name": "Policy & trade wedges",
+   "parent": "ROOT",
+   "split": "By jurisdiction x instrument: tariff/quota/carbon/standard/subsidy/export-control, with stacking matrix",
+   "status": "Verified"
+  },
+  {
+   "def": "Central taxes + clearances before melt shop.",
+   "excl": "Destination tariffs, export rebates.",
+   "id": "P1",
+   "incl": "BCD/AIDC/SWS/IGST HS7403/7404/7901, FTA, BIS QCO, scrap NOC.",
+   "name": "India inbound cost",
+   "parent": "POL",
+   "split": "Price (tariff) vs quantity (controls)",
+   "status": "Disputed",
+   "status_note": "BCD nil on copper scrap from 2-Feb-2025 VERIFIED R2 (Budget/CBIC/PIB/Reuters); R1 quarantined - Disputed per strict rule. BIS QCO: 2024 S.O.1801(E) issued VERIFIED but 2023 withdrawn Nov-2025 + 2024 ambiguous - DISPUTED as active blanket, check current BIS list."
+  },
+  {
+   "def": "Rebates lowering net FOB INR.",
+   "excl": "Buyer duties.",
+   "id": "P2",
+   "incl": "RoDTEP 4R/4RE, drawback Ch74/83, advance auth, GST zero-rating.",
+   "name": "India outbound offsets",
+   "parent": "POL",
+   "split": "Domestic-tax remission vs import-duty refund",
+   "status": "Disputed",
+   "status_note": "RoDTEP mechanism VERIFIED; rates MUST be vintage-stamped (cut to 50% 23-Feb-2026, restored 23-Mar-2026, extended to 31-Dec-2026 per DGFT 60/66/74). Drawback-ban claim DISPUTED (no ban found, regime active)."
+  },
+  {
+   "def": "US duties/carbon levied at import. Discount-or-lose-volume.",
+   "excl": "LME formation.",
+   "id": "P3",
+   "incl": "Sec232 Cu 50% content-only, steel/alu derivatives, IEEPA reciprocal India, MFN, AD/CVD.",
+   "name": "US market access",
+   "parent": "POL",
+   "split": "US (this) vs EU (P4)",
+   "status": "Verified",
+   "status_note": "Sec232 50% semis+derivatives eff 1-Aug-2025, content-only, ores/cathodes/scrap EXCLUDED VERIFIED (WH + FR 2025-14893, two rounds). US-India IEEPA 50%->18% Feb-2026 VERIFIED R2 (WH/Reuters); R1 quarantined - Disputed per strict rule, do not conflate with 232."
+  },
+  {
+   "def": "EU carbon/border costs.",
+   "excl": "US regime.",
+   "id": "P4",
+   "incl": "CBAM definitive, steel Reg 2026/1384 TRQ, sanctions bans.",
+   "name": "EU market access",
+   "parent": "POL",
+   "split": "US vs EU (see P3)",
+   "status": "Verified",
+   "status_note": "CBAM definitive 1-Jan-2026, 6 sectors, brass/copper OUT VERIFIED (Reg 2023/956 + EC). 2028 downstream-extension proposal flagged, not adopted. Steel Reg 2026/1384 18.3Mt/50% from 1-Jul-2026 VERIFIED R2 (EUR-Lex); R1 quarantined - Disputed strict."
+  },
+  {
+   "def": "LME rulebook altering premium/queue/warrant, not govt tax.",
+   "excl": "Govt tariffs.",
+   "id": "P5",
+   "incl": "LILO, load-out minima, rent caps, brand listing, sanctions attestation.",
+   "name": "Exchange microstructure",
+   "parent": "POL",
+   "split": "Storage cost vs deliverability",
+   "status": "Disputed",
+   "status_note": "LILO+QBRC from 1-May-2016 VERIFIED historic (R2); current calibration under 2026 review - vintage required."
+  },
+  {
+   "def": "Global cost-raising rules shifting LME + scrap for all buyers.",
+   "excl": "Product QCO.",
+   "id": "P6",
+   "incl": "India EPR 1-Apr-2026, NFM recycling framework, mine royalties, RU sanctions.",
+   "name": "Environmental + sanctions",
+   "parent": "POL",
+   "split": "Environmental vs sanctions",
+   "status": "Disputed",
+   "status_note": "EPR 18 non-ferrous products from 1-Apr-2026 VERIFIED R2 (MoEFCC/CPCB); R1 quarantined - Disputed strict."
+  },
+  {
+   "def": "Melt-to-gate INR spreads under no-hedge spot buying.",
+   "excl": "LME level, FX, duties, demand volumes.",
+   "id": "CONV",
+   "incl": "Alloy math, scrap discount spread, melt/extrude/finish charges, dealer/freight/carry, cluster.",
+   "name": "Conversion & commercial",
+   "parent": "ROOT",
+   "split": "By value-add + pricing mechanism: metal math -> feed discount -> physical conversion -> commercial overlay -> cluster instance",
+   "status": "Disputed"
+  },
+  {
+   "def": "LME-derived intrinsic alloy value before work.",
+   "excl": "Labour, energy, margins.",
+   "id": "C1",
+   "incl": "LME Cu/Zn x USDINR x alloy %, MCX Cu/Zn/BRASS ref, IS319/CW614N/C360 math.",
+   "name": "Metal value anchor",
+   "parent": "CONV",
+   "split": "Reference (LME) vs domestic translation (MCX) vs alloy math",
+   "status": "Verified",
+   "status_note": "Alloy math ranges VERIFIED (IS319 Gr-I 56-59% Pb2-3.5, Gr-II 60-63% Pb2.5-3.7; C260 70/30; C360 60-63%; Naval 60/39.25/0.75Sn). MCX Cu compulsory delivery VERIFIED; MCX brass 2018 1t VERIFIED historical, absent 2026 list - time-qualify."
+  },
+  {
+   "def": "Discount of honey/cuttings to LME blend.",
+   "excl": "Melt energy.",
+   "id": "C2",
+   "incl": "Imported honey discount, domestic purja/honey/chadar vs virgin spread, billet CFR ratio.",
+   "name": "Scrap & feed discount",
+   "parent": "CONV",
+   "split": "Imported (this) vs domestic spread",
+   "status": "Disputed",
+   "status_note": "Honey-at-discount-to-LME mechanism VERIFIED via Hindu 2018; discount % + billet 62.5-63.5% LME ratio single-source (SMM) - Disputed; do not conflate composition % with price ratio."
+  },
+  {
+   "def": "Step charges melt to finished form.",
+   "excl": "Trader margin, freight.",
+   "id": "C3",
+   "incl": "Melt, extrude/draw 2-100mm, finish/CNC/plate/OES, yield loss, temper.",
+   "name": "Physical conversion chain",
+   "parent": "CONV",
+   "split": "Melt vs extrude/draw vs finish",
+   "status": "Disputed",
+   "status_note": "Rs14-18/kg scrap->billet 2018 single anecdote QUARANTINED for weekly model; mechanism kept Disputed. 1-2wk LME pass-through lag VERIFIED R1 via Anand Brass 2026-04-27 (single trade source) - Disputed strict, model as lag to estimate."
+  },
+  {
+   "def": "Non-metallurgical add-ons for spot/weekly buying.",
+   "excl": "LME level.",
+   "id": "C4",
+   "incl": "Dealer premium, MOQ/1T lot, port/demurrage, FOB Mundra/Kandla, sea freight, FX carry, export markup.",
+   "name": "Commercial & logistics overlay",
+   "parent": "CONV",
+   "split": "Margin vs freight vs carry",
+   "status": "Disputed",
+   "status_note": "Mundra/Kandla demurrage + FOB + 25-30d US/18-22d EU transit single-vendor - Disputed. Dealer margins/premia: no citable source - gap."
+  },
+  {
+   "def": "Where conversion happens. Functional split, not macro.",
+   "excl": "National macro drivers.",
+   "id": "C5",
+   "incl": "Jamnagar industrial rod/parts; Moradabad decor; unit counts, export shares.",
+   "name": "Cluster instance",
+   "parent": "CONV",
+   "split": "Jamnagar industrial vs Moradabad decor",
+   "status": "Disputed",
+   "status_note": "Jamnagar 3000/5000 units 80% sold-India (2018 Hindu) vs 5000+ Jamnagar 80% exports (2026 vendor) conflict denominators - Disputed. Moradabad 600 export + NIC economy page VERIFIED existence; 7000cr turnover single-press Disputed."
+  },
+  {
+   "id": "S2_IN",
+   "parent": "S2",
+   "name": "India copper smelters",
+   "def": "Dahej (Hindalco, largest custom), Kutch Phase-1 0.5Mtpa 28-Mar-2024, Tuticorin 0.4Mtpa idle since May-2018.",
+   "incl": "Capacity, utilisation, ramp timelines.",
+   "excl": "China smelters.",
+   "status": "Verified",
+   "status_note": "Commissioning dates verified; utilisation levels gap."
+  },
+  {
+   "id": "S2_CN",
+   "parent": "S2",
+   "name": "China smelters + TC spot",
+   "def": "Concentrate tightness -> spot TC negative, benchmark $0/t 2026.",
+   "incl": "Spot TC (Fastmarkets/Mysteel), maintenance hits.",
+   "excl": "India capacity.",
+   "status": "Verified"
+  },
+  {
+   "id": "F1_INR",
+   "parent": "F1",
+   "name": "USD/INR leg",
+   "def": "RBI/FBIL ref + FRED DEXINUS cross-check. Drives INR cost tick-for-tick.",
+   "incl": "Daily ref, forwards premium.",
+   "excl": "EUR legs.",
+   "status": "Verified"
+  },
+  {
+   "id": "F1_EUR",
+   "parent": "F1",
+   "name": "EUR/USD leg",
+   "def": "ECB ref + FRED DEXUSEU. Drives export realisation.",
+   "incl": "EUR/USD + EUR/INR cross.",
+   "excl": "USD/INR domestic leg.",
+   "status": "Verified"
+  },
+  {
+   "id": "P3_232",
+   "parent": "P3",
+   "name": "Sec232 copper 50% content-only",
+   "def": "Semis + intensive derivatives, copper-content value only, eff 1-Aug-2025. Ores/cathodes/scrap excluded.",
+   "incl": "Annex HTS, CBP content declaration, no-stack with auto-232.",
+   "excl": "IEEPA reciprocal.",
+   "status": "Verified"
+  },
+  {
+   "id": "P3_IEEPA",
+   "parent": "P3",
+   "name": "IEEPA reciprocal India baseline",
+   "def": "India-country rate (50% Aug-2025 -> 18% Feb-2026 framework). Applies to non-copper content of brass goods.",
+   "incl": "Country rate timeline, transhipment 40%.",
+   "excl": "232 content duty.",
+   "status": "Disputed",
+   "status_note": "R2-primary vs R1-quarantine; do not stack with 232."
+  },
+  {
+   "id": "C1_GR1",
+   "parent": "C1",
+   "name": "IS319 Gr-I / CW614N-type",
+   "def": "Cu 56-59%, Pb 2.0-3.5%, Zn remainder. Free-cutting rod.",
+   "incl": "Rod/bar spec windows.",
+   "excl": "Gr-II chemistry.",
+   "status": "Verified"
+  },
+  {
+   "id": "C1_GR2",
+   "parent": "C1",
+   "name": "IS319 Gr-II / C360-type",
+   "def": "Cu 60-63%, Pb 2.5-3.7%, Zn remainder. Higher-Cu rod.",
+   "incl": "Rod spec windows.",
+   "excl": "Gr-I chemistry.",
+   "status": "Verified"
+  },
+  {
+   "id": "D2_US",
+   "parent": "D2",
+   "name": "US hardware pull",
+   "def": "Housing starts/permits (FRED HOUST), construction spend, HS 7412/8481/8302 imports.",
+   "incl": "Residential + nonres construction.",
+   "excl": "EU pull.",
+   "status": "Disputed",
+   "status_note": "Shares vintage-gated; HS volumes gap."
+  },
+  {
+   "id": "D2_EU",
+   "parent": "D2",
+   "name": "EU hardware pull",
+   "def": "EU construction production (Eurostat), CBAM/safeguard-gated demand.",
+   "incl": "Construction prod + import TRQ fill.",
+   "excl": "US pull.",
+   "status": "Disputed",
+   "status_note": "US shares verified; EU construction proof pending: Eurostat sts_copr_m + Comext HS to pull."
+  },
+  {
+   "id": "S1_CL",
+   "parent": "S1",
+   "name": "Chile/Peru concentrate origin",
+   "def": "Grade decline + incidents (Escondida -300kt to 1.1Mt 2027 guide; El Teniente -33kt). Drives TC.",
+   "incl": "Mine output, grades, incidents.",
+   "excl": "DRC/Indonesia SX-EW.",
+   "status": "Disputed",
+   "status_note": "Single-press incident R1; use as dummies."
+  },
+  {
+   "id": "S1_DRC",
+   "parent": "S1",
+   "name": "DRC/Indonesia SX-EW vs conc",
+   "def": "Kakula flood May-2025; Grasberg -32% conc; DRC SX-EW +8% vs conc -34% H1-2026.",
+   "incl": "Flood/mud-rush dummies, SX-EW split.",
+   "excl": "Chile/Peru.",
+   "status": "Disputed"
+  },
+  {
+   "id": "P4_UK",
+   "parent": "P4",
+   "name": "UK CBAM from 2027",
+   "def": "UK tax on embodied emissions for imports from 1-Jan-2027: aluminium, cement, fertiliser, hydrogen, iron & steel. Registration from 1-Jan-2028. Brass/copper out (as EU).",
+   "incl": "Finance Act 2026 Sch17, SI 2026/802 + 809, quarterly CBAM rate, carbon price relief.",
+   "excl": "EU CBAM (P4); indirect emissions (out at implementation).",
+   "status": "Verified",
+   "status_note": "R2-policy flagged + direct GOV.UK fetch 2026-10-02."
+  },
+  {
+   "id": "C4_FRT",
+   "parent": "C4",
+   "name": "Ocean freight (WCI legs)",
+   "def": "Container freight for inbound scrap/semis + outbound hardware: WCI composite + Shanghai-Rotterdam/Genoa/LA/NY legs; blank sailings, ETS/ETS surcharges, Red Sea/Cape routing.",
+   "incl": "WCI weekly Thursday, 8-lane legs, Red Sea diversion tracker.",
+   "excl": "Dry-bulk BDI (F5); inland trucking (PPAC RSP).",
+   "status": "Disputed",
+   "status_note": "Single round; India-specific legs to calibrate."
+  },
+  {
+   "id": "F5_EN",
+   "parent": "F5",
+   "name": "Energy & fuel",
+   "def": "Fuel/power costs feeding smelting, fabrication and freight: Brent, Henry Hub/EU gas, Indian Basket + petrol/diesel RSP, industrial power tariffs.",
+   "incl": "Daily Brent, weekly gas, PPAC basket/RSP, EIA power prices.",
+   "excl": "Metal prices themselves.",
+   "status": "Verified"
+  },
+  {
+   "id": "M_SPR",
+   "parent": "SUP",
+   "name": "Spreads & premiums",
+   "def": "Benchmark spreads signalling tightness: LME cash-3M, COMEX-LME arbitrage, cathode/zinc premiums, Yangshan premium; SHFE lens on China.",
+   "incl": "Backwardation/contango, warrant-cancel ratio, arb spread.",
+   "excl": "Outright price levels (M_CU/M_ZN).",
+   "status": "Disputed",
+   "status_note": "Premia levels paid (Fastmarkets/Platts/CRU); spreads free-delayed. Single round on arb evidence."
+  },
+  {
+   "id": "P_ME",
+   "parent": "POL",
+   "name": "Middle East access (CEPA)",
+   "def": "UAE CEPA in force May-2022 (97.4% lines zero) + GCC 5% CET baseline off-CEPA; Jebel Ali re-export hub; dirham settlement.",
+   "incl": "CoO CTH+RVC>=35%, TRQ/origin policing.",
+   "excl": "EU/US/AU regimes.",
+   "status": "Disputed",
+   "status_note": "Search-level; pull UAE schedule + Commerce text for brass HS."
+  },
+  {
+   "id": "P_AU",
+   "parent": "POL",
+   "name": "Australia access (ECTA)",
+   "def": "ECTA in force 29-Dec-2022; 100% of imports from India tariff-free from 1-Jan-2026; ABF Schedule 10A; CECA talks resumed.",
+   "incl": "Scheme IECT, origin rules, dumping-duty watch.",
+   "excl": "AU demand (D2_AU).",
+   "status": "Disputed"
+  },
+  {
+   "id": "P_UKFTA",
+   "parent": "POL",
+   "name": "UK access (CETA, live)",
+   "def": "UK-India CETA in force 15-Jul-2026: 99% of Indian goods duty-free into UK; Ch.2 + Annex 2A-b; QCO/non-tariff watch.",
+   "incl": "Brass-hardware tariff lines, origin rules.",
+   "excl": "UK CBAM 2027 (P4_UK).",
+   "status": "Disputed",
+   "status_note": "Line-level brass check pending."
+  },
+  {
+   "id": "P4_PB",
+   "parent": "P4",
+   "name": "EU lead/material rules",
+   "def": "DWD recast: lead 10->5 ug/L by 2036; EU hygiene standards + conformity marking from 31/12/2026; lead-free grade cost delta open.",
+   "incl": "EN 15664 testing, positive list, national transpositions.",
+   "excl": "Carbon duties (P4).",
+   "status": "Disputed"
+  },
+  {
+   "id": "D2_ME",
+   "parent": "D2",
+   "name": "Gulf hardware pull",
+   "def": "Oil-funded Gulf construction; OPEC MOMR monthly as spending-power proxy; UAE re-export channel.",
+   "incl": "ORB/Brent, Gulf PMI, awards (MEED paid).",
+   "excl": "Tariffs (P_ME).",
+   "status": "Disputed"
+  },
+  {
+   "id": "D2_AU",
+   "parent": "D2",
+   "name": "Australia hardware pull",
+   "def": "ABS Building Approvals monthly + RBA cash-rate cycle; ECTA zero-duty from 2026.",
+   "incl": "Approvals, alterations, rate pass-through.",
+   "excl": "Origin rules (P_AU).",
+   "status": "Disputed"
+  },
+  {
+   "id": "WATCH",
+   "parent": "ROOT",
+   "name": "Watchlist: needs source",
+   "def": "Unevidenced but material factors, kept visible per owner instruction. Grey = do not model until sourced.",
+   "incl": "14 hypotheses + evidence needed each.",
+   "excl": "Verified/Disputed graph (siblings).",
+   "status": "Unverified",
+   "status_note": "Container for unevidenced hypotheses; each lists evidence needed."
+  },
+  {
+   "id": "W_MGN",
+   "parent": "WATCH",
+   "name": "Dealer margins / premia",
+   "def": "Dealer net margins over LME-implied metal value by channel.",
+   "incl": "Evidence needed: 3+ dealer quotes or mandi series.",
+   "excl": "Modelled drivers (siblings).",
+   "status": "Unverified",
+   "status_note": "Source needed \u2014 see gap row."
+  },
+  {
+   "id": "W_CONV",
+   "parent": "WATCH",
+   "name": "Live conversion Rs/kg",
+   "def": "Current scrap->billet/rod jobwork charge (2018 figure stale).",
+   "incl": "Evidence needed: 2026 foundry quotes.",
+   "excl": "Modelled drivers (siblings).",
+   "status": "Unverified",
+   "status_note": "Source needed \u2014 see gap row."
+  },
+  {
+   "id": "W_MND",
+   "parent": "WATCH",
+   "name": "Mandi rod premium",
+   "def": "Finished-rod premium over alloy metal value by spec/dia.",
+   "incl": "Evidence needed: mandi price lists.",
+   "excl": "Modelled drivers (siblings).",
+   "status": "Unverified",
+   "status_note": "Source needed \u2014 see gap row."
+  },
+  {
+   "id": "W_HNY",
+   "parent": "WATCH",
+   "name": "Honey discount live",
+   "def": "Brass scrap discount % to LME blend, import vs domestic.",
+   "incl": "Evidence needed: BigMint/RecycleInMe or importer quotes.",
+   "excl": "Modelled drivers (siblings).",
+   "status": "Unverified",
+   "status_note": "Source needed \u2014 see gap row."
+  },
+  {
+   "id": "W_CARRY",
+   "parent": "WATCH",
+   "name": "Inventory carry cost",
+   "def": "MCLR + forward premia cost of unhedged stock.",
+   "incl": "Evidence needed: FBIL forwards + bank MCLR.",
+   "excl": "Modelled drivers (siblings).",
+   "status": "Unverified",
+   "status_note": "Source needed \u2014 see gap row."
+  },
+  {
+   "id": "W_PWR",
+   "parent": "WATCH",
+   "name": "Foundry power tariff",
+   "def": "State power/fuel cost for melt shops.",
+   "incl": "Evidence needed: discom orders + fuel bills.",
+   "excl": "Modelled drivers (siblings).",
+   "status": "Unverified",
+   "status_note": "Source needed \u2014 see gap row."
+  },
+  {
+   "id": "W_MON",
+   "parent": "WATCH",
+   "name": "Monsoon magnitude",
+   "def": "Rain disruption to mining/logistics/construction.",
+   "incl": "Evidence needed: IMD + delay attribution.",
+   "excl": "Modelled drivers (siblings).",
+   "status": "Unverified",
+   "status_note": "Source needed \u2014 see gap row."
+  },
+  {
+   "id": "W_EUCOM",
+   "parent": "WATCH",
+   "name": "EU import volumes",
+   "def": "HS 7412/8481/8302 volumes from Comext.",
+   "incl": "Evidence needed: Eurostat pull.",
+   "excl": "Modelled drivers (siblings).",
+   "status": "Unverified",
+   "status_note": "Source needed \u2014 see gap row."
+  },
+  {
+   "id": "W_MEDEM",
+   "parent": "WATCH",
+   "name": "Gulf demand series",
+   "def": "Project/PMI demand beyond oil proxy.",
+   "incl": "Evidence needed: MEED or UAE PMI.",
+   "excl": "Modelled drivers (siblings).",
+   "status": "Unverified",
+   "status_note": "Source needed \u2014 see gap row."
+  },
+  {
+   "id": "W_AUDEM",
+   "parent": "WATCH",
+   "name": "AU demand detail",
+   "def": "Alterations/plumbing beyond approvals.",
+   "incl": "Evidence needed: ABS alterations + HIA.",
+   "excl": "Modelled drivers (siblings).",
+   "status": "Unverified",
+   "status_note": "Source needed \u2014 see gap row."
+  },
+  {
+   "id": "W_PB",
+   "parent": "WATCH",
+   "name": "Lead-free cost delta",
+   "def": "Si-brass vs Pb-brass mill surcharge.",
+   "incl": "Evidence needed: mill surcharges.",
+   "excl": "Modelled drivers (siblings).",
+   "status": "Unverified",
+   "status_note": "Source needed \u2014 see gap row."
+  },
+  {
+   "id": "W_GST",
+   "parent": "WATCH",
+   "name": "GST schedule check",
+   "def": "CBIC GST rate cross-check for brass HS.",
+   "incl": "Evidence needed: CBIC notifications.",
+   "excl": "Modelled drivers (siblings).",
+   "status": "Unverified",
+   "status_note": "Source needed \u2014 see gap row."
+  },
+  {
+   "id": "W_BETA",
+   "parent": "WATCH",
+   "name": "USD beta quantified",
+   "def": "Joint-regression USD->Cu beta with controls.",
+   "incl": "Evidence needed: econometric estimate.",
+   "excl": "Modelled drivers (siblings).",
+   "status": "Unverified",
+   "status_note": "Source needed \u2014 see gap row."
+  },
+  {
+   "id": "W_ELAS",
+   "parent": "WATCH",
+   "name": "Scrap elasticity quantified",
+   "def": "Collection response curve to Cu price.",
+   "incl": "Evidence needed: flow-vs-price model.",
+   "excl": "Modelled drivers (siblings).",
+   "status": "Unverified",
+   "status_note": "Source needed \u2014 see gap row."
+  }
+ ]
+}
