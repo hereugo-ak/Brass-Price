@@ -20,6 +20,8 @@
 | Free data spine | **Done and live.** 7 FRED series + ECB + CFTC, full history backfilled, 2,789-row weekly feature table, daily collector at 10/11 feeds. |
 | Baseline + model harness | **Done.** Naive bar established; Ridge tournament run; naive wins — by design, this is the honest bar. |
 | Decision engine | **Demo only.** Runs on public legs; real brass signal needs owner labels. |
+| Metal-leg model | **Built 2026-11-12.** `data/brass_model.py` — 4-week band + quote-floor grid, spread as a parameter. Naive still wins (MAE ₹27.31/kg). Band is asymmetric. See `output/BAND_REPORT.md`. |
+| Collection tool | **Built 2026-11-12.** `Brass_Weekly_Input.html` — browser-only weekly price entry, weekday dropdown (default Monday), 11/11 headless tests pass. |
 | Owner labels | **Partially unblocked (2026-11-12).** 6 of 8 answers received verbatim in `data/owner_answers.md`. Q6 price formula and Q5 quote-validity days still missing. |
 | Manual collection | **Templates ready, mostly empty.** One LME day + one MCX bhavcopy captured. |
 | Automation | **Partial.** Cron entry exists but daemon will not start in this WSL without admin; data drifted one month until manually refreshed on 2026-11-11. |
@@ -292,6 +294,43 @@ Walk-forward, `data/baseline.py`, target USD/INR weekly close:
 
 Candidate target file when labels exist: `data/brass_target.csv` with columns `week,true_inr_kg`. `train.py --target BRASS` already looks for it and refuses cleanly if absent.
 
+### 6.5 Metal-leg model (2026-11-12)
+
+`data/brass_model.py` models the metal leg only:
+`(wCu·Cu + (1−wCu)·Zn) × USDINR / 1000`, inputs shifted for publication lag per `LEAK_MAP.md`
+(copper/zinc 56 days, FX 7 days), 4-week horizon to match the founder's one-month requirement.
+
+| wCu | naive MAE | best challenger |
+|---:|---:|---:|
+| 0.580 | 26.45 | 26.74 (drift26) |
+| 0.600 | 26.94 | 27.26 (drift26) |
+| **0.615** | **27.31** | 27.65 (drift26) |
+| 0.630 | 27.68 | 28.03 (drift26) |
+
+385 walk-forward forecasts, step 4 weeks. **Naive wins at every weight** — a third independent
+confirmation of the same finding. Outputs: `data/brass_model_results.json`, `data/brass_band.csv`,
+`output/BAND_REPORT.md`.
+
+**New finding — the band is asymmetric.** Latest metal leg ₹994.63/kg (week 2026-11-02).
+80% band: −₹33.84 / **+₹60.71**. 90% band: −₹45.98 / **+₹83.03**. Upside risk is ~1.8× downside.
+A symmetric band would systematically under-cushion the quote floor — the exact failure the project
+exists to prevent. The asymmetry is required output, not decoration.
+
+**Correction recorded:** an earlier claim this session that the unknown spread was "12×" the
+forecast error compared ±₹50 against the FX-only error (₹4.1/kg). Against the properly modelled
+4-week metal-leg error (₹27.31/kg) the ratio is **~1.8×**. The 12× figure is withdrawn.
+
+### 6.6 Weekly collection tool (2026-11-12)
+
+`Brass_Weekly_Input.html` — self-contained, browser-only, no upload, localStorage persistence.
+Weekday dropdown (Mon–Sun, default Monday) that snaps the date; bartan/gittu/blend with automatic
+50-50 blend; delivered flag; GST flag; source; note. Exports CSV matching the `brass_target.csv`
+columns. Guards: rejects non-positive and implausible prices (outside ₹150–3000/kg), rejects a date
+that is not the chosen weekday, warns on ex-godown and on duplicate weeks. Shows progress against
+the 8/12/30/100 row milestones.
+**Verified:** 11/11 behavioural tests pass in headless Chromium (`--dump-dom` harness), JS syntax
+clean via `node --check`.
+
 ---
 
 ## 7. Owner inputs — partially received (2026-11-12)
@@ -539,6 +578,9 @@ Brass/
 | 2026-11-12 | Owner answers received (6/8) | Founder reply recorded verbatim in `data/owner_answers.md`: brass is scrap-based (bartan/gittu), bought almost weekly hand-to-mouth, ~5–6 t/month; Europe + Middle East dominate; ~70% of raw material is scrap; needs ~1-month forward projection. Q6 formula + Q5 validity days still missing. | `data/owner_answers.md` |
 | 2026-11-12 | Owner follow-up on price mechanism | Founder: "LME governs most of it but in India we have MCX which is metal trading which also governs the price, plus the transportation is always extra." Identity updated with an MCX reference leg and a transport line. | `data/owner_answers.md` |
 | 2026-11-12 | MCX re-capture probed and blocked | `mcxindia.com` returns HTTP 403 on home, Market Data and the bhavcopy endpoint with a normal browser UA. MCX stays manual-browser only; no automated route exists without circumventing the block, which we will not do. | Direct probe 2026-11-12: 3/3 endpoints 403. |
+| 2026-11-12 | Metal-leg model built; naive wins at every weight | `data/brass_model.py`: 4-week walk-forward, 385 forecasts, publication-lag aware. naive MAE ₹27.31/kg vs best challenger 27.65. Band empirically calibrated and asymmetric (upside ₹60.71 vs downside ₹33.84 at 80%). | `data/brass_model_results.json`, `output/BAND_REPORT.md` |
+| 2026-11-12 | WRONG RATIO CORRECTED | An earlier claim that the spread uncertainty was "12× the forecast error" compared ±₹50/kg against the FX-only error (₹4.1/kg). Measured against the modelled 4-week metal-leg error (₹27.31/kg) the ratio is **~1.8×**. The 12× claim is withdrawn and must not be reused. | `output/BAND_REPORT.md` §5 |
+| 2026-11-12 | Weekly collection tool added | `Brass_Weekly_Input.html` — browser-only, weekday dropdown defaulting Monday with date snapping, 50-50 blend, delivered/GST flags, CSV export, 8/12/30/100 progress. 11/11 headless Chromium tests pass. | `node --check` clean; `--dump-dom` harness |
 | 2026-11-12 | Guard added for the MCX frameset trap | `data/check_mcx.py` fails closed if a saved bhavcopy has no price table. Current file fails, as expected. `MANUAL_GUIDE.md` now documents the trap and the check. | `python3 check_mcx.py` -> FAIL on the 2026-10-09 file. |
 
 ---

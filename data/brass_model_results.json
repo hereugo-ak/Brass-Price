@@ -1,0 +1,149 @@
+{
+ "weights": {
+  "0.58": {
+   "naive": {
+    "n": 385,
+    "MAE": 26.45,
+    "RMSE": 40.19
+   },
+   "ma4": {
+    "n": 385,
+    "MAE": 27.16,
+    "RMSE": 41.79
+   },
+   "ma13": {
+    "n": 385,
+    "MAE": 29.53,
+    "RMSE": 46.39
+   },
+   "drift26": {
+    "n": 385,
+    "MAE": 26.74,
+    "RMSE": 39.85
+   },
+   "_band": {
+    "q80_low": -33.24,
+    "q80_high": 59.12,
+    "q90_low": -45.16,
+    "q90_high": 80.78
+   }
+  },
+  "0.6": {
+   "naive": {
+    "n": 385,
+    "MAE": 26.94,
+    "RMSE": 41.01
+   },
+   "ma4": {
+    "n": 385,
+    "MAE": 27.66,
+    "RMSE": 42.65
+   },
+   "ma13": {
+    "n": 385,
+    "MAE": 30.09,
+    "RMSE": 47.33
+   },
+   "drift26": {
+    "n": 385,
+    "MAE": 27.26,
+    "RMSE": 40.68
+   },
+   "_band": {
+    "q80_low": -33.57,
+    "q80_high": 60.17,
+    "q90_low": -45.71,
+    "q90_high": 81.88
+   }
+  },
+  "0.615": {
+   "naive": {
+    "n": 385,
+    "MAE": 27.31,
+    "RMSE": 41.63
+   },
+   "ma4": {
+    "n": 385,
+    "MAE": 28.03,
+    "RMSE": 43.29
+   },
+   "ma13": {
+    "n": 385,
+    "MAE": 30.51,
+    "RMSE": 48.05
+   },
+   "drift26": {
+    "n": 385,
+    "MAE": 27.65,
+    "RMSE": 41.3
+   },
+   "_band": {
+    "q80_low": -33.84,
+    "q80_high": 60.71,
+    "q90_low": -45.98,
+    "q90_high": 83.03
+   }
+  },
+  "0.63": {
+   "naive": {
+    "n": 385,
+    "MAE": 27.68,
+    "RMSE": 42.25
+   },
+   "ma4": {
+    "n": 385,
+    "MAE": 28.41,
+    "RMSE": 43.94
+   },
+   "ma13": {
+    "n": 385,
+    "MAE": 30.94,
+    "RMSE": 48.76
+   },
+   "drift26": {
+    "n": 385,
+    "MAE": 28.03,
+    "RMSE": 41.93
+   },
+   "_band": {
+    "q80_low": -34.13,
+    "q80_high": 61.26,
+    "q90_low": -46.52,
+    "q90_high": 84.36
+   }
+  }
+ },
+ "notes": [
+  "METAL LEG ONLY. The spread layer (premium, transport, conversion, scrap discount, duties) is not modelled and not guessed.",
+  "This is a PROXY series, not Castle Hardwares buying price.",
+  "Inputs shifted for publication lag per data/LEAK_MAP.md.",
+  "Weights swept across the IS 319 Grade-II 60-63% Cu range."
+ ],
+ "headline": {
+  "primary_weight": 0.615,
+  "horizon_weeks": 4,
+  "naive_MAE_inr_kg": 27.31,
+  "best_challenger": {
+   "n": 385,
+   "MAE": 27.31,
+   "RMSE": 41.63
+  },
+  "naive_wins": true,
+  "band": {
+   "q80_low": -33.84,
+   "q80_high": 60.71,
+   "q90_low": -45.98,
+   "q90_high": 83.03
+  }
+ },
+ "latest": {
+  "week": "2026-11-02",
+  "metal_leg_inr_kg": 994.63,
+  "band": {
+   "q80_low": -33.84,
+   "q80_high": 60.71,
+   "q90_low": -45.98,
+   "q90_high": 83.03
+  }
+ }
+}

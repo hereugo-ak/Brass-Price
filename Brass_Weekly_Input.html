@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brass Weekly Input — Castle Hardwares</title>
+<style>
+  :root{
+    --ink:#1c1a17; --ink-2:#4a453d; --ink-3:#7d766b;
+    --paper:#faf7f2; --paper-2:#f3eee4; --rule:#ddd4c4;
+    --accent:#8a6a2f; --warn:#8a3b2f; --ok:#3f6b46;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    padding:24px 16px 64px}
+  .wrap{max-width:920px;margin:0 auto}
+  header{border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:22px}
+  h1{font-size:21px;margin:0 0 4px;letter-spacing:-.01em}
+  .sub{color:var(--ink-3);font-size:13px;margin:0}
+  .note{background:var(--paper-2);border-left:3px solid var(--accent);
+    padding:10px 14px;font-size:13px;color:var(--ink-2);margin:0 0 22px}
+  fieldset{border:1px solid var(--rule);padding:14px 16px 18px;margin:0 0 18px;background:#fff}
+  legend{font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--ink-3);padding:0 6px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:12px}
+  label{display:block;font-size:12px;color:var(--ink-3);margin-bottom:4px;letter-spacing:.02em}
+  input,select{width:100%;padding:8px 9px;border:1px solid var(--rule);background:var(--paper);
+    color:var(--ink);font-size:14px;font-family:inherit;border-radius:2px}
+  input[type=number]{font-family:var(--mono)}
+  input:focus,select:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .hint{font-size:11px;color:var(--ink-3);margin-top:3px}
+  button{font-family:inherit;font-size:13px;padding:9px 16px;border:1px solid var(--ink);
+    background:var(--ink);color:var(--paper);cursor:pointer;border-radius:2px;letter-spacing:.02em}
+  button.ghost{background:transparent;color:var(--ink)}
+  button:hover{opacity:.85}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;font-family:var(--mono)}
+  th,td{text-align:left;padding:6px 7px;border-bottom:1px solid var(--rule)}
+  th{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);
+    font-family:inherit;font-weight:600}
+  .num{text-align:right}
+  .empty{color:var(--ink-3);font-style:italic;padding:14px 4px;font-family:inherit}
+  .msg{font-size:13px;padding:9px 12px;margin:10px 0;border-radius:2px;display:none}
+  .msg.err{display:block;background:#fbeeea;border-left:3px solid var(--warn);color:var(--warn)}
+  .msg.ok{display:block;background:#eef4ee;border-left:3px solid var(--ok);color:var(--ok)}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1px;
+    background:var(--rule);border:1px solid var(--rule);margin:18px 0}
+  .stat{background:#fff;padding:11px 13px}
+  .stat b{display:block;font-size:19px;font-family:var(--mono);letter-spacing:-.02em}
+  .stat span{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)}
+  textarea{width:100%;min-height:130px;font-family:var(--mono);font-size:12px;
+    border:1px solid var(--rule);background:#fff;padding:10px;color:var(--ink)}
+  .del{color:var(--warn);cursor:pointer;font-family:inherit;font-size:11px;
+    background:none;border:none;padding:0;text-decoration:underline}
+  .prog{margin:6px 0 0}
+  .bar{height:5px;background:var(--paper-2);position:relative;margin-top:6px}
+  .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--accent)}
+  footer{margin-top:28px;padding-top:14px;border-top:1px solid var(--rule);
+    font-size:11.5px;color:var(--ink-3)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Brass Weekly Input</h1>
+    <p class="sub">Castle Hardwares — weekly brass scrap price record</p>
+  </header>
+
+  <p class="note">
+    Runs entirely in this browser. Nothing is uploaded. Rows are saved locally on this device,
+    and you export a CSV when you want to hand it over. Money in <strong>₹ per kilo</strong>,
+    <strong>delivered to works, GST included</strong> — the basis agreed on 2026-11-12.
+  </p>
+
+  <fieldset>
+    <legend>Week</legend>
+    <div class="grid">
+      <div>
+        <label for="wd">Observation weekday</label>
+        <select id="wd">
+          <option value="1" selected>Monday</option>
+          <option value="2">Tuesday</option>
+          <option value="3">Wednesday</option>
+          <option value="4">Thursday</option>
+          <option value="5">Friday</option>
+          <option value="6">Saturday</option>
+          <option value="0">Sunday</option>
+        </select>
+        <div class="hint">Default Monday. Choosing a weekday snaps the date below.</div>
+      </div>
+      <div>
+        <label for="dt">Observation date</label>
+        <input type="date" id="dt">
+        <div class="hint">If the weekday was a holiday, use the real date here and note it.</div>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Prices — ₹ per kilo</legend>
+    <div class="grid">
+      <div>
+        <label for="bart">Bartan scrap</label>
+        <input type="number" id="bart" step="0.5" min="0" placeholder="e.g. 560">
+      </div>
+      <div>
+        <label for="gitt">Gittu scrap</label>
+        <input type="number" id="gitt" step="0.5" min="0" placeholder="e.g. 545">
+      </div>
+      <div>
+        <label for="blend">50-50 blend</label>
+        <input type="number" id="blend" step="0.01" min="0" placeholder="auto">
+        <div class="hint" id="blendHint">Filled automatically from the two grades.</div>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Basis and source</legend>
+    <div class="row2">
+      <div>
+        <label for="basis">Headline series this week</label>
+        <select id="basis">
+          <option value="blend" selected>blend (50-50)</option>
+          <option value="bartan">bartan</option>
+          <option value="gittu">gittu</option>
+        </select>
+      </div>
+      <div>
+        <label for="src">Source</label>
+        <input type="text" id="src" placeholder="dealer / mandi / report">
+      </div>
+    </div>
+    <div class="row2" style="margin-top:12px">
+      <div>
+        <label for="delv">Delivered to works</label>
+        <select id="delv">
+          <option value="yes" selected>yes — transport included</option>
+          <option value="no">no — ex-godown</option>
+        </select>
+      </div>
+      <div>
+        <label for="gst">GST</label>
+        <select id="gst">
+          <option value="inclusive" selected>inclusive</option>
+          <option value="exclusive">exclusive</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:12px">
+      <label for="note">Note</label>
+      <input type="text" id="note" placeholder="holiday, grade change, GST change…">
+    </div>
+  </fieldset>
+
+  <div class="actions">
+    <button id="add">Add week</button>
+    <button id="csvBtn" class="ghost">Show CSV</button>
+    <button id="copyBtn" class="ghost">Copy CSV</button>
+    <button id="clearBtn" class="ghost">Clear all</button>
+  </div>
+
+  <div class="msg" id="msg"></div>
+
+  <div class="stats">
+    <div class="stat"><b id="sRows">0</b><span>weeks recorded</span></div>
+    <div class="stat"><b id="sFirst">—</b><span>first week</span></div>
+    <div class="stat"><b id="sLast">—</b><span>latest week</span></div>
+    <div class="stat"><b id="sStage">none</b><span>stage</span></div>
+  </div>
+  <div class="prog">
+    <div class="hint" id="progTxt">Next milestone: 8 weeks</div>
+    <div class="bar"><i id="progBar" style="width:0%"></i></div>
+  </div>
+
+  <h2 style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+      color:var(--ink-3);margin:26px 0 8px">Recorded weeks</h2>
+  <table id="tbl">
+    <thead>
+      <tr><th>week</th><th>basis</th><th class="num">bartan</th><th class="num">gittu</th>
+      <th class="num">blend</th><th>source</th><th></th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div class="actions" id="csvWrap" style="display:none">
+    <textarea id="csvOut" readonly></textarea>
+  </div>
+
+  <footer>
+    Blanks stay blank. Never estimate or fill a missing week — a gap is honest data.
+    Never edit an old row; add a correction row with a note.
+    Target reaches model-fit stage at 30 weeks and tournament stage at 100.
+  </footer>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var KEY = 'brass_weekly_v1';
+  var COLS = ['week','basis','bartan_inr_kg','gittu_inr_kg','blend_inr_kg',
+              'delivered','gst','source','note'];
+  var rows = [];
+  var $ = function (id) { return document.getElementById(id); };
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) { rows = JSON.parse(raw) || []; }
+    } catch (e) { rows = []; }
+  }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(rows)); } catch (e) {}
+  }
+  function msg(text, kind) {
+    var el = $('msg');
+    el.textContent = text;
+    el.className = 'msg ' + (kind || '');
+    if (!text) { el.className = 'msg'; }
+  }
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+  function iso(d) {
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+  }
+
+  // snap the date to the chosen weekday
+  function snapDate() {
+    var wd = parseInt($('wd').value, 10);
+    var v = $('dt').value;
+    if (!v) { return; }
+    var parts = v.split('-');
+    var d = new Date(+parts[0], +parts[1] - 1, +parts[2]);
+    var diff = wd - d.getDay();
+    if (diff !== 0) { d.setDate(d.getDate() + diff); }
+    $('dt').value = iso(d);
+  }
+
+  function autoBlend() {
+    var b = parseFloat($('bart').value);
+    var g = parseFloat($('gitt').value);
+    if (!isNaN(b) && !isNaN(g)) {
+      $('blend').value = ((b + g) / 2).toFixed(2);
+      $('blendHint').textContent = 'Average of the two grades. Override if the real mix differs.';
+    }
+  }
+
+  function addRow() {
+    var week = $('dt').value;
+    var basis = $('basis').value;
+    var bartan = $('bart').value.trim();
+    var gittu = $('gitt').value.trim();
+    var blend = $('blend').value.trim();
+
+    if (!week) { return msg('Pick an observation date.', 'err'); }
+    var d = new Date(week + 'T00:00:00');
+    if (parseInt($('wd').value, 10) !== d.getDay()) {
+      return msg('The date is not a ' + $('wd').options[$('wd').selectedIndex].text +
+                 '. Change the weekday or the date.', 'err');
+    }
+    var nums = [bartan, gittu, blend].filter(function (x) { return x !== ''; });
+    if (!nums.length) { return msg('Enter at least one price.', 'err'); }
+    for (var i = 0; i < nums.length; i++) {
+      var n = parseFloat(nums[i]);
+      if (isNaN(n) || n <= 0) { return msg('Prices must be positive numbers.', 'err'); }
+      if (n < 150 || n > 3000) {
+        return msg('₹' + n + '/kg looks wrong for brass. Check the unit.', 'err');
+      }
+    }
+    if (basis === 'bartan' && bartan === '') { return msg('Headline is bartan but it is empty.', 'err'); }
+    if (basis === 'gittu' && gittu === '') { return msg('Headline is gittu but it is empty.', 'err'); }
+    if (basis === 'blend' && blend === '') { return msg('Headline is blend but it is empty.', 'err'); }
+
+    var dupe = rows.filter(function (r) { return r.week === week; })[0];
+    if (dupe && !confirm('Week ' + week + ' already recorded. Add anyway as a correction row?')) {
+      return;
+    }
+    if ($('delv').value === 'no') {
+      if (!confirm('This is an ex-godown price. It will not match the delivered basis. Continue?')) {
+        return;
+      }
+    }
+
+    rows.push({
+      week: week,
+      basis: basis,
+      bartan_inr_kg: bartan,
+      gittu_inr_kg: gittu,
+      blend_inr_kg: blend,
+      delivered: $('delv').value,
+      gst: $('gst').value,
+      source: $('src').value.trim(),
+      note: $('note').value.trim()
+    });
+    rows.sort(function (a, b) { return a.week < b.week ? -1 : a.week > b.week ? 1 : 0; });
+    save(); render();
+    $('bart').value = ''; $('gitt').value = ''; $('blend').value = '';
+    $('note').value = '';
+    msg('Added week ' + week + '.', 'ok');
+  }
+
+  function stage(n) {
+    if (n >= 100) { return 'tournament'; }
+    if (n >= 30) { return 'fit'; }
+    if (n >= 12) { return 'band'; }
+    if (n >= 8) { return 'offset'; }
+    return n ? 'starting' : 'none';
+  }
+  function nextMilestone(n) {
+    var ms = [8, 12, 30, 100];
+    for (var i = 0; i < ms.length; i++) { if (n < ms[i]) { return ms[i]; } }
+    return null;
+  }
+
+  function render() {
+    var tb = $('tbl').querySelector('tbody');
+    tb.innerHTML = '';
+    if (!rows.length) {
+      tb.innerHTML = '<tr><td colspan="7" class="empty">No weeks recorded yet.</td></tr>';
+    }
+    rows.forEach(function (r, idx) {
+      var tr = document.createElement('tr');
+      [r.week, r.basis, r.bartan_inr_kg, r.gittu_inr_kg, r.blend_inr_kg, r.source]
+        .forEach(function (v, c) {
+          var td = document.createElement('td');
+          td.textContent = v || '—';
+          if (c >= 2 && c <= 4) { td.className = 'num'; }
+          tr.appendChild(td);
+        });
+      var td = document.createElement('td');
+      var btn = document.createElement('button');
+      btn.className = 'del'; btn.textContent = 'remove';
+      btn.onclick = function () {
+        if (confirm('Remove week ' + r.week + '?')) {
+          rows.splice(idx, 1); save(); render();
+        }
+      };
+      td.appendChild(btn); tr.appendChild(td);
+      tb.appendChild(tr);
+    });
+
+    var n = rows.length;
+    $('sRows').textContent = n;
+    $('sFirst').textContent = n ? rows[0].week : '—';
+    $('sLast').textContent = n ? rows[n - 1].week : '—';
+    $('sStage').textContent = stage(n);
+
+    var nm = nextMilestone(n);
+    $('progTxt').textContent = nm
+      ? 'Next milestone: ' + nm + ' weeks (' + (nm - n) + ' to go)'
+      : 'All milestones reached — ready for the full tournament.';
+    var prev = nm ? [0, 8, 12, 30, 100] : null;
+    var pct = 0;
+    if (nm) {
+      var i = [8, 12, 30, 100].indexOf(nm);
+      var floor = i === 0 ? 0 : [8, 12, 30][i - 1];
+      pct = Math.max(0, Math.min(100, ((n - floor) / (nm - floor)) * 100));
+    } else { pct = 100; }
+    $('progBar').style.width = pct + '%';
+  }
+
+  function csv() {
+    var lines = [COLS.join(',')];
+    rows.forEach(function (r) {
+      lines.push(COLS.map(function (c) {
+        var v = r[c] === undefined ? '' : String(r[c]);
+        return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+      }).join(','));
+    });
+    return lines.join('\n');
+  }
+
+  function showCsv() {
+    $('csvWrap').style.display = 'block';
+    $('csvOut').value = csv();
+    msg('CSV for ' + rows.length + ' week(s). Copy it into data/manual or send it on.', 'ok');
+  }
+
+  function copyCsv() {
+    var text = csv();
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(
+        function () { msg('CSV copied to clipboard.', 'ok'); },
+        function () { showCsv(); msg('Copy blocked — select the text below manually.', 'err'); }
+      );
+    } else {
+      showCsv(); msg('Copy blocked — select the text below manually.', 'err');
+    }
+  }
+
+  // wire up
+  $('wd').addEventListener('change', snapDate);
+  $('bart').addEventListener('input', autoBlend);
+  $('gitt').addEventListener('input', autoBlend);
+  $('add').addEventListener('click', addRow);
+  $('csvBtn').addEventListener('click', showCsv);
+  $('copyBtn').addEventListener('click', copyCsv);
+  $('clearBtn').addEventListener('click', function () {
+    if (!rows.length) { return msg('Nothing to clear.'); }
+    if (confirm('Delete all ' + rows.length + ' recorded week(s)? Export first if unsure.')) {
+      rows = []; save(); render(); msg('All rows cleared.', 'ok');
+    }
+  });
+
+  load();
+  // default the date to the most recent Monday (or chosen weekday)
+  (function initDate() {
+    var d = new Date();
+    var wd = parseInt($('wd').value, 10);
+    var diff = (d.getDay() - wd + 7) % 7;
+    d.setDate(d.getDate() - diff);
+    $('dt').value = iso(d);
+  })();
+  render();
+})();
+</script>
+</body>
+</html>
