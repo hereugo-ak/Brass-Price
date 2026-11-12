@@ -1,0 +1,326 @@
+{
+ "model": "brass_inr_kg = ratio x metal_leg_inr_kg",
+ "primary_weight_cu": 0.615,
+ "ratio_by_year": {
+  "2019": 0.977,
+  "2023": 0.91,
+  "2026": 0.897
+ },
+ "ratio_overall_mean": 0.91,
+ "ratio_overall_min": 0.701,
+ "ratio_overall_max": 1.049,
+ "n_anchors": 38,
+ "anchors": [
+  {
+   "anchor": "MCX BRASSPHY futures (zero-volume settlement)",
+   "period": "2019-08",
+   "brass_inr_kg": 326.0,
+   "metal_leg_inr_kg": 312.3,
+   "ratio": 1.044,
+   "n": 21
+  },
+  {
+   "anchor": "MCX BRASSPHY futures (zero-volume settlement)",
+   "period": "2019-09",
+   "brass_inr_kg": 320.4,
+   "metal_leg_inr_kg": 316.6,
+   "ratio": 1.012,
+   "n": 21
+  },
+  {
+   "anchor": "MCX BRASSPHY futures (zero-volume settlement)",
+   "period": "2019-10",
+   "brass_inr_kg": 303.7,
+   "metal_leg_inr_kg": 318.4,
+   "ratio": 0.954,
+   "n": 23
+  },
+  {
+   "anchor": "MCX BRASSPHY futures (zero-volume settlement)",
+   "period": "2019-11",
+   "brass_inr_kg": 298.9,
+   "metal_leg_inr_kg": 324.4,
+   "ratio": 0.921,
+   "n": 21
+  },
+  {
+   "anchor": "MCX BRASSPHY futures (zero-volume settlement)",
+   "period": "2019-12",
+   "brass_inr_kg": 313.5,
+   "metal_leg_inr_kg": 328.2,
+   "ratio": 0.955,
+   "n": 21
+  },
+  {
+   "anchor": "MTLEXS Mumbai (Brass Sheet scrap)",
+   "period": "2023-01",
+   "brass_inr_kg": 520.0,
+   "metal_leg_inr_kg": 556.5,
+   "ratio": 0.934,
+   "n": 1
+  },
+  {
+   "anchor": "MTLEXS Mumbai (Brass Honey scrap)",
+   "period": "2023-01",
+   "brass_inr_kg": 497.0,
+   "metal_leg_inr_kg": 556.5,
+   "ratio": 0.893,
+   "n": 1
+  },
+  {
+   "anchor": "MTLEXS Mumbai (Brass Sheet scrap)",
+   "period": "2023-01",
+   "brass_inr_kg": 527.0,
+   "metal_leg_inr_kg": 556.5,
+   "ratio": 0.947,
+   "n": 1
+  },
+  {
+   "anchor": "MTLEXS Mumbai (Brass Honey scrap)",
+   "period": "2023-01",
+   "brass_inr_kg": 485.0,
+   "metal_leg_inr_kg": 556.5,
+   "ratio": 0.871,
+   "n": 1
+  },
+  {
+   "anchor": "MTLEXS Mumbai (Brass Sheet scrap)",
+   "period": "2023-01",
+   "brass_inr_kg": 527.0,
+   "metal_leg_inr_kg": 556.5,
+   "ratio": 0.947,
+   "n": 1
+  },
+  {
+   "anchor": "MTLEXS Mumbai (Brass Honey scrap)",
+   "period": "2023-01",
+   "brass_inr_kg": 485.0,
+   "metal_leg_inr_kg": 556.5,
+   "ratio": 0.871,
+   "n": 1
+  },
+  {
+   "anchor": "MTLEXS (Sheet)",
+   "period": "2026-11",
+   "brass_inr_kg": 995.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.997,
+   "n": 1
+  },
+  {
+   "anchor": "MTLEXS (Honey)",
+   "period": "2026-11",
+   "brass_inr_kg": 875.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.877,
+   "n": 1
+  },
+  {
+   "anchor": "MTLEXS (Sheet)",
+   "period": "2026-11",
+   "brass_inr_kg": 995.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.997,
+   "n": 1
+  },
+  {
+   "anchor": "MTLEXS (Honey)",
+   "period": "2026-11",
+   "brass_inr_kg": 867.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.869,
+   "n": 1
+  },
+  {
+   "anchor": "MTLEXS (Sheet)",
+   "period": "2026-11",
+   "brass_inr_kg": 987.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.989,
+   "n": 1
+  },
+  {
+   "anchor": "MTLEXS (Honey)",
+   "period": "2026-11",
+   "brass_inr_kg": 875.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.877,
+   "n": 1
+  },
+  {
+   "anchor": "MTLEXS (Sheet)",
+   "period": "2026-11",
+   "brass_inr_kg": 1000.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 1.002,
+   "n": 1
+  },
+  {
+   "anchor": "MTLEXS (Honey)",
+   "period": "2026-11",
+   "brass_inr_kg": 883.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.885,
+   "n": 1
+  },
+  {
+   "anchor": "AajBazar (Sheet)",
+   "period": "2026-11",
+   "brass_inr_kg": 1000.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 1.002,
+   "n": 1
+  },
+  {
+   "anchor": "AajBazar (Chadari)",
+   "period": "2026-11",
+   "brass_inr_kg": 885.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.887,
+   "n": 1
+  },
+  {
+   "anchor": "AajBazar (Honey)",
+   "period": "2026-11",
+   "brass_inr_kg": 882.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.884,
+   "n": 1
+  },
+  {
+   "anchor": "AajBazar (Purja)",
+   "period": "2026-11",
+   "brass_inr_kg": 856.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.858,
+   "n": 1
+  },
+  {
+   "anchor": "AajBazar (Yellow)",
+   "period": "2026-11",
+   "brass_inr_kg": 700.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.701,
+   "n": 1
+  },
+  {
+   "anchor": "PTI via News18 (As named)",
+   "period": "2026-11",
+   "brass_inr_kg": 978.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.98,
+   "n": 1
+  },
+  {
+   "anchor": "PTI via News18 (As named)",
+   "period": "2026-11",
+   "brass_inr_kg": 880.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.882,
+   "n": 1
+  },
+  {
+   "anchor": "PTI via News18 (As named)",
+   "period": "2026-11",
+   "brass_inr_kg": 875.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.877,
+   "n": 1
+  },
+  {
+   "anchor": "PTI via News18 (Gun metal)",
+   "period": "2026-11",
+   "brass_inr_kg": 1047.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 1.049,
+   "n": 1
+  },
+  {
+   "anchor": "Steel-Baba (Chadri (Sheet Cutting))",
+   "period": "2026-09",
+   "brass_inr_kg": 935.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.937,
+   "n": 1
+  },
+  {
+   "anchor": "Steel-Baba (Honey Brass (Clean))",
+   "period": "2026-09",
+   "brass_inr_kg": 905.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.907,
+   "n": 1
+  },
+  {
+   "anchor": "Steel-Baba (Utensil (Bartan/Pital))",
+   "period": "2026-09",
+   "brass_inr_kg": 870.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.872,
+   "n": 1
+  },
+  {
+   "anchor": "Steel-Baba (Purja (Mixed Parts))",
+   "period": "2026-09",
+   "brass_inr_kg": 825.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.827,
+   "n": 1
+  },
+  {
+   "anchor": "Steel-Baba (Turnings/Borings)",
+   "period": "2026-09",
+   "brass_inr_kg": 750.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.752,
+   "n": 1
+  },
+  {
+   "anchor": "ShreeMetalPrices (Honey)",
+   "period": "2026-11",
+   "brass_inr_kg": 917.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.919,
+   "n": 1
+  },
+  {
+   "anchor": "ShreeMetalPrices (Chadri)",
+   "period": "2026-11",
+   "brass_inr_kg": 892.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.894,
+   "n": 1
+  },
+  {
+   "anchor": "ShreeMetalPrices (Purja)",
+   "period": "2026-11",
+   "brass_inr_kg": 872.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.874,
+   "n": 1
+  },
+  {
+   "anchor": "National Recycling (Mixed)",
+   "period": "2026-11",
+   "brass_inr_kg": 815.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.817,
+   "n": 1
+  },
+  {
+   "anchor": "Adinath Metal (Dealer rate)",
+   "period": "2026-10",
+   "brass_inr_kg": 810.0,
+   "metal_leg_inr_kg": 998.0,
+   "ratio": 0.812,
+   "n": 1
+  }
+ ],
+ "caveats": [
+  "MCX BRASSPHY 2019 had zero volume and zero OI: those are settlement prices of an illiquid contract, not traded prints.",
+  "MTLEXS 2023 covers three days in one city (Mumbai).",
+  "The 2026 board is concentrated in November; it is a level, not a series.",
+  "The ratio drifts downward over time; a single constant will be wrong in either direction. Report the range.",
+  "Low-tier sources (household/kabadi) are excluded by construction."
+ ]
+}
