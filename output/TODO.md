@@ -19,13 +19,13 @@ The forecaster did not, and has been withdrawn.
 | Engine frozen | ✅ `data/engine.py`, `MODEL_VERSION 2026-11-12.1`, matches product to ₹0.01 |
 | Rupee-saved backtest | ✅ run — **buy signal rejected** (−₹0.11/kg) |
 | **Model training** | ⛔ **DONE AND NEGATIVE** — 8 models, 17 drivers, 155 months, all lose (DM −5.6 to −10.2) |
-| Product UI | ✅ v3, editorial system, 19/19 headless tests |
+| Product UI | ✅ **v4 — wired to the live API.** Floor, verdict, note and quote log all come from the backend. Offline fallback keeps the factory floor working. 23/23 headless integration tests |
 | Quote log | ✅ **live** — every check stored with `model_version`, floor at time, verdict |
 | Backend / API | ✅ **BUILT & TESTED** — FastAPI + SQLite, 28/28 pytest, verified on a live server |
 | Sync All | ✅ built — per-feed `OK / STALE / BLOCKED / MANUAL / FAILED`, never crashes |
 | Manual upload | ✅ built — preview → validate → commit, with tested guards |
-| Guide (owner-facing) | ⛔ not built (P2) |
-| Delivery (weekly note) | ⛔ not built (P3) |
+| Guide (owner-facing) | ✅ **built** — 3-step first-run overlay + per-feed upload instructions in the Data tab |
+| Delivery (weekly note) | 🟡 note generated from the API and copyable; **sending** not built (P3) |
 | Push to GitHub | ⛔ blocked on your login |
 
 ---
@@ -52,12 +52,12 @@ displayed number is reproducible from stored rows + `model_version`.
 
 ---
 
-## P2 — Guide and onboarding
+## P2 — Guide and onboarding ✅ DONE 2026-11-12
 
-- [ ] 3-screen first-run guide: what the floor is, how to check, when the note arrives
-- [ ] Per-feed "how to get this" panels, including the honest MCX instruction
-- [ ] Error states that name the fix (not "contact support")
-- [ ] Written for a factory owner: short sentences, no jargon
+- [x] 3-step first-run guide: the floor, checking a price, where the numbers come from
+- [x] Per-feed upload instructions in the Data tab — columns, unit, and the honest MCX note
+- [x] Every failure names the fix: frameset trap, blocked feed, backend offline
+- [x] Written in plain English, no jargon, no weekday names
 
 **Acceptance:** a non-technical user completes a manual MCX upload without help.
 
