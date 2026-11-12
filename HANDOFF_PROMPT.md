@@ -16,6 +16,8 @@ You are continuing the **Brass Price Foresight** project for **Castle Hardwares,
 5. `data/baseline_metrics.json`, `data/tournament_dexinus.json`, `data/decisions_demo.json` — current model reality
 6. `data/MANUAL_GUIDE.md` — the collection routine
 
+**A public domestic brass series DOES exist (found 2026-11-12, do not re-search it):** the Office of the Economic Adviser publishes WPI commodity 1314090011 "Brass metal/sheet/coils", monthly, base 2011-12=100, covering 2012-04 to 2026-04 (169 observations), free at `eaindustry.nic.in` (row 596 of `monthly_index_*.xls`). Extracted to `data/manual/wpi_brass_monthly.csv`. It is an INDEX, not ₹/kg — one real Castle price anchors it to a 169-month ₹/kg history via `price = price_anchor × index/index_anchor`. It is MONTHLY; never interpolate it to weekly. It is also the first target on which anything beat naive (`drift12`, by 2.7-7.5%, but DM +0.56..+1.22 = not significant, and the edge is post-2020 only). See `output/WPI_BRASS_FINDING.md`.
+
 **Core insight, do not re-litigate:** there is no brass futures contract (LME/MCX/COMEX verified). Brass price is reconstructed as an identity:
 
 ```

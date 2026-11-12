@@ -37,3 +37,4 @@ HCL MIC output/sales y/y%,% y/y,quarterly,public free,HCL Production/Sales repor
 HS 74032100 duty stack events,BCD/SWS/IGST steps,event,public free,EximGuru notifications (CBIC mirror),2006-,same day,mirror; confirm CBIC
 IBM Average Sale Price (copper),INR/t,monthly,public free,IBM ASP portal,long,~1 month,pull method TBD
 HCL base-price circulars,INR/kg,monthly,public free,HCL Price Circular page,2017-2020 seen,monthly,archive looks stale; verify current
+WPI brass metal/sheet/coils (commodity 1314090011),"index, base 2011-12=100",monthly,public free,"Office of the Economic Adviser (DPIIT), eaindustry.nic.in, monthly_index file",2012-04 to 2026-04 = 169 months,"Government of India, public",~14 days after month end (WPI release),INDEX not INR/kg; needs a price anchor to convert; WPI weight only 0.01026% so basket is small; rebase to 2022-23 would break the series; level rose 2.14x vs metal leg 2.83x since 2012 so pass-through is partial

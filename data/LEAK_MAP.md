@@ -19,3 +19,4 @@
 Rule: any backtest row dated D may only use values published on or before D.
 | ECB euro ref (USD+INR/EUR) | ECB | daily | ~16:00 CET same day | collect_daily.py |
 | CFTC COMEX copper COT | CFTC | weekly (Tue/Fri) | Fri 15:30 ET | collect_daily.py |
+| WPI brass index (1314090011) | OEA / DPIIT | monthly | ~14 days after month end | manual: eaindustry.nic.in -> monthly_index file |
