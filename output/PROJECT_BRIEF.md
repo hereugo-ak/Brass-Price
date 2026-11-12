@@ -142,6 +142,7 @@ What the answers changed in the design: the target became the **domestic brass s
 | Metal-leg model (`brass_model.py`) | Cu+Zn×FX, ₹/kg, 4-week | naive MAE **₹27.31/kg**; **all challengers lose at every alloy weight** |
 | `drift12` on the WPI brass index | domestic brass index, 1–4 months | **beats naive in all 12 configurations by 2.7–7.5%** — but DM +0.56…+1.22, not significant, and the edge exists only post-2020 |
 | **Ratio model (`brass_target_from_board.py`)** | brass ₹/kg = ratio × metal leg | **ratio 0.876 ± 0.039**, band ₹804 / ₹871 / ₹966 |
+| **Procurement backtest (`backtest_procurement.py`)** | synthetic brass, 1,593 weeks | **buy-timing signal FAILS**: −₹0.11/kg vs buying every week. Quote floor is what survives. |
 
 **Findings that matter:**
 
@@ -150,6 +151,9 @@ What the answers changed in the design: the target became the **domestic brass s
 - **First genuine challenge to naive:** `drift12` on the real domestic brass index. Suggestive, not established.
 - **The metal leg construction is validated:** MCX BRASSPHY 2019 settled at **0.977×** our computed metal content. An actual Indian exchange settlement is reproduced to within 2.3%.
 - **Domestic copper validates too:** MTLEXS Mumbai cathode ₹1,410/kg vs our IMF-derived ₹1,359/kg — a 3.8% gap consistent with an import premium.
+- **The buy/wait signal was rejected by its own acceptance test.** Deferring when the forecast says "cheaper next week" loses **₹0.11/kg (−0.045%)** against buying every week, on 1,592 decision weeks and 30.5% deferrals. Per the project rule, it does not ship. The honest finding is that the value is on the **sell** side.
+- **The asymmetry is confirmed in time, not only in spread:** brass was higher than today in **52.6% of 1-week periods, 57.5% of 4-week periods and 59.6% of 8-week periods**. The expected cost of delay is small (+0.24% over four weeks) — the owner's weekly rhythm is rational — but the tail is one-sided, which is exactly what the quote floor covers.
+- **Quoting at the band's middle carries an expected metal cost of ₹5.37/kg = ~₹29,500 per 5,500 kg order**, worst case ₹77.7/kg. Quoting at the band high removes that risk but prices ~11% above the middle. That trade-off is the decision the floor rule encodes.
 
 ### 2.8 Tools and deliverables built
 
@@ -166,6 +170,7 @@ What the answers changed in the design: the target became the **domestic brass s
 | `output/BRASS_RATIO_FINDING.md` | the ratio discovery, tiers and validation | current |
 | `output/WPI_BRASS_FINDING.md` | the WPI index discovery and its four tests | current |
 | `output/BAND_REPORT.md` | metal-leg results, band, quote-floor grid | current |
+| `output/PROCUREMENT_BACKTEST.md` | acceptance test: cost of delay, signal rejection, quote exposure | current |
 
 ---
 
@@ -195,7 +200,8 @@ Layers 1 and 2 are **done and tested**. What remains is confirmation on Castle's
 | 7 | Measure the brass/metal ratio from board and exchange data | **done — 0.876 ± 0.039** |
 | 8 | Produce the band in ₹/kg with a quote floor | **done — ₹804 / ₹871 / ₹966, floor ₹1,014** |
 | 9 | Confirm the ratio on Castle's own invoice | **open — one number needed** |
-| 10 | Weekly price note → ratio drift series, rupee-saved backtest | **open — needs a series** |
+| 10 | **Rupee-saved backtest** | **done — buy signal fails and is withdrawn; floor survives** |
+| 11 | Weekly price note → ratio drift series, live floor | **open — needs a series** |
 
 ### 3.3 Automated collection
 
@@ -223,7 +229,7 @@ MCX data therefore arrives by manual bhavcopy. It is now captured: 955 daily cop
 
 ## 5. Honest limitations
 
-1. **No model has beaten naive on a Castle-specific target.** Naive wins on FX and on the metal leg. `drift12` beats naive on the domestic brass index but is not statistically significant and depends on the post-2020 regime.
+1. **No model has beaten naive on a Castle-specific target, and the buy-timing signal has now been tested and rejected** (−₹0.11/kg against buying every week). Naive wins on FX and on the metal leg. `drift12` beats naive on the domestic brass index but is not statistically significant and depends on the post-2020 regime.
 2. **The project's edge is structural, not predictive** — the identity, the measured ratio, the asymmetric band, and the quote-floor rule.
 3. **The ratio drifts down**: 0.977 (2019) → 0.910 (2023) → 0.876 (2026), about −1.5% a year. A constant ratio will be wrong in either direction; the band must carry the drift.
 4. **MCX BRASSPHY 2019 had zero volume and zero open interest** — settlement prices of an illiquid contract. Usable as a ratio anchor, never as a traded price or as proof brass is hedgeable.
@@ -237,7 +243,9 @@ MCX data therefore arrives by manual bhavcopy. It is now captured: 955 daily cop
 
 **Delivered:** a verified 72-node driver map; a live public data spine with 53 years of history plus 955 daily MCX closes; an honest naive bar; a metal-leg model with an asymmetric 4-week band; **a measured brass/metal ratio validated across three source families and seven years**; **a ₹/kg band of ₹804 / ₹871 / ₹966 with a ₹1,014 quote floor, cross-checked against a real board price of ₹870**; a two-tier market structure that explains the price contradiction; a browser capture tool; and owner-facing documents re-scoped to the owner's actual answers.
 
-**Not delivered, and not claimed:** a model that beats naive on Castle's real price, a rupee-saved backtest, or a calibrated continuous ₹/kg history.
+**Also delivered — a negative result, honestly reported:** the rupee-saved backtest now exists, and it **rejects the buy-timing signal** (−₹0.11/kg). The quote floor is what survives it. This is the acceptance rule doing its job.
+
+**Not delivered, and not claimed:** a model that beats naive on Castle's real price, a profitable timing signal, or a calibrated continuous ₹/kg history.
 
 **The gap is now one invoice and one weekly figure.** This morning it was the entire spread layer. That is the difference the last datasets made.
 

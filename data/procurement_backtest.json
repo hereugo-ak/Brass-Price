@@ -1,0 +1,52 @@
+{
+ "label": "SYNTHETIC TARGET: metal leg x ratio, not Castle invoice",
+ "ratio": 0.876,
+ "ratio_sd": 0.039,
+ "weekly_frame": {
+  "n": 1593,
+  "first": "1992-03-02",
+  "last": "2026-11-02"
+ },
+ "cost_of_delay": {
+  "1": {
+   "n": 1592,
+   "mean_inr_kg": 0.59,
+   "pct_up": 52.6
+  },
+  "2": {
+   "n": 1591,
+   "mean_inr_kg": 1.19,
+   "pct_up": 55.6
+  },
+  "3": {
+   "n": 1590,
+   "mean_inr_kg": 1.78,
+   "pct_up": 56.5
+  },
+  "4": {
+   "n": 1589,
+   "mean_inr_kg": 2.38,
+   "pct_up": 57.5
+  },
+  "8": {
+   "n": 1585,
+   "mean_inr_kg": 4.76,
+   "pct_up": 59.6
+  }
+ },
+ "signal_backtest": {
+  "weeks": 1592,
+  "baseline_avg_inr_kg": 249.02,
+  "signal_avg_inr_kg": 249.13,
+  "saved_inr_kg": -0.11,
+  "saved_pct": -0.045,
+  "times_deferred": 485,
+  "defer_rate_pct": 30.5,
+  "saved_inr_per_month": -612.0
+ },
+ "latest": {
+  "week": "2026-11-02",
+  "metal_leg_known": 994.63,
+  "brass_estimate_inr_kg": 871.29
+ }
+}
