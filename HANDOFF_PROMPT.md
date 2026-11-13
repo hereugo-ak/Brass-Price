@@ -52,7 +52,7 @@ price ₹/kg = wCu·Cu·FX + wZn·Zn·FX + premium − scrap + conversion + marg
 | Fluid floor | ✅ `(brass + up + transport) × 1.05` = **₹950.40** same-day / ₹964.61 15d / ₹972.54 30d |
 | Band width | ⚠️ one constant 25.8 proven **wrong in both directions**; regime buckets validated, **not implemented** |
 | Backend | ✅ 12 modules, 14 endpoints, 8 tables, **47 tests passing** |
-| Frontend | ✅ single HTML, 4 tabs, wired to the API, offline fallback |
+| Frontend | ✅ **two UIs**: React 19 + Vite + TS in `frontend/` (the product — 4 screens, builds clean, never recomputes the maths) and `Castle_Quote_Checker.html` (one file, offline fallback) |
 | Deployed | ⛔ localhost only; no auth, no hosting, no scheduler |
 | GitHub | ⛔ **20 commits local, never pushed** |
 | **The one missing number** | ⛔ **one Castle invoice** (₹/kg, month, grade) |
@@ -105,9 +105,17 @@ FX weekly: naive 0.2128 vs best Ridge 0.2930. Metal leg 4-week: naive ₹27.31 v
 start_local.bat                  # Windows: API :8000 + page :8080 + browser
 ./start_local.sh                 # WSL / Linux, Ctrl-C stops both
 python -m pytest tests -q        # 47 tests
+
+# the product UI (React + Vite), needs the API on :8000
+cd frontend && npm install && npm run dev        # → :8080
+cd frontend && npm run build                     # → frontend/dist/ (committed)
 ```
 
-**Never open the HTML via `file://`** — it cannot call the API and silently drops to offline numbers. Serve it over `http://`. Full guide: `RUN_LOCAL.md`.
+**Never open either UI via `file://`** — it cannot call the API and silently drops to offline numbers. Serve over `http://`. Full guide: `RUN_LOCAL.md`.
+
+**Two UIs exist.** `frontend/` (React) is the product and the better one — its API client never
+recomputes the verdict, so client and server cannot disagree. `Castle_Quote_Checker.html` is a
+one-file field fallback that *does* duplicate the verdict and note text; maintain the React one.
 ---
 
 ## Immediate next actions, in order

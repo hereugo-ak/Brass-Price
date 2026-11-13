@@ -27,7 +27,7 @@
 | Buy/wait signal | ⛔ **built, tested, rejected** (−₹0.11/kg) — withdrawn |
 | Band width | ⚠️ one constant (25.8) proven wrong in both directions; regime buckets validated, **not yet implemented** |
 | Backend | ✅ 12 modules, 14 endpoints, 8 tables, 47 tests passing |
-| Frontend | ✅ single HTML file, 4 tabs, wired to the API, offline fallback |
+| Frontend | ✅ **two UIs**: React 19 + Vite + TypeScript in `frontend/` (the product, 4 screens, instrument-panel design, builds clean, calls the API for every number) **and** `Castle_Quote_Checker.html` (one file, no build, offline fallback) |
 | Deployed | ⛔ localhost only, no auth, nothing hosted |
 | GitHub | ⛔ **20 commits local, never pushed** |
 | The one missing number | ⛔ **one Castle invoice** (₹/kg, month, grade) |
@@ -403,28 +403,64 @@ regime instead of a flat ₹973 — a ₹42/kg spread ≈ **₹2.3 lakh/month** 
 
 ---
 
-## 8. The product (frontend)
+## 8. The product (frontends)
 
-`Castle_Quote_Checker.html` — **one file, no build step, works offline.** Set in the same editorial
-system as `Brass_Story.html`: ledger paper, hairlines, serif display, tabular figures, stamp verdict,
-printed gauge. Deliberately **not** a dark-glass template.
+**There are two, and they serve different jobs.**
 
-**Four tabs:**
+### 8.1 `frontend/` — the product UI (React 19 + Vite + TypeScript)
 
-| Tab | What it does | Backend calls |
-|---|---|---|
-| **Check a quote** | price → safe / thin / risky / stop + gap in ₹ on 100 kg and 5,500 kg | `GET /week`, `POST /quote` |
-| **Weekly note** | generated text, copy, share, send, history | `GET /week` ×3, `POST /note/send`, `GET /note/history` |
-| **History** | floor coverage vs 80% target, exposure flagged, per-quote table | `GET /report` |
-| **Data** | **Sync All**, last run, per-feed status chips, **manual upload** (preview → commit) | `POST /sync`, `GET /sync/last`, `GET /upload/templates`, `POST /upload/preview`, `POST /upload/commit` |
+Currently the better interface. Dark instrument-panel design: a fixed data strip (metal · low · mid ·
+high · floor same-day/15/30 · transport), a large serif floor figure, cover-period selector, a price
+sheet card (metal, metal age, ratio ± sd, transport, margin, status), the low/middle/high trio, a
+horizontal gauge with **STOP / RISKY / THIN / SAFE** zones and a needle placed on the quoted price,
+and a derivation strip showing `metal × ratio + transport = expected + cushion × margin → floor`.
 
-Plus: connection badge (LIVE / OFFLINE, click to change the backend URL), 3-step first-run guide,
-`prefers-reduced-motion` support, offline fallback to built-in numbers with an explicit warning.
+Four screens: `FloorScreen`, `NoteScreen`, `HistoryScreen`, `DataScreen`, plus `Gauge`,
+`TrendChart`, `Toast`. **`src/api/client.ts` is the only API client and it deliberately never
+recomputes the verdict or the band** — when the backend is unreachable it shows the last cached week,
+clearly marked, and disables actions that need the engine. This is the correct architecture and it
+fixes the duplication found in the HTML version.
 
-**Known architectural flaw, stated honestly:** two pieces of logic are **duplicated** between client
-and server — the **verdict thresholds** (`app/engine.py` *and* line ~670 of the HTML) and the **note
-text** (`app/notes.py` *and* `buildNote()`). If one changes, they silently disagree. This should be
-fixed by having the client ask the backend for both.
+```bash
+cd frontend && npm install && npm run dev     # :8080, expects the API on :8000
+npm run build                                  # → frontend/dist/ (654 KB, committed)
+```
+
+### 8.2 `Castle_Quote_Checker.html` — the field UI
+
+One file, no build step, no npm. Set in the paper/ledger system of `Brass_Story.html`. Four tabs
+(Check · Note · History · Data), live API wiring, and an offline fallback to built-in numbers with an
+explicit warning. Useful where a laptop cannot run a dev server.
+
+**Known flaw in this one, stated honestly:** it duplicates the verdict thresholds and the note text
+between client and server. The React UI does not. If only one UI is maintained, maintain the React one.
+
+### 8.3 Shared behaviour (both)
+
+
+**`frontend/` — Vite + React 19 + TypeScript app, "Price Sheet" design system (v2).** Built
+2026-11-14. Replaces the single-file `Castle_Quote_Checker.html` UI (kept for reference).
+The screen is composed as a machined engineering price-sheet of the floor — not a dashboard:
+no app shell, no cards, no rounded boxes. A broadsheet masthead with heavy-over-hair rules and a
+numbered section index (01 FLOOR / 02 WEEKLY NOTE / 03 HISTORY / 04 DATA); a full-bleed price
+strip; the floor as a ~168px Fraunces numeral with a dimension line; an engineering **title
+block** (METAL / METAL AGE / RATIO / TRANSPORT / MARGIN 5% ×1.05 / STATUS) carrying the
+provenance; a hatched machinist's-rule gauge (verdict zones drawn as diagonal hatch patterns,
+tick scale above the ruler, leader-line callouts, dimension line broken around its label); the
+whole model shown as a one-line equation; the verdict rendered as a die-cut stamp plate pressed
+at −1.8°. Fonts self-hosted via @fontsource (Fraunces Variable, Instrument Sans Variable, IBM
+Plex Mono). Four tabs with full parity. Offline shows the cache explicitly marked; every
+failure surfaces. Run: `python -m app.cli serve` + `npm run dev` in `frontend/` (README there).
+A prebuilt `dist/` ships in the repo. (v1 "Foundry" dashboard composition was rejected as
+generic and fully re-composed; screenshots of the review pass live in the build workspace.)
+
+**Architectural fix, stated:** the old client duplicated the verdict thresholds and note text.
+The new client **never recomputes verdicts or band maths** — verdicts come only from `POST /quote`;
+offline it shows the last synced week from localStorage cache, explicitly marked, with checking
+and logging disabled. Nothing is silently estimated.
+
+`Castle_Quote_Checker.html` — **previous product, kept as reference.** Single file, no build step,
+4 tabs, offline fallback with built-in numbers. Superseded by `frontend/`.
 
 ---
 
@@ -493,7 +529,17 @@ python -m app.cli serve                     # uvicorn on :8000
 **Windows, one click:** double-click **`start_local.bat`** → API on :8000, page on :8080, browser opens.
 Stop with **`stop_local.bat`**. Full guide: `RUN_LOCAL.md`.
 
-**Manual:**
+**The new frontend (recommended):**
+
+```bat
+:: API (project root)
+python -m app.cli serve
+:: frontend (separate terminal, in frontend\)
+npm install   :: first time only
+npm run dev   :: opens the UI on http://127.0.0.1:8080
+```
+
+**Manual (old UI):**
 
 ```bat
 python -m uvicorn app.api:app --host 127.0.0.1 --port 8000
@@ -616,7 +662,8 @@ new data (a weekly brass series), and even then expect naive to win.
 
 ## 16. File inventory
 
-**Root:** `Castle_Quote_Checker.html` (the product) · `Brass_Story.html` (owner story) ·
+**Root:** `frontend/` (**the product** — Vite + React + TS, see §8) · `Castle_Quote_Checker.html`
+(previous single-file product, kept as reference) · `Brass_Story.html` (owner story) ·
 `brass_graph.html` (72-node graph) · `DTPS_Dossier.html` · `Castle_Discovery_Questions.html` ·
 `Brass_Weekly_Input.html` · `PRD.md` · `PRD_v2.md` · `BACKEND.md` · `RUN_LOCAL.md` ·
 `brass_session_handoff.md` · `HANDOFF_PROMPT.md` · `start_local.bat` · `stop_local.bat` ·

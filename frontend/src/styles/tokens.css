@@ -1,0 +1,99 @@
+/* ==========================================================================
+   BRASS GUARD — "Foundry" design system
+   A precision instrument, not a dashboard template. Warm dark ink, machined
+   hairlines, brass accent, serif display numerals. No glass, no gradients,
+   no glow. Every rule below earns its place.
+   ========================================================================== */
+
+:root {
+  /* ink & surfaces — warm near-black, like oxidised bronze */
+  --bg-0: #14110e;
+  --bg-1: #1a1613;
+  --bg-2: #211c16;
+  --bg-3: #292219;
+  --bg-input: #241e17;
+
+  /* hairlines */
+  --line: rgba(236, 222, 194, 0.09);
+  --line-2: rgba(236, 222, 194, 0.16);
+  --line-3: rgba(236, 222, 194, 0.30);
+
+  /* text — cream on ink */
+  --tx-0: #f0e8d6;
+  --tx-1: #c9bda3;
+  --tx-2: #94897333;
+  --tx-2: #948973;
+  --tx-3: #6b6252;
+  --tx-4: #4c453a;
+
+  /* the metal itself */
+  --brass: #c9963c;
+  --brass-bright: #e0b054;
+  --brass-dim: #8a6a2c;
+  --brass-wash: rgba(201, 150, 60, 0.09);
+
+  /* verdicts */
+  --safe: #5aa877;
+  --safe-wash: rgba(90, 168, 119, 0.10);
+  --thin: #d2a44c;
+  --thin-wash: rgba(210, 164, 76, 0.10);
+  --risky: #cf7a44;
+  --risky-wash: rgba(207, 122, 68, 0.10);
+  --stop: #c4564a;
+  --stop-wash: rgba(196, 86, 74, 0.12);
+
+  /* type */
+  --serif: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  --sans: 'Instrument Sans Variable', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --settle: cubic-bezier(0.16, 1, 0.3, 1);
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- base ---------- */
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  background: var(--bg-0);
+  color: var(--tx-0);
+  font: 15px/1.6 var(--sans);
+  font-feature-settings: "tnum" 1, "lnum" 1;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+}
+
+/* faint machining texture: two hairline gradients, imperceptible but felt */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(1200px 800px at 75% -10%, rgba(201, 150, 60, 0.045), transparent 60%),
+    radial-gradient(900px 700px at -10% 110%, rgba(90, 110, 140, 0.03), transparent 55%);
+}
+
+#root { position: relative; z-index: 1; }
+
+::selection { background: rgba(201, 150, 60, 0.32); color: var(--tx-0); }
+
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; border-radius: 2px; }

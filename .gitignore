@@ -19,3 +19,16 @@ data/outbox/
 # throwaway screenshot/test harnesses
 _t_*.html
 _shot*.html
+
+# local preview / scratch files
+_*.html
+_*.png
+_*.log
+_*.out
+_*.txt
+
+# frontend tooling
+frontend/node_modules/
+
+# agent skill definitions, not project source
+.hermes/

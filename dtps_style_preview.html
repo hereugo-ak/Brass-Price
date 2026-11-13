@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Brass Guard — 3 style directions</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#111;color:#eee;font-family:Inter,system-ui,sans-serif;padding:32px 24px 80px}
+.page{max-width:1180px;margin:0 auto}
+h1.top{font-size:22px;font-weight:700;margin-bottom:6px}
+p.sub{color:#999;font-size:14px;margin-bottom:28px}
+.dir{border:1px solid #333;border-radius:14px;overflow:hidden;margin-bottom:36px}
+.dir-head{display:flex;align-items:center;gap:12px;padding:14px 20px;background:#1b1b1b}
+.dir-head h2{font-size:16px}
+.dir-head span{font-size:13px;color:#999}
+.pick{margin-left:auto;background:#fff;color:#111;border:0;border-radius:8px;padding:9px 20px;font-weight:700;font-size:14px;cursor:pointer}
+.slides{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:0}
+.mini{aspect-ratio:16/9;padding:34px 30px;display:flex;flex-direction:column;justify-content:center;gap:12px;overflow:hidden}
+.kicker{font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.65;font-weight:700}
+.big{font-size:34px;line-height:1.12;font-weight:700}
+.mid{font-size:19px;line-height:1.45}
+.num{font-size:44px;font-weight:700;line-height:1}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.tbl th{font-size:10px;letter-spacing:.12em;text-transform:uppercase;opacity:.55;text-align:left;padding:6px 8px}
+.tbl td{padding:7px 8px;border-top:1px solid currentColor;opacity:.92}
+/* A heritage */
+.a-cover{background:#17140D;color:#F5EFE0}.a-cover .big{font-family:Fraunces,Georgia,serif}
+.a-body{background:#F5EFE0;color:#221D10}.a-body .big{font-family:Fraunces,Georgia,serif;font-size:24px}
+.a-data{background:#221D10;color:#F5EFE0}.a-data .num{font-family:"JetBrains Mono",monospace;color:#C9A227}
+/* B console */
+.b-cover{background:#08090A;color:#F4F4F5}.b-cover .big{font-family:Inter,sans-serif;letter-spacing:-.02em}
+.b-body{background:#101216;color:#E4E4E7}.b-body .big{font-size:22px;letter-spacing:-.01em}
+.b-data{background:#08090A;color:#E4E4E7}.b-data .num{font-family:"JetBrains Mono",monospace;color:#8B7CFF}
+/* C stripe */
+.c-cover{background:#0A2540;color:#fff}.c-cover .big{font-family:"Source Sans 3",Inter,sans-serif;letter-spacing:-.01em}
+.c-body{background:#fff;color:#0A2540}.c-body .big{font-size:23px}
+.c-data{background:#F6F9FC;color:#0A2540}.c-data .num{font-family:"Source Sans 3",sans-serif;color:#635BFF}
+.note{max-width:1180px;margin:0 auto;color:#888;font-size:13px}
+</style></head>
+<body><div class="page">
+<h1 class="top">Brass Guard DTPS deck — pick a direction</h1>
+<p class="sub">Each direction shown as cover + content + data slide. Click a pick button and I rebuild the .pptx in that style.</p>
+
+<div class="dir">
+<div class="dir-head"><h2>A · Heritage Brass</h2><span>Charcoal + brass + cream · Fraunces serif · suits a 1965 Aligarh exporter, premium and serious</span><button class="pick" data-hermes-send="Direction A, Heritage Brass. Rebuild the DTPS pptx in that style.">Pick A</button></div>
+<div class="slides">
+<div class="mini a-cover"><div class="kicker">DTPS Live Project · MBA-506 · AMU</div><div class="big">Brass Guard</div><div class="mid" style="opacity:.75">A defensible floor for fixed-price export quotes.</div></div>
+<div class="mini a-body"><div class="kicker">1 · The problem</div><div class="big">Every export quote is priced on gut feel.</div><div class="mid">Fixed-price sales abroad. No forward price at home.</div></div>
+<div class="mini a-data"><div class="kicker">5 · The floor this week</div><div class="num">₹950.40</div><div class="mid">same-day floor · 15-day ₹964.61 · 30-day ₹972.54</div></div>
+</div></div>
+
+<div class="dir">
+<div class="dir-head"><h2>B · Console Dark</h2><span>Linear-style void black + violet · mono numerals · suits the working backend, 47 tests, data spine</span><button class="pick" data-hermes-send="Direction B, Console Dark. Rebuild the DTPS pptx in that style.">Pick B</button></div>
+<div class="slides">
+<div class="mini b-cover"><div class="kicker">CASTLE HARDWARES × AMU · DTPS LIVE</div><div class="big">Brass Guard</div><div class="mid" style="opacity:.7">Weekly band + quote floor. No forecasting fairy tales.</div></div>
+<div class="mini b-body"><div class="kicker" style="color:#8B7CFF">01 — PROBLEM</div><div class="big">Every export quote is priced on gut feel.</div><div class="mid" style="opacity:.7">Fixed-price sales. No forward curve.</div></div>
+<div class="mini b-data"><div class="kicker" style="color:#8B7CFF">05 — FLOOR / KG</div><div class="num">₹950.40</div><div class="mid" style="opacity:.7">15d → ₹964.61 · 30d → ₹972.54</div></div>
+</div></div>
+
+<div class="dir">
+<div class="dir-head"><h2>C · Stripe Editorial</h2><span>White + ink navy + iris · Source Sans · clean, institutional, safest on a classroom projector</span><button class="pick" data-hermes-send="Direction C, Stripe Editorial. Rebuild the DTPS pptx in that style.">Pick C</button></div>
+<div class="slides">
+<div class="mini c-cover"><div class="kicker">DTPS Live Project · MBA-506</div><div class="big">Brass Guard</div><div class="mid" style="opacity:.8">A defensible floor for fixed-price brass export quotes.</div></div>
+<div class="mini c-body"><div class="kicker" style="color:#635BFF">1 · The problem</div><div class="big">Every export quote is priced on gut feel.</div><div class="mid" style="opacity:.7">Fixed-price sales abroad, no forward price at home.</div></div>
+<div class="mini c-data"><div class="kicker" style="color:#635BFF">The floor this week</div>
+<table class="tbl"><tr><th>Horizon</th><th>Floor</th></tr><tr><td>Same-day</td><td><b>₹950.40</b></td></tr><tr><td>15-day</td><td><b>₹964.61</b></td></tr><tr><td>30-day</td><td><b>₹972.54</b></td></tr></table></div>
+</div></div>
+
+</div>
+<p class="note">Type in the .pptx will use Windows-native twins of these fonts (Georgia for Fraunces, Consolas for mono) so nothing breaks on the classroom PC. Slides stay 8 + cover, one idea each, same honest content.</p>
+</body></html>
