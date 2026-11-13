@@ -1,0 +1,62 @@
+{
+ "full": {
+  "const": {
+   "pinball": 4.153,
+   "coverage": 0.944,
+   "width": 51.35,
+   "n": 356
+  },
+  "qreg": {
+   "pinball": 3.292,
+   "coverage": 0.928,
+   "width": 47.25,
+   "n": 356
+  },
+  "gbr": {
+   "pinball": 2.398,
+   "coverage": 0.911,
+   "width": 34.47,
+   "n": 28
+  }
+ },
+ "early": {
+  "const": {
+   "pinball": 3.329,
+   "coverage": 0.969,
+   "width": 51.35,
+   "n": 178
+  },
+  "qreg": {
+   "pinball": 2.232,
+   "coverage": 0.913,
+   "width": 26.11,
+   "n": 178
+  },
+  "gbr": {
+   "pinball": 1.017,
+   "coverage": 0.893,
+   "width": 18.81,
+   "n": 14
+  }
+ },
+ "late": {
+  "const": {
+   "pinball": 4.977,
+   "coverage": 0.919,
+   "width": 51.35,
+   "n": 178
+  },
+  "qreg": {
+   "pinball": 4.353,
+   "coverage": 0.944,
+   "width": 68.39,
+   "n": 178
+  },
+  "gbr": {
+   "pinball": 3.779,
+   "coverage": 0.929,
+   "width": 50.13,
+   "n": 14
+  }
+ }
+}

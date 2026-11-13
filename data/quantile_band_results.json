@@ -1,0 +1,59 @@
+{
+ "0.05:unconditional": {
+  "pinball": 2.07,
+  "coverage": 0.8904,
+  "mean_abs_quantile": 11.52,
+  "n": 356
+ },
+ "0.05:qreg": {
+  "pinball": 1.717,
+  "coverage": 0.9382,
+  "mean_abs_quantile": 24.49,
+  "n": 356
+ },
+ "0.05:gbr": {
+  "pinball": 1.421,
+  "coverage": 0.9286,
+  "mean_abs_quantile": 17.36,
+  "n": 28
+ },
+ "0.95:unconditional": {
+  "pinball": 2.267,
+  "coverage": 0.8483,
+  "mean_abs_quantile": 14.2,
+  "n": 356
+ },
+ "0.95:qreg": {
+  "pinball": 1.576,
+  "coverage": 0.9185,
+  "mean_abs_quantile": 22.94,
+  "n": 356
+ },
+ "0.95:gbr": {
+  "pinball": 0.977,
+  "coverage": 0.8929,
+  "mean_abs_quantile": 17.11,
+  "n": 28
+ },
+ "_combined": {
+  "unconditional": {
+   "pinball": 4.337,
+   "width": 25.72,
+   "coverage": 0.8694
+  },
+  "qreg": {
+   "pinball": 3.293,
+   "width": 47.43,
+   "coverage": 0.9284
+  },
+  "gbr": {
+   "pinball": 2.398,
+   "width": 34.47,
+   "coverage": 0.9107
+  }
+ },
+ "_verdict": {
+  "best": "gbr",
+  "beats_baseline": true
+ }
+}
